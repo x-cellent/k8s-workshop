@@ -31,15 +31,14 @@ func init() {
 
 func runServer(cmd *cobra.Command, args []string) error {
 	docs := cmd.Context().Value("docs").(embed.FS)
-	return Run("/docs", http.FS(docs))
+	return Run("/docs", viper.GetInt(flag.Port), http.FS(docs))
 }
 
-func Run(path string, fs http.FileSystem) error {
+func Run(path string, port int, fs http.FileSystem) error {
 	http.Handle("/", http.FileServer(fs))
 
-	port := viper.GetInt(flag.Port)
-	slidesURL := fmt.Sprintf("http://localhost:%d/docs", port)
-	fmt.Printf("Starting workshop slides server at %s%s...\n", slidesURL, path)
+	slidesURL := fmt.Sprintf("http://localhost:%d%s", port, path)
+	fmt.Printf("Starting workshop slides server at %s...\n", slidesURL)
 
 	go func() {
 		time.Sleep(500 * time.Millisecond)
