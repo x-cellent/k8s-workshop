@@ -1,6 +1,8 @@
 # k8s workshop
 
-Contains a CLI tool for spawning a local k8s cluster using [kind](https://kind.sigs.k8s.io/) on the `main` branch.
+The presentation slides are available
+- [online](x-cellent.github.io/k8s-workshop)
+- at `localhost:8080/k8s-workshop` after running `bin/k8s-workshop slides` (note: run `make` to build the CLI binary)
+- at `localhost:8080` after running `make slides`
 
-The `gh-pages` branch contains the presentation slides available [online](x-cellent.github.io/k8s-workshop) or at `localhost:8080` after running `bin/k8s-workshop slides`.
-
+The last option can be used for development. Simply press `F5` in your browser after any update to [slides.md](./cmd/slides/k8s-workshop/slides.md).
