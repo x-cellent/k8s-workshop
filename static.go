@@ -9,5 +9,9 @@ import (
 )
 
 func main() {
-	log.Fatal(slides.Run("", http.Dir("docs")))
+	log.Fatal(runStaticSlidesServer())
+}
+
+func runStaticSlidesServer() error {
+	return slides.Run("", http.Dir("docs"))
 }
