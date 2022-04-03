@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"context"
+	"embed"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/x-cellent/k8s-workshop/cmd/slides"
@@ -22,6 +24,7 @@ func init() {
 	rootCmd.AddCommand(slides.Cmd)
 }
 
-func Execute() error {
-	return rootCmd.Execute()
+func Execute(docs embed.FS) error {
+	ctx := context.WithValue(context.Background(), "docs", docs)
+	return rootCmd.ExecuteContext(ctx)
 }

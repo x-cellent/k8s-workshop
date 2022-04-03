@@ -7,8 +7,9 @@ build:
 
 .PHONY .SILENT: slides
 slides: down
-	docker run -d --name k8s-workshop-slides --net host -v $(shell pwd):/k8s-workshop golang:1.18 sh -c 'cd /k8s-workshop/cmd/slides && go run main.go' >/dev/null
-	echo "Slides are ready at localhost:8080! Stop slides server with 'make down' or 'docker rm -f k8s-workshop-slides'"
+	docker run -d --name k8s-workshop-slides --net host -v $(shell pwd):/k8s-workshop golang:1.18 sh -c 'cd /k8s-workshop && go run static.go' >/dev/null
+	echo "Browse slides at localhost:8080"
+	echo "Stop slides server with 'make down' or 'docker rm -f k8s-workshop-slides'"
 
 .PHONY .SILENT: down
 down:
