@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/x-cellent/k8s-workshop/cmd/install/flag"
+	"github.com/x-cellent/k8s-workshop/cmd/install/krew"
 	"github.com/x-cellent/k8s-workshop/cmd/install/kubectl"
 )
 
@@ -21,4 +22,5 @@ func init() {
 	Cmd.PersistentFlags().StringP(flag.DestinationDir, flag.DestinationDirShort, ".", "destination directory")
 
 	Cmd.AddCommand(kubectl.Cmd)
+	Cmd.AddCommand(krew.Cmd)
 }
