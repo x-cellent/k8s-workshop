@@ -58,6 +58,11 @@ func install(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	destDir := viper.GetString(flag.DestinationDir)
+	if destDir == "." {
+		destDir = currentDir
+	}
+
 	err = os.Chdir(dir)
 	if err != nil {
 		return err
@@ -65,7 +70,7 @@ func install(cmd *cobra.Command, args []string) error {
 	defer os.Chdir(currentDir)
 
 	fileURL := fmt.Sprintf("https://get.helm.sh/helm-%s-%s-%s.%s", v, runtime.GOOS, runtime.GOARCH, suffix)
-	archive, err := download.File(fileURL, viper.GetString(flag.DestinationDir))
+	archive, err := download.File(fileURL, ".")
 	if err != nil {
 		return err
 	}
@@ -80,13 +85,23 @@ func install(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	path := filepath.Join(currentDir, "helm")
+	path := "helm"
 	switch runtime.GOOS {
 	case "windows":
 		path += ".exe"
 	}
 
 	src := filepath.Join(fmt.Sprintf("%s-%s", runtime.GOOS, runtime.GOARCH), path)
-	dest := filepath.Join(viper.GetString(flag.DestinationDir), path)
-	return cp.File(src, dest)
+	dest := filepath.Join(destDir, path)
+	err = cp.File(src, dest)
+	if err != nil {
+		return err
+	}
+
+	switch runtime.GOOS {
+	case "linux", "darwin":
+		return os.Chmod(dest, 0755)
+	}
+
+	return nil
 }

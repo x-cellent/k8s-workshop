@@ -51,7 +51,7 @@ func install(cmd *cobra.Command, args []string) error {
 
 	krew := fmt.Sprintf("krew-%s_%s", runtime.GOOS, runtime.GOARCH)
 	fileURL := fmt.Sprintf("https://github.com/kubernetes-sigs/krew/releases/%s/download/%s.tar.gz", v, krew)
-	archive, err := download.File(fileURL, viper.GetString(flag.DestinationDir))
+	archive, err := download.File(fileURL, ".")
 	if err != nil {
 		return err
 	}
