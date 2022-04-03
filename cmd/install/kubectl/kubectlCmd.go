@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/viper"
 	"github.com/x-cellent/k8s-workshop/cmd/install/download"
 	"github.com/x-cellent/k8s-workshop/cmd/install/flag"
+	"os"
 	"runtime"
 	"strings"
-	"syscall"
 )
 
 var Cmd = &cobra.Command{
@@ -43,10 +43,5 @@ func install(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	switch runtime.GOOS {
-	case "linux":
-		return syscall.Chmod(path, 0755)
-	default:
-		return nil
-	}
+	return os.Chmod(path, 0755)
 }

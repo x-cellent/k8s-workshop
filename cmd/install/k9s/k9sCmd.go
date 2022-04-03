@@ -38,7 +38,7 @@ func install(cmd *cobra.Command, args []string) error {
 		v = "v" + v
 	}
 
-	dir, err := os.MkdirTemp(".", "helm-*")
+	dir, err := os.MkdirTemp(".", "k9s-*")
 	if err != nil {
 		return err
 	}
@@ -90,10 +90,5 @@ func install(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	switch runtime.GOOS {
-	case "linux", "darwin":
-		return os.Chmod(dest, 0755)
-	}
-
-	return nil
+	return os.Chmod(dest, 0755)
 }
