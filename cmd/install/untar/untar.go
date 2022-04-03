@@ -1,4 +1,4 @@
-// Copied from https://cs.opensource.google/go/x/build/+/3f0b173c:internal/untar/untar.go
+// Copied and slightly modified from https://cs.opensource.google/go/x/build/+/3f0b173c:internal/untar/untar.go
 
 // Copyright 2017 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
@@ -25,9 +25,14 @@ import (
 // forked for now.  Unfork and add some opts arguments here, so the
 // buildlet can use this code somehow.
 
-// Untar reads the gzip-compressed tar file from r and writes it into dir.
-func Untar(r io.Reader, dir string) error {
-	return untar(r, dir)
+// Untar reads the gzip-compressed tar file from path and writes it into dir.
+func Untar(path, dir string) error {
+	fr, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+
+	return untar(fr, dir)
 }
 
 func untar(r io.Reader, dir string) (err error) {

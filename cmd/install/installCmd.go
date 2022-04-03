@@ -4,6 +4,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/x-cellent/k8s-workshop/cmd/install/flag"
+	"github.com/x-cellent/k8s-workshop/cmd/install/helm"
+	"github.com/x-cellent/k8s-workshop/cmd/install/k9s"
+	"github.com/x-cellent/k8s-workshop/cmd/install/kind"
 	"github.com/x-cellent/k8s-workshop/cmd/install/krew"
 	"github.com/x-cellent/k8s-workshop/cmd/install/kubectl"
 )
@@ -23,4 +26,7 @@ func init() {
 
 	Cmd.AddCommand(kubectl.Cmd)
 	Cmd.AddCommand(krew.Cmd)
+	Cmd.AddCommand(helm.Cmd)
+	Cmd.AddCommand(k9s.Cmd)
+	Cmd.AddCommand(kind.Cmd)
 }

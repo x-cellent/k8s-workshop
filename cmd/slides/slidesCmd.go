@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/x-cellent/k8s-workshop/cmd/open"
 	"github.com/x-cellent/k8s-workshop/cmd/slides/flag"
 	"net/http"
 	"os"
-	"os/exec"
-	"runtime"
 	"time"
 )
 
@@ -42,28 +41,11 @@ func Run(path string, port int, fs http.FileSystem) error {
 
 	go func() {
 		time.Sleep(500 * time.Millisecond)
-		out, err := openInDefaultBrowser(slidesURL)
+		out, err := open.InDefaultBrowser(slidesURL)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "Failed to open %s in default browser:\n%s%s", slidesURL, string(out), err.Error())
 		}
 	}()
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
-}
-
-func openInDefaultBrowser(fileOrURL string) ([]byte, error) {
-	var cmd string
-	var args []string
-
-	switch runtime.GOOS {
-	case "windows":
-		cmd = "cmd"
-		args = []string{"/c", "start"}
-	case "darwin":
-		cmd = "open"
-	default:
-		cmd = "xdg-open"
-	}
-	args = append(args, fileOrURL)
-	return exec.Command(cmd, args...).CombinedOutput()
 }
