@@ -5,6 +5,7 @@ import (
 	"embed"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/x-cellent/k8s-workshop/cmd/install"
 	"github.com/x-cellent/k8s-workshop/cmd/slides"
 )
 
@@ -22,6 +23,7 @@ func init() {
 	}()
 
 	rootCmd.AddCommand(slides.Cmd)
+	rootCmd.AddCommand(install.Cmd)
 }
 
 func Execute(docs embed.FS) error {
