@@ -4,7 +4,6 @@ metadata:
   labels:
     app: frontend
   name: web
-  namespace: default
 spec:
   containers:
   - name: web

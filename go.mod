@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -22,5 +23,4 @@ require (
 	golang.org/x/sys v0.0.0-20190624142023-c5567b49c5d0 // indirect
 	golang.org/x/text v0.3.2 // indirect
 	gopkg.in/ini.v1 v1.51.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

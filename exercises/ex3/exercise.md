@@ -1,5 +1,3 @@
-Aufgabe 3:
-
 Diese yaml für einen Pod ist kaputt und muss gefixt werden, ob alles passt, sieht man wenn man den pod in den Namepsace ex3 deployen kann.
 
 ```yaml

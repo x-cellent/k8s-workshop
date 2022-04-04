@@ -28,7 +28,8 @@ func init() {
 	rootCmd.AddCommand(cluster.Cmd)
 }
 
-func Execute(docs embed.FS) error {
+func Execute(docs, exercises embed.FS) error {
 	ctx := context.WithValue(context.Background(), "docs", docs)
+	ctx = context.WithValue(ctx, "exercises", exercises)
 	return rootCmd.ExecuteContext(ctx)
 }
