@@ -47,7 +47,7 @@ ENTRYPOINT ["mysql"] #Startcommand welcher der container ausfuehren soll
 
 +++
 
-## Das Dockerfile
+## Das Dockerfile !TO_DO!
 1. Multi-Stage Dockerfiles auch Moeglich <!-- .element: class="fragment" data-fragment-index="1" -->
 1. Vorteile des Multi-Stage Dockerfiles <!-- .element: class="fragment" data-fragment-index="2" -->
     1. Vorteil 1 <!-- .element: class="fragment" data-fragment-index="3" -->
@@ -92,8 +92,13 @@ Zeit: ca 10 min
 
 +++
 
-## Nachteile von Containarisierung
+## Nachteile von Containarisierung !TO-DO!
 1. Fehlende Orchestrierung
+1. Fehlende Ausfallsicherheit
+
+---
+
+# Monolith vs Microservices !TO-DO!
 
 ---
 
@@ -102,30 +107,47 @@ Zeit: ca 10 min
 
 +++
 
+### Kubernetes
+
 1. Urspruenglich 2014 entwickelt von Google
 1. Abgegeben 2015 an die Cloud Native Compute Fondation (CNCF)
 
 +++
 
-## Warum Kubernetes?
+## Warum Kubernetes? !TO_DO!
 1. 
 
 +++
 
-## Architektur von Kubernetes
+## Architektur von Kubernetes !TO-DO GROESSE ANPASSEN!
 ![image](https://raw.githubusercontent.com/kubernetes/kubernetes/release-1.3/docs/design/architecture.png)
 
 +++
 
 ### Architektur
-1. Einzelne Services sind Modular aufgebaut und austauschbar
-    1. API-Server
-    1. Scheudler
-    1. Kubelet
-    1. Kube-Controller-Manager
-    1. Kube-Proxy
-1. Core Services sind Open-Source von der CNCF bereitgestellt
+1. Einzelne Services sind Modular aufgebaut und austauschbar <!-- .element: class="fragment" data-fragment-index="1" -->
+    1. API-Server <!-- .element: class="fragment" data-fragment-index="2" -->
+    1. Scheudler <!-- .element: class="fragment" data-fragment-index="3" -->
+    1. Kubelet <!-- .element: class="fragment" data-fragment-index="4" -->
+    1. Kube-Controller-Manager <!-- .element: class="fragment" data-fragment-index="5" -->
+    1. Kube-Proxy <!-- .element: class="fragment" data-fragment-index="6" -->
+1. Core Services sind Open-Source von der CNCF bereitgestellt <!-- .element: class="fragment" data-fragment-index="7" -->
 
++++
+
+## Ausfallsicherheit
+
+1. Container Health Check
+    1. readyness
+    1. liveness
+1. Hostsystemausfall
+1. Update
+
++++
+
+## Wichtige Ressourcen
+1. kubectl cheat sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet
+1. kubernetes docs: https://kubernetes.io/docs/concepts/overview
 
 ---
 
@@ -134,7 +156,7 @@ Zeit: ca 10 min
 +++
 
 # Install Tools
-
+Kubernetes Dokumentation:​
 - kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
 - krew <!-- .element: class="fragment" data-fragment-index="2" -->
 - helm <!-- .element: class="fragment" data-fragment-index="3" -->
