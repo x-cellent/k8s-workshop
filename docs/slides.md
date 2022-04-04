@@ -29,10 +29,10 @@ make
 +++
 
 ## Vorteile Containarisierung
-1. kleinere Images
-1. Geringerer Ressourcenverbrauch
-1. Erhoehte Sicherheit
-1. Abhaengigkeiten mit im Image
+1. kleinere Images <!-- .element: class="fragment" data-fragment-index="1" -->
+1. Geringerer Ressourcenverbrauch <!-- .element: class="fragment" data-fragment-index="2" -->
+1. Erhoehte Sicherheit <!-- .element: class="fragment" data-fragment-index="3" -->
+1. Abhaengigkeiten mit im Image <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
@@ -43,6 +43,33 @@ make
 FROM alpine:3.9 #base Image
 RUN apk add --no-cache mysql-client #Commands welche man ausfuehren möchte, in diesem fall mysql-client installieren
 ENTRYPOINT ["mysql"] #Startcommand welcher der container ausfuehren soll
+```
+
++++
+
+## Das Dockerfile
+1. Multi-Stage Dockerfiles auch Moeglich <!-- .element: class="fragment" data-fragment-index="1" -->
+1. Vorteile des Multi-Stage Dockerfiles <!-- .element: class="fragment" data-fragment-index="2" -->
+    1. Vorteil 1 <!-- .element: class="fragment" data-fragment-index="3" -->
+    1. Vorteil 2 <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+## Wichtige Docker befehle
+1. docker run
+1. docker ps 
+1. docker logs
+1. docker build
+1. docker rm
+1. docker exec
+1. docker --help
+
++++
+
+## Aufgabe
+1. Bitte aufgabe ex1 starten
+```sh
+bin/k8s-workshop cluster exercise -n 1
 ```
 
 ---
