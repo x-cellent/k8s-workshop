@@ -3,7 +3,7 @@ default: build
 
 .PHONY .SILENT: build
 build:
-	docker run --rm -v $(shell pwd):/src golang:1.18 sh -c 'cd /src && go fmt ./... && go mod download && go mod tidy && go build -o bin/k8s-workshop'
+	docker run --rm -v $(shell pwd):/src golang:1.18 sh -c 'cd /src && go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
 
 .PHONY .SILENT: slides
 slides: down

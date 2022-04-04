@@ -6,13 +6,13 @@ Only [Make](https://www.gnu.org/software/make/) and [Docker](https://docs.docker
 
 ## Build
 
-Run `make` or `make build` to build the workshop CLI, which will then be compiled to `bin/k8s-workshop`.
+Run `make` or `make build` to build the workshop CLI, which will then be compiled to `bin/w6p`.
 
 ## Slides
 
 The workshop slides are available
 - ...[online](https://x-cellent.github.io/k8s-workshop)
-- ...at `http://localhost:8080/docs` after running `bin/k8s-workshop slides`
+- ...at `http://localhost:8080/docs` after running `bin/w6p slides`
 - ...at `http://localhost:8080` after running `make slides`
 
 The last option can be used for development.
