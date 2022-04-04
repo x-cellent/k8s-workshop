@@ -71,6 +71,24 @@ ENTRYPOINT ["mysql"] #Startcommand welcher der container ausfuehren soll
 ```sh
 bin/k8s-workshop cluster exercise -n 1
 ```
+Zeit: ca 15 min
+
++++
+
+## Image Builden
+
+```sh
+docker build -t IMAGENAME:IMAGETAG ./location/of/docker-file
+```
+
++++
+
+## Aufgabe
+1. Bitte aufgabe ex2 starten
+```sh
+bin/k8s-workshop cluster exercise -n 2
+```
+Zeit: ca 10 min
 
 ---
 
