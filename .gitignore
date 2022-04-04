@@ -10,3 +10,5 @@ log/*.log
 tmp/**
 node_modules/
 .sass-cache
+k8s-workshop.kind.yaml
+k8s-workshop.kubeconfig
