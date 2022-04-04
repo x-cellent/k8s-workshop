@@ -26,6 +26,25 @@ make
 
 # Container
 
++++
+
+## Vorteile Containarisierung
+1. kleinere Images
+1. Geringerer Ressourcenverbrauch
+1. Erhoehte Sicherheit
+1. Abhaengigkeiten mit im Image
+
++++
+
+## Das Dockerfile
+1. Datei zum Image bauen
+
+```Dockerfile
+FROM alpine:3.9 #base Image
+RUN apk add --no-cache mysql-client #Commands welche man ausfuehren möchte, in diesem fall mysql-client installieren
+ENTRYPOINT ["mysql"] #Startcommand welcher der container ausfuehren soll
+```
+
 ---
 
 # Kubernetes
