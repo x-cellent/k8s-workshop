@@ -41,7 +41,7 @@ spec:
             cpu: "1.0"
             memory: "1G"
         volumeMounts:
-        - name: config-volume
+        - name: nginx-configmap
           mountPath: /etc/nginx 
           readOnly: true
       volumes:
