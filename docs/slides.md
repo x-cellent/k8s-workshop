@@ -90,9 +90,42 @@ bin/k8s-workshop cluster exercise -n 2
 ```
 Zeit: ca 10 min
 
++++
+
+## Nachteile von Containarisierung
+1. Fehlende Orchestrierung
+
 ---
 
 # Kubernetes
+*Kubernetes ist ein Open-Source-System  zur Automatisierung der Bereitstellung, Skalierung und Verwaltung von Container-Anwendungen*
+
++++
+
+1. Urspruenglich 2014 entwickelt von Google
+1. Abgegeben 2015 an die Cloud Native Compute Fondation (CNCF)
+
++++
+
+## Warum Kubernetes?
+1. 
+
++++
+
+## Architektur von Kubernetes
+![image](https://raw.githubusercontent.com/kubernetes/kubernetes/release-1.3/docs/design/architecture.png)
+
++++
+
+### Architektur
+1. Einzelne Services sind Modular aufgebaut und austauschbar
+    1. API-Server
+    1. Scheudler
+    1. Kubelet
+    1. Kube-Controller-Manager
+    1. Kube-Proxy
+1. Core Services sind Open-Source von der CNCF bereitgestellt
+
 
 ---
 
