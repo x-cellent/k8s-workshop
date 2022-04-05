@@ -2,6 +2,7 @@ package cluster
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/x-cellent/k8s-workshop/cmd/cluster/down"
 	"github.com/x-cellent/k8s-workshop/cmd/cluster/exercise"
 	"github.com/x-cellent/k8s-workshop/cmd/cluster/run"
 )
@@ -13,5 +14,6 @@ var Cmd = &cobra.Command{
 
 func init() {
 	Cmd.AddCommand(run.Cmd)
+	Cmd.AddCommand(down.Cmd)
 	Cmd.AddCommand(exercise.Cmd)
 }

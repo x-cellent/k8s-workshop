@@ -35,7 +35,8 @@ nodes:
 `
 
 const (
-	clusterName       = "k8s-workshop"
+	NetworkName       = "k8s-workshop"
+	ClusterName       = "k8s-workshop"
 	clusterConfigFile = "k8s-workshop.kind.yaml"
 	kubeconfigFile    = "k8s-workshop.kubeconfig"
 )
@@ -52,7 +53,7 @@ func runCluster(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println("Create Docker network named kind (10.10.10.0/24)")
-	_ = exec.Command(docker, "network", "create", "kind", "--subnet", "10.10.10.0/24").Run()
+	_ = exec.Command(docker, "network", "create", NetworkName, "--subnet", "10.10.10.0/24").Run()
 
 	fmt.Printf("Write KinD config file %q\n", clusterConfigFile)
 	err = os.WriteFile(clusterConfigFile, []byte(kindConfig), 0600)
@@ -61,13 +62,13 @@ func runCluster(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println("Starting cluster (this may take some time)...")
-	err = exec.Command(kind, "create", "cluster", "--name", clusterName, "--config", clusterConfigFile).Run()
+	err = exec.Command(kind, "create", "cluster", "--name", ClusterName, "--config", clusterConfigFile).Run()
 	if err != nil {
 		return err
 	}
 
 	fmt.Printf("Write workshop cluster kubeconfig to %q\n", kubeconfigFile)
-	bb, err := exec.Command(kind, "get", "kubeconfig", "--name", clusterName).CombinedOutput()
+	bb, err := exec.Command(kind, "get", "kubeconfig", "--name", ClusterName).CombinedOutput()
 	if err != nil {
 		return err
 	}
