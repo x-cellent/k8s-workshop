@@ -100,6 +100,10 @@ Zeit: ca 10 min
 
 # Monolith vs Microservices !TO-DO!
 
++++
+
+![image](https://i0.wp.com/mjaglan.github.io/images/docker-virtualbox/docker-vs-vm.png?w=840&ssl=1)
+
 ---
 
 # Kubernetes
@@ -162,3 +166,11 @@ Kubernetes Dokumentation:​
 - helm <!-- .element: class="fragment" data-fragment-index="3" -->
 - kind <!-- .element: class="fragment" data-fragment-index="4" -->
 - k9s <!-- .element: class="fragment" data-fragment-index="5" -->
+
+---
+
+# Objekttypen in K8s
+
++++
+
+## 
