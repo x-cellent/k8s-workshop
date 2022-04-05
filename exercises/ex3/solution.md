@@ -1,10 +1,11 @@
+5s
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
   labels:
     app: frontend
   name: web
-  namespace: default
 spec:
   containers:
   - name: web
@@ -18,3 +19,4 @@ spec:
       limits:
         cpu: "1.0"
         memory: "1G"
+```

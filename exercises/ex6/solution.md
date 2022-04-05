@@ -1,5 +1,5 @@
-Erst die configmap anschauen:
-
+10m
+Erst die ConfigMap anschauen:
 ```sh
 k get cm -n ex6 nginx-configmap
 ```
@@ -9,7 +9,7 @@ und als yaml file ausgeben:
 k get cm -n ex6 nginx-configmap -o yaml
 ```
 
-und deployment yaml anpassen mit volumemount:
+und Deployment anpassen mit volumeMounts:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment

@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type manifestFragment struct {
@@ -107,7 +108,7 @@ func runExercise(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	return nil
+	return runSolutionTimer(exercises, exDir)
 }
 
 func printExercise(fs embed.FS, exampleDir string, number int) error {
@@ -121,6 +122,33 @@ func printExercise(fs embed.FS, exampleDir string, number int) error {
 		ex += "\n"
 	}
 	fmt.Printf("Aufgabe %d:\n\n%s\n", number, ex)
+
+	return nil
+}
+
+func runSolutionTimer(fs embed.FS, exampleDir string) error {
+	bb, err := fs.ReadFile(filepath.Join(exampleDir, "solution.md"))
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(bb), "\n")
+	if len(lines) == 0 {
+		return nil
+	}
+
+	d, err := time.ParseDuration(strings.TrimSpace(lines[0]))
+	if err == nil {
+		fmt.Printf("\nDie Lösung wird in %s angezeigt\n", d)
+		time.Sleep(d)
+		lines[0] = "\nLösung:\n"
+	} else {
+		fmt.Println(err.Error())
+		fmt.Println("\nLösung:")
+		fmt.Println()
+	}
+
+	fmt.Println(strings.Join(lines, "\n"))
 
 	return nil
 }

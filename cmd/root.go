@@ -11,7 +11,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "k8s-workshop",
+	Use:   "w6p",
 	Short: "A CLI tool for the x-cellent k8s workshop",
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Usage()
