@@ -1,12 +1,12 @@
 10m
 Erst die ConfigMap anschauen:
 ```sh
-k get cm -n ex6 nginx-configmap
+kubectl get cm -n ex6 nginx-configmap
 ```
 
 und als yaml file ausgeben:
 ```sh
-k get cm -n ex6 nginx-configmap -o yaml
+kubectl get cm -n ex6 nginx-configmap -o yaml
 ```
 
 und Deployment anpassen mit volumeMounts:
