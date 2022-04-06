@@ -1,7 +1,3 @@
-15m
-
-
-```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -24,8 +20,3 @@ spec:
             - -c
             - date; echo Pascal
           restartPolicy: OnFailure
-```
-
-```sh
-kubectl create job -n ex6 --from=cronjob/hello hello-test
-```

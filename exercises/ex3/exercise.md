@@ -1,5 +1,5 @@
 Diese yaml für einen Pod ist kaputt und muss gefixt werden.
-Ob alles passt, sieht man wenn man den pod in den Namepsace ex3 deployen kann.
+Ob alles passt, sieht man wenn man den pod in den Namepsace ex1 deployen kann.
 
 ```yaml
 apiVersion: v1
@@ -8,7 +8,6 @@ metadata:
   labels:
     app: frontend
   name: web
-  namespace: default
 spec:
 containers:
 - name: web

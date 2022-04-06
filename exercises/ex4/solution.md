@@ -5,6 +5,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: web
+  namespace: ex2
 spec:
   selector:
     app: frontend

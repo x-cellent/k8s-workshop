@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   labels:
     app: frontend
+    namespace: ex2
   name: web
 spec:
   containers:

@@ -1,5 +1,3 @@
-da configmaps nicht verschluesselt werden eignen diese sich nicht als storage fuer sensible daten wie passwoerter etc.
+Erstelle ein Cronjob in Namespace ex6 welcher alle 10 Minuten ausgeführt wird und alle 10 minuten das datum und dein Namen ausgibt, dieser soll 5 gelungene und 8 failed jobs aufheben
 
-Welches andere API Objekt gibt es, um sensible daten zu speichern?
-
-erstelle ein solches objekt in Namespace ex7 mit dem key `db-password` und einem eigen festgelegtes passwort.
+Teste diesen Cronjob

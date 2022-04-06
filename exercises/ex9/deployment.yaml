@@ -1,12 +1,10 @@
-15m
-```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: frontend
   name: web
-  namespace: ex3
+  namespace: ex7
 spec:
   replicas: 3
   selector:
@@ -29,4 +27,3 @@ spec:
           limits:
             cpu: "1.0"
             memory: "1G"
-```

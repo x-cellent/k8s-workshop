@@ -6,6 +6,7 @@ metadata:
   labels:
     app: frontend
   name: web
+  namespace: ex1
 spec:
   containers:
   - name: web

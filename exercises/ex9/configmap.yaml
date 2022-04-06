@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-configmap
-  namepsace: ex6
+  namepsace: ex7
 data:
   nginx.conf: |
     user nginx;

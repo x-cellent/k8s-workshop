@@ -667,7 +667,7 @@ bin/w6s exercise k8s -n 3
 
 +++
 
-#### Lösungsweg
+#### Lösungsbesprechung
 
 <aside class="notes">
   ein teilnehmer erklärt seine lösung 
@@ -709,6 +709,162 @@ bin/w6s exercise k8s -n 3
 +++
 
 #### Aufgabe
+- Bitte starte aufgabe k8s 4
+```sh
+bin/w6s exercise k8s -n 4
+```
+
++++
+
+#### Lösungsbesprechung
+- deamonSet aus kubernetes Doku
+- kubernetes Doku ist immer gut
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+  
+  kubernetes Doku ist immer ein guter ort sich infos zu holen, deployments anzuschauen/abzuschauen
+</aside>
+
++++
+
+### StatefulSet
+- persistente Pods
+- geordnetes Updaten
+
+<aside class="notes">
+  StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine anwendung ihren status nicht verliert
+
+  z.B Datenbanken sind klassische Anwendungen welche man in diesem zustand haben möchte.
+</aside>
+
++++
+
+### Job
+- ausführung eines commandes in einem pod
+- datenbank backups
+
+<aside class="notes">
+  jobs sind praktisch um einzelne kommandos auszuführen
+
+  z.B prüfen ob ein service im cluster erreichbar ist, datenbank backups zu erstellen
+</aside>
+
++++
+
+#### Aufgabe
+
+- Bitte starte aufgabe k8s 5
+```sh
+bin/w6s exercise k8s -n 5
+```
+
++++
+
+#### Lösungsbeschreibung
+
++++
+
+### Cronjobs
+- Mischung aus klassischen Cronjobs und Jobs
+- regelmäßige ausführung eines jobs
+
+<aside class="notes">
+  wie klassische Linux Cronjobs 
+
+  Regelmäßige außführung von Jobs
+
+  man kann auch einmalig die Jobs eines Cronjobs außführen pratkisch für debugging
+</aside>
+
++++
+
+#### Aufgabe
+
+- Bitte starte aufgabe k8s 6
+```sh
+bin/w6s exercise k8s -n 6
+```
+
++++
+
+#### Lösungsbesprechung
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+
+  kubectl create job nicht in cronjob k8s doku
+</aside>
+
++++
+
+### Configmaps
+- speicherung von nicht vertraulichen daten
+- einbindung in pods als
+    - enviroment-variable
+    - command-line argument
+    - als datei in Volume
+- kein reload von pods bei änderung von configmap
+
+<aside class="notes">
+  in configmaps sollen nur nicht vertrauliche daten gespeichert werden
+
+  es gibt mehrere wege diese in die container einzubinden
+
+  pods reloaden nicht automatisch wenn configmaps geupdated wurden
+  </aside>
+
++++
+
+#### Aufgabe
+- Bitte starte aufgabe k8s 7
+```sh
+bin/w6s exercise k8s -n 7
+```
+
++++
+
+#### Lösungsbesprechung
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+</aside>
+
++++
+
+### Aufgabe
+- Bitte starte aufgabe k8s 8
+```sh
+bin/w6s exercise k8s -n 8
+```
+
+<aside class="notes">
+  Diesmal die Aufgabe vor dem API Objekt
+
+  Teilnehmer sollen secrects finden 
+</aside>
+
++++
+
+#### Lösungsbesprechung
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+</aside>
+
++++
+
+### Secret
+- speicherung vertraulicher daten
+- unentschlüsselt in etcd db
+
+<aside class="notes">
+  secrets gibt es um vertrauliche daten zu speichern
+
+  standartmäßig liegen diese daten aber unverschlüsselt im etcd
+
+  einbindung ähnlich wie bei configmaps
+</aside>
 
 ---
 
