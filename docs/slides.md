@@ -48,6 +48,10 @@ make
 
 # Container
 
+<aside class="notes">
+  
+</aside>
+
 +++
 
 ## Vorteile Containarisierung
@@ -204,4 +208,7 @@ Kubernetes Dokumentation:​
 
 +++
 
-## 
+---
+
+# Fragen
+- Hab ihr noch Fragen an uns?
