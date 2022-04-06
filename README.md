@@ -17,11 +17,13 @@ The workshop slides are available
 
 The last option can be used for development.
 Simply press `F5` in your browser after any update to [slides.md](./docs/slides.md).
-<<<<<<< Updated upstream
-=======
 
 ### Export to PDF
 
+```
+make pdf
+```
+or
 ```
 bin/w6p slides export
 ```
@@ -32,7 +34,7 @@ bin/w6p slides export
 Run
 ```
 bin/w6p exercise docker -nX
-´``
+```
 to start the Docker exercise number `X`.
 
 ### Kubernetes exercises
@@ -67,4 +69,3 @@ bin/w6p exercise k8s -nX
 ```
 to start the Kubernetes exercise number `X`.
 Each exercise will be deployed into a fresh namespace `exX` including the exercise number `X`, for example `ex1`.
->>>>>>> Stashed changes
