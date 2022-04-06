@@ -20,11 +20,26 @@ Simply press `F5` in your browser after any update to [slides.md](./docs/slides.
 
 ## Hands-On
 
-### Start/Stop workshop cluster
+### Docker exercises
+Run
+```
+bin/w6p exercise docker -nX
+´``
+to start the Docker exercise number `X`.
 
+### Kubernetes exercises
+
+First you need to start the local Kubernetes workshop cluster:
 ```
 bin/w6p cluster run
+```
+
+Note:
+This cluster runs within the Docker container `k8s-workshop-cluster-control-plane`.
+Cou can shutdown the workshop cluster by either of the following commands:
+```
 bin/w6p cluster shutdown
+docker rm -f k8s-workshop-cluster-control-plane
 ```
 
 #### Interact with workshop cluster
@@ -35,11 +50,12 @@ export KUBECONFIG=$(pwd)/k8s-workshop.kubeconfig
 k9s
 ```
 
-### Exercises
+### Kubernetes exercises
 
-After `make cluster run` run
+First start the workshop claster through `make cluster run`.
+Then run
 ```
-bin/w6p exercise -n X
+bin/w6p exercise k8s -nX
 ```
-to start exercise number `X`.
-Each exercise will be deployed to a fresh namespace `exX` including the exercise number `X`, e.g. `ex3`.
+to start the Kubernetes exercise number `X`.
+Each exercise will be deployed into a fresh namespace `exX` including the exercise number `X`, for example `ex1`.
