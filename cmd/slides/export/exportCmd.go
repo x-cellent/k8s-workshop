@@ -17,9 +17,10 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "export",
-	Short: "Exports workshop slides to PDF",
-	RunE:  exportToPDF,
+	Use:     "export",
+	Aliases: []string{"pdf"},
+	Short:   "Exports workshop slides to PDF",
+	RunE:    exportToPDF,
 }
 
 func init() {

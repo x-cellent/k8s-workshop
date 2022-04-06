@@ -36,7 +36,7 @@ nodes:
 
 const (
 	NetworkName       = "k8s-workshop"
-	ClusterName       = "k8s-workshop"
+	ClusterName       = "k8s-workshop-cluster"
 	clusterConfigFile = "k8s-workshop.kind.yaml"
 	kubeconfigFile    = "k8s-workshop.kubeconfig"
 )
@@ -83,7 +83,7 @@ func runCluster(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	kubeconfigPath := filepath.Join(wd, kubeconfigFile)
-	fmt.Printf("\nWorkshop cluster is ready to be used. Run\n\n    export KUBECONFIG=%s\n\nto autoconnect to the workshop cluster.\n", kubeconfigPath)
+	fmt.Printf("\nWorkshop cluster is ready to be used. Run\n\n    export KUBECONFIG=%s\n\nto autoconnect to the workshop cluster using kubectl, helm or k9s.\n", kubeconfigPath)
 
 	return nil
 }

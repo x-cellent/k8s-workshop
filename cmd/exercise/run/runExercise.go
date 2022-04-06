@@ -1,17 +1,21 @@
-package exercise
+package run
 
 import (
 	"embed"
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"github.com/x-cellent/k8s-workshop/cmd/cluster/exercise/flag"
 	"gopkg.in/yaml.v2"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
+)
+
+type Kind = string
+
+const (
+	Docker Kind = "docker"
+	K8s    Kind = "k8s"
 )
 
 type manifestFragment struct {
@@ -24,87 +28,91 @@ type manifest struct {
 	content  []byte
 }
 
-var Cmd = &cobra.Command{
-	Use:     "exercise",
-	Aliases: []string{"ex"},
-	Short:   "Runs the given exercise",
-	RunE:    runExercise,
-}
+const (
+	delim = "\n========================================"
 
-const nsPattern = `---
+	nsPattern = `---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ex%d
 `
+)
 
-func init() {
-	Cmd.PreRun = func(cmd *cobra.Command, args []string) {
-		_ = viper.BindPFlags(Cmd.PersistentFlags())
+func Exercise(exercises embed.FS, n int, kind Kind) error {
+	if kind == K8s {
+		kubeconfig := os.Getenv("KUBECONFIG")
+		if filepath.Base(kubeconfig) != "k8s-workshop.kubeconfig" {
+			return fmt.Errorf("Please set KUBECONFIG environment variable pointing to path of workshop cluster kubeconfig")
+		}
 	}
 
-	Cmd.PersistentFlags().IntP(flag.Number, flag.NumberShort, 0, "exercise number")
+	ns := fmt.Sprintf("ex%d", n)
 
-	_ = Cmd.MarkPersistentFlagRequired(flag.Number)
-}
-
-func runExercise(cmd *cobra.Command, args []string) error {
-	kubectl, err := exec.LookPath("kubectl")
+	exercisesDir := filepath.Join("exercises", kind)
+	dd, err := exercises.ReadDir(exercisesDir)
 	if err != nil {
 		return err
 	}
-
-	kubeconfig := os.Getenv("KUBECONFIG")
-	if filepath.Base(kubeconfig) != "k8s-workshop.kubeconfig" {
-		return fmt.Errorf("Please set KUBECONFIG environment variable pointing to path of workshop cluster kubeconfig")
+	exDir := ""
+	for _, d := range dd {
+		if d.IsDir() && strings.HasPrefix(d.Name(), ns) {
+			exDir = filepath.Join(exercisesDir, d.Name())
+			break
+		}
+	}
+	if exDir == "" {
+		return fmt.Errorf("Example %d not found", n)
 	}
 
-	exercises := cmd.Context().Value("exercises").(embed.FS)
-	n := viper.GetInt(flag.Number)
-	ns := fmt.Sprintf("ex%d", n)
-
-	exDir := filepath.Join("exercises", ns)
 	err = printExercise(exercises, exDir, n)
 	if err != nil {
 		return err
 	}
 
-	mm, err := getManifests(exercises, exDir)
-	if err != nil {
-		return err
-	}
-
-	if len(mm) == 0 {
-		return nil
-	}
-
-	fmt.Println("Applying manifests...")
-
-	manifestFile := "manifest.yaml"
-
-	err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0600)
-	if err != nil {
-		return err
-	}
-	_ = exec.Command(kubectl, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
-	err = exec.Command(kubectl, "apply", "-f", manifestFile).Run()
-	if err != nil {
-		return err
-	}
-
-	for _, m := range mm {
-		err = os.WriteFile(manifestFile, m.content, 0600)
+	if kind == K8s {
+		kubectl, err := exec.LookPath("kubectl")
 		if err != nil {
 			return err
 		}
 
-		args = []string{"apply", "-f", manifestFile}
-		if m.fragment.Kind != "Namespace" {
-			args = append([]string{"-n", ns}, args...)
-		}
-		err = exec.Command(kubectl, args...).Run()
+		mm, err := getManifests(exercises, exDir)
 		if err != nil {
 			return err
+		}
+
+		if len(mm) == 0 {
+			return nil
+		}
+
+		fmt.Printf("Deploying exercise manifests into namespace %s...\n", ns)
+
+		manifestFile := "manifest.yaml"
+
+		err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0600)
+		if err != nil {
+			return err
+		}
+		_ = exec.Command(kubectl, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
+		err = exec.Command(kubectl, "apply", "-f", manifestFile).Run()
+		if err != nil {
+			return err
+		}
+
+		for _, m := range mm {
+			err = os.WriteFile(manifestFile, m.content, 0600)
+			if err != nil {
+				return err
+			}
+
+			args := []string{"apply", "-f", manifestFile}
+			if m.fragment.Kind != "Namespace" {
+				args = append([]string{"-n", ns}, args...)
+			}
+			err = exec.Command(kubectl, args...).Run()
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -121,7 +129,7 @@ func printExercise(fs embed.FS, exampleDir string, number int) error {
 	if !strings.HasSuffix(ex, "\n\n") {
 		ex += "\n"
 	}
-	fmt.Printf("Aufgabe %d:\n\n%s\n", number, ex)
+	fmt.Printf("%s\nAufgabe %d:%s\n\n%s\n", delim, number, delim, ex)
 
 	return nil
 }
@@ -141,10 +149,10 @@ func runSolutionTimer(fs embed.FS, exampleDir string) error {
 	if err == nil {
 		fmt.Printf("\nDie Lösung wird in %s angezeigt\n", d)
 		time.Sleep(d)
-		lines[0] = "\nLösung:\n"
+		lines[0] = fmt.Sprintf("%s\nLösung:%s\n", delim, delim)
 	} else {
 		fmt.Println(err.Error())
-		fmt.Println("\nLösung:")
+		fmt.Println(fmt.Sprintf("%s\nLösung:%s", delim, delim))
 		fmt.Println()
 	}
 

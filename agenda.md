@@ -18,6 +18,7 @@
 1. Container-Orchestrierung (20 min)
     - Warum?
     - Warum Kubernetes?
+    - Cloud-Native Computing Foundation
 
 1. Prinzipien hinter Kubernetes  (1h-1h 30m)
     - Pod != Container
@@ -76,7 +77,7 @@
     - Generelle Architektur und Konzepte
         - "Kubernetes Cluster as Cattle"
         - Verwaltung durch Gardener: Soil, Seed, Shoot, Reconcilation
-        - metal-stack als IaaS-Schicht: Partition, Machine, Firewall, Image, Networks 
+        - metal-stack als IaaS-Schicht: Partition, Machine, Firewall, Image, Networks
         - Netzwerk (Internet, MPLS)
         - Storage: lokal, Lightbits, S3
         - DBaaS: Postgres
@@ -89,7 +90,7 @@
         - Zusätzliche Objekt-Typen: Firewall, ClusterwideNetworkPolicy
         - Zusätzliche Objekte: Firewall, Headless-Services zum Monitoring der Firewall
     - Status-Seite: https://status.fits.cloud/
- 
+
 1. Prometheus, Grafana, Thanos
     - Metrics-API
     - Exporter
