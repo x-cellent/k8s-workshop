@@ -1,4 +1,4 @@
-
+3s
 Ordner Anlegen namens nginx-volume in welcher eine Hello World datei liegt, diesen mit einem Docker Run command als volume einbinden
 
 ```sh

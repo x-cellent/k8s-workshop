@@ -28,12 +28,16 @@ type manifest struct {
 	content  []byte
 }
 
-const nsPattern = `---
+const (
+	delim = "\n========================================"
+
+	nsPattern = `---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ex%d
 `
+)
 
 func Exercise(exercises embed.FS, n int, kind Kind) error {
 	if kind == K8s {
@@ -125,7 +129,7 @@ func printExercise(fs embed.FS, exampleDir string, number int) error {
 	if !strings.HasSuffix(ex, "\n\n") {
 		ex += "\n"
 	}
-	fmt.Printf("Aufgabe %d:\n\n%s\n", number, ex)
+	fmt.Printf("%s\nAufgabe %d:%s\n\n%s\n", delim, number, delim, ex)
 
 	return nil
 }
@@ -145,10 +149,10 @@ func runSolutionTimer(fs embed.FS, exampleDir string) error {
 	if err == nil {
 		fmt.Printf("\nDie Lösung wird in %s angezeigt\n", d)
 		time.Sleep(d)
-		lines[0] = "\nLösung:\n"
+		lines[0] = fmt.Sprintf("%s\nLösung:%s\n", delim, delim)
 	} else {
 		fmt.Println(err.Error())
-		fmt.Println("\nLösung:")
+		fmt.Println(fmt.Sprintf("%s\nLösung:%s", delim, delim))
 		fmt.Println()
 	}
 
