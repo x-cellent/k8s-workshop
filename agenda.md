@@ -18,7 +18,6 @@
 1. Container-Orchestrierung (20 min)
     - Warum?
     - Warum Kubernetes?
-    - Cloud-Native Computing Foundation
 
 1. Prinzipien hinter Kubernetes  (1h-1h 30m)
     - Pod != Container
@@ -32,6 +31,7 @@
 1. optional ausblick auf morgen (10m)
 
 1. Komponenten eines Kubernetes-Clusters
+    - Cloud-Native Computing Foundation
     - Basis: apiserver, scheduler, kubelet, kube-controller-manager, kube-proxy, etcd
     - Verpflichtende Neben-Projekte: CNI, Container-Runtime
     - Optional: DNS und cloud-controller-manager
