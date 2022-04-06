@@ -2,6 +2,28 @@
 
 ---
 
+# Vortragende
+
++++
+
+- Sandro Koll
+
++++
+
+- Pascal Rimann
+
++++
+
+## Teilnehmer
+
++++
+
+- Kurze Vorstellung
+- Erfahrungen?
+- Erwartungen?
+
+---
+
 # Agenda
 
 ---
@@ -33,6 +55,15 @@ make
 1. Geringerer Ressourcenverbrauch <!-- .element: class="fragment" data-fragment-index="2" -->
 1. Erhoehte Sicherheit <!-- .element: class="fragment" data-fragment-index="3" -->
 1. Abhaengigkeiten mit im Image <!-- .element: class="fragment" data-fragment-index="4" -->
+
+<aside class="notes">
+  base Ubuntu Server Image ca 2 GB
+  base Ubuntu Container Image ca 27 MB
+  Alpine noch kleiner ca 2.7 MB
+  
+  Da kein Komplettes OS installiert wird
+  Kernel wird sich geteilt mit host system
+</aside>
 
 +++
 
