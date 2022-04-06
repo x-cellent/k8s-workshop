@@ -2,6 +2,28 @@
 
 ---
 
+# Vortragende
+
++++
+
+- Sandro Koll
+
++++
+
+- Pascal Rimann
+
++++
+
+## Teilnehmer
+
++++
+
+- Kurze Vorstellung
+- Erfahrungen?
+- Erwartungen?
+
+---
+
 # Agenda
 
 ---
@@ -9,30 +31,34 @@
 <!-- .slide: style="text-align: left;"> -->
 ## Tag 1
 1. Container
-1. Kubernetes
-1. Setup
-    1. Install Tools
-    1. Aliases
-        - k=kubectl
-        - dy='--dry-run=client -o yaml'
-    1. Cluster
-```sh
-git clone https://github.com/x-cellent/k8s-workshop.git
-cd k8s-workshop
-make
-```
+1. Monolithen vs. Microservices
+1. Container-Orchestrierung
+1. Prinzipien hinter Kubernetes 
 
 ---
 
 # Container
+
+<aside class="notes">
+  
+</aside>
 
 +++
 
 ## Vorteile Containarisierung
 1. kleinere Images <!-- .element: class="fragment" data-fragment-index="1" -->
 1. Geringerer Ressourcenverbrauch <!-- .element: class="fragment" data-fragment-index="2" -->
-1. Erhoehte Sicherheit <!-- .element: class="fragment" data-fragment-index="3" -->
-1. Abhaengigkeiten mit im Image <!-- .element: class="fragment" data-fragment-index="4" -->
+1. Erhöhte Sicherheit <!-- .element: class="fragment" data-fragment-index="3" -->
+1. Abhängigkeiten mit im Image <!-- .element: class="fragment" data-fragment-index="4" -->
+
+<aside class="notes">
+  base Ubuntu Server Image ca 2 GB
+  base Ubuntu Container Image ca 27 MB
+  Alpine noch kleiner ca 2.7 MB
+  
+  Da kein Komplettes OS installiert wird
+  Kernel wird sich geteilt mit host system
+</aside>
 
 +++
 
@@ -41,14 +67,14 @@ make
 
 ```Dockerfile
 FROM alpine:3.9 #base Image
-RUN apk add --no-cache mysql-client #Commands welche man ausfuehren möchte, in diesem fall mysql-client installieren
-ENTRYPOINT ["mysql"] #Startcommand welcher der container ausfuehren soll
+RUN apk add --no-cache mysql-client #Commands welche man ausführen möchte, in diesem fall mysql-client installieren
+ENTRYPOINT ["mysql"] #Startcommand welcher der container ausführen soll
 ```
 
 +++
 
 ## Das Dockerfile !TO_DO!
-1. Multi-Stage Dockerfiles auch Moeglich <!-- .element: class="fragment" data-fragment-index="1" -->
+1. Multi-Stage Dockerfiles auch Möglich <!-- .element: class="fragment" data-fragment-index="1" -->
 1. Vorteile des Multi-Stage Dockerfiles <!-- .element: class="fragment" data-fragment-index="2" -->
     1. Vorteil 1 <!-- .element: class="fragment" data-fragment-index="3" -->
     1. Vorteil 2 <!-- .element: class="fragment" data-fragment-index="4" -->
@@ -98,7 +124,153 @@ Zeit: ca 10 min
 
 ---
 
-# Monolith vs Microservices !TO-DO!
+# Monolith vs Microservices 
+
++++
+
+![image](https://i0.wp.com/mjaglan.github.io/images/docker-virtualbox/docker-vs-vm.png?w=840&ssl=1)
+
+<aside class="notes">
+  wie man auf diesem bild erkennen kann, ist eine microservice struktur deutlich kleiner als ein Monolith system
+
+  liegt daran, dass sich alle systeme ein host os teilen können
+
+  dazu zählen kernel aufgaben
+
+  deployments schneller da nicht alle prozesse beendet und neugestartet werden müssen
+</aside>
+
+---
+
+# Container Orchestrierung
+
++++
+
+## Wieso?
+- Orchestrierung von Containern <!-- .element: class="fragment" data-fragment-index="1" -->
+
+<aside class="notes">
+  Unter Orchestrierung versteht man das Deployment Maintainance und Scaling
+
+  Vorteile: Besser ressourcen nutzung
+
+  bessere Bereitsstellung von Containern -> zero Downtime Updates
+</aside>
+
++++
+
+## Warum Kubernetes?
+- warum nicht docker swarm?
+- mehr flexibilität
+- eingebautes monitoring und logging
+- Bereitstellung von Storage 
+- grösere userbase
+
+<aside class="notes">
+  da wir einiges über docker gehört haben kann man sich fragen warum nicht docker swarm?
+
+  es hat ja eine leichtere installation und kommt aus dem gleichen haus wie docker
+
+  bei kubernetes hat man eine größere flexibilität, sodass man anwendungen bereitstellen kann, wie man möchtet
+
+  kubernetes hat ein eingebautes monitoring und logging, docker swarm nicht
+
+  speicher kann man bei kubernetes so hinzufügen, dass es als einzeiler genutzt werden kann
+</aside>
+
+---
+
+# Prinzipien hinter Kubernetes
+
++++
+
+### Der Pod
+- kein Container
+- beinhaltet mindestens einen Container
+- kann init container beinhalten
+- kann sidecar container beinhalten
+
+<aside class="notes">
+  oft werden pods mit containern verglichen
+
+  aber ein pod ist grundsätzlich eine gruppe (gruppe von walen vergleich)
+
+  teilen sich speicher und Netzwerkressourcen
+
+  befinden sich auf dem selber server
+
+  erhält einen oder mehrere container > abhängig voneinader
+
+  init container kann script vor start ausführen
+
+  sidecar container kann daten im pod aktualisieren
+
+  dazu morgen mehr
+</aside>
+
++++
+
+### Wo laufen Pods?
+- Auf Nodes
+
+<aside class="notes">
+  Die pods laufen auf sogenannten nodes, dies sind die server auf welchen die diversen Kubernetes core programme laufen, dies wird morgen genauer behandelt
+</aside>
+
++++
+
+### Ordnungselemente
+- deployment <!-- .element: class="fragment" data-fragment-index="1" -->
+- daemonSet <!-- .element: class="fragment" data-fragment-index="2" -->
+- ReplicaSet <!-- .element: class="fragment" data-fragment-index="3" -->
+- StatefulSet <!-- .element: class="fragment" data-fragment-index="4" -->
+- Job <!-- .element: class="fragment" data-fragment-index="5" -->
+
+<aside class="notes">
+  wie man sehen kann, ist das wichtigste element der pod
+
+  seltenst setzt man ihn einzeln ein
+
+  normalerweise nutzt man ein übergeortnetes ordnungselement
+
+  welche sind
+
+  ReplicaSet: zum sicherstellen, eine genaue anzahl an pods zu haben, wird nur seltenst genutzt ansonsten:
+
+  deployment: wird genutzt um replicasets auszurollen, da dies automatisierte rolling updates anbietet
+
+  daemonset: vergewissert, dass auf allen nodes ein pod läuft
+
+  StatefulSet: dazu da, eine statische anwendung zu deployen, nicht austauschbar datenbanken zum beispiel
+
+  Job: ein pod welcher kurzzeitig für eine aufgabe ausgeführt wird
+  
+  weiterführung zum cronjob zum beispiel um backups auszuführen
+</aside>
+
+
+---
+
+# Fragen
+- Hab ihr noch Fragen an uns?
+
+---
+
+# Ausblick auf Morgen
+- Architektur von Kubernetes
+- Basis Objekte von Kubernetes
+
+---
+
+# Agenda
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+## Tag 2
+1. Architektur von Kubernetes
+1. Einrichtung euerer Umgebung
+1. Basisobjekte Kubernetes mit Übungen
 
 ---
 
@@ -109,29 +281,211 @@ Zeit: ca 10 min
 
 ### Kubernetes
 
-1. Urspruenglich 2014 entwickelt von Google
-1. Abgegeben 2015 an die Cloud Native Compute Fondation (CNCF)
+- Ursprünglich 2014 entwickelt von Google
+- Abgegeben 2015 an die Cloud Native Compute Fondation (CNCF)
+
+<aside class="notes">
+  Weiterentwicklung von Google Borg
+
+  aktuelle version 1.23.5
+</aside>
 
 +++
 
-## Warum Kubernetes? !TO_DO!
-1. 
+### CNCF
+
+- Cloud Native Computing Foundation
+- 2015 Gegründet
+- äber 500 Hersteller und Betreiber
+
+<aside class="notes">
+  CNCF ist die Cloud Native Computung Foundation
+
+  untergeordnet der Linux Fondation
+
+  Größte Unternehmen sind Amazon, Google, Apple, Microsoft
+
+  x-cellent ist auch teil der CNCF
+</aside>
+
 
 +++
 
-## Architektur von Kubernetes !TO-DO GROESSE ANPASSEN!
-![image](https://raw.githubusercontent.com/kubernetes/kubernetes/release-1.3/docs/design/architecture.png)
+## Architektur von Kubernetes 
+![image](https://upload.wikimedia.org/wikipedia/commons/b/be/Kubernetes.png)
+
+<aside class="notes">
+  2 arten der nodes, master/controlPlane und worker
+</aside>
 
 +++
 
-### Architektur
-1. Einzelne Services sind Modular aufgebaut und austauschbar <!-- .element: class="fragment" data-fragment-index="1" -->
-    1. API-Server <!-- .element: class="fragment" data-fragment-index="2" -->
-    1. Scheudler <!-- .element: class="fragment" data-fragment-index="3" -->
-    1. Kubelet <!-- .element: class="fragment" data-fragment-index="4" -->
-    1. Kube-Controller-Manager <!-- .element: class="fragment" data-fragment-index="5" -->
-    1. Kube-Proxy <!-- .element: class="fragment" data-fragment-index="6" -->
-1. Core Services sind Open-Source von der CNCF bereitgestellt <!-- .element: class="fragment" data-fragment-index="7" -->
+### Architektur des Clusters
+1. Modular und austauschbar <!-- .element: class="fragment" data-fragment-index="1" -->
+    1. Control-Plane <!-- .element: class="fragment" data-fragment-index="2" -->
+        - etcd <!-- .element: class="fragment" data-fragment-index="3" -->
+        - API-Server <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Scheudler <!-- .element: class="fragment" data-fragment-index="5" -->
+        - Kube-Controller-Manager <!-- .element: class="fragment" data-fragment-index="6" -->
+    1. Nodes <!-- .element: class="fragment" data-fragment-index="7" -->
+        - Kubelet <!-- .element: class="fragment" data-fragment-index="8" -->
+        - Kube-Proxy <!-- .element: class="fragment" data-fragment-index="9" -->
+1. Open-Source  <!-- .element: class="fragment" data-fragment-index="10" -->
+
+<aside class="notes">
+  Das Kubernetes Konstrukt ist modular aufgebaut und komplett austauschbar.
+
+  zusammengefasst werden einige diese unter dem Namen "ControlPlane" welche nur auf dem Master server laufen
+  
+  Kernkomponenten sind ...
+  
+  bei Nodes zählen alle, sowohl master als auch worker nodes
+  
+  Diese Komponenten sind komplett Open Source 
+  
+  gleich kommen einzelheiten zu diesen Komponenten
+</aside>
+
++++
+
+## Control-Plane 
+
+<aside class="notes">
+die Controle Plane Server sind die nodes, welche für die Verwaltung des Clusters zuständig sind, normalerweise keine container auf diesen nodes
+</aside>
+
++++
+
+### etcd
+- entwickelt von CoreOS
+- key-value Database
+- kann nicht getauscht werden
+- speichert stand von cluster
+- Consistency notwending
+
+<aside class="notes">
+  wird entwickelt und maintaint von coreos team
+  
+  open source tool
+  
+  quasi hardcoded in kubernetes core
+  
+  wichtigste K8s komponente
+  
+  speichert configuration, status, und alle metadaten
+  
+  wenn man etcd backup in neuen Cluster einspielt, baut es den cluster wie zuvor auf
+  
+  Consistency, also Wiedersruchsfreiheit ist beim etcd notwendig, anosnsten kann es zu ausfällen des Clusters kommen
+</aside>
+
++++
+
+### API-Server
+- Ansprechpunkt des Users 
+- Validation der Daten
+- bekanntester ist kube-apiserver
+- horizontale skalierbarkeit
+
+<aside class="notes">
+  immer wenn ihr im Cluster was arbeitet sprecht ihr mit dem API Server, egal ob mit kubectl, helm, k9s etc..
+  
+  Validiert, ob rechte vorhanden sind, und anfragen sinn ergeben
+  
+  updated values in etcd
+  
+  bekanntester api server tool kube-apiserver
+</aside>
+
++++
+
+#### scheduler
+- Verteilt workload
+- verantworlich für pods ohne node
+
+<aside class="notes">
+  sobald ein neuer Pod am API Server erstellt wurde, von diesem in die etcd db geschrieben wurde
+  
+  nimmt der scheudler die werte und verteilt diese an nodes
+  
+  Faktoren bei entscheidung welche node
+  
+  Ressourcenanforderungen
+  
+  Hard/Software-einschränkungen
+  
+  bestimmte Flags z.B. niemals auf master/nur auf master
+</aside>
+
++++
+
+### Kube-Controller-Manager
+- bringt cluster von "ist" -> "soll"
+- Managed Nodes
+- mitteilung an scheuduler wenn node down
+
+<aside class="notes">
+  bekommt von scheduler meldung, wenn pod zu node kommen soll und übermittelt dies
+  
+  ueberwacht nodes, wenn einer down ist, mitteilung an scheuduler, node down bitte pods neu verteilen
+</aside>
+
++++
+
+## Nodes
+
+<aside class="notes">
+  die nachfolgende Software ist auf allen nodes, also master und worker installiert
+<aside>
+
++++
+
+### Kubelet
+- verwaltet pods
+- auf jeden node installiert
+- verantwortlich für status 
+
+<aside class="notes">
+  kubelet bekommt info von controller und fürt auf node aus
+  
+  startet stoppt updated pods auf node
+  
+  überwacht pods ob sie gewünschten status haben
+</aside>
+
++++
+
+### Kube Proxy
+- verwaltet Netzwerkanfragen
+- routet traffic zu gewünschten pod
+- loadbalancer
+
+<aside class="notes">
+  der kube-proxy wird angefragt sobald eine Netzwerkanfrage zum node kommt und leitet diese weiter zum gewünschten container
+  
+  übernimmt auch loadbalancing funktionen, sollten meherere Pods das gleiche machen (mehere nginx zum beispiel)
+</aside>
+
++++
+
+## OpenSource
+
+<aside class="notes">
+  Alle diese Komponenten sind opensource und theoretisch austauschbar, auch wenn einige so sehr in den kubernetes core eingebaut sind, dass diese nur mit sehr hohen aufwand getauscht werden können
+</aside>
+
++++
+
+## Namepsaces
+- separierungseinheit in Kubernetes
+
+<aside class="notes">
+  Namespaces sind ein ganz wichtiger punkt in Kubernetes
+  
+  separiert im Cluster verschiedene Anwendungen
+
+  Gleiche Anwendung kann im Cluster in verschiedenen Namespaces mit gleichen Namen laufen
+</aside>
 
 +++
 
@@ -143,7 +497,32 @@ Zeit: ca 10 min
 1. Hostsystemausfall
 1. Update
 
-+++
+<aside class="notes">
+  Kubernetes hat den großen Vorteil, dass die deployten Anwendungen Ausfallsicher sind
+
+  dies wird erziehlt, indem man bei container 
+
+  readyness checks, also checks die prüfen ob der container gestartet ist
+
+  und liveness checks, also checks die fortlaufend prüfen, ob der container noch läuft
+
+  definieren kann.
+
+  Sollte dies einmal nicht der fall sein, dann versucht das Kubelet den status wieder herzustellen
+
+  Bei einem Node ausfall sorgt der scheduler, dass die pods auf einem anderen Node gestartet wird
+
+  updates werden bei kubernetes normalerweise so gemacht, dass die replicas nach und nach ausgetauscht werden
+
+  dadurch ist die anwendung niemals komplett heruntergefahren und durchgehend erreichbar
+</aside>
+
+---
+
+# Fragen
+- Hab ihr noch Fragen an uns?
+
+---
 
 ## Wichtige Ressourcen
 1. kubectl cheat sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet
@@ -151,14 +530,63 @@ Zeit: ca 10 min
 
 ---
 
-# Setup
+# Setup euerer Umgebung
+- clonen dieses Repos und erstellen des kommandozeilen-tools
+```sh
+git clone https://github.com/x-cellent/k8s-workshop.git
+cd k8s-workshop
+make
+```
+
+<aside class="notes">
+  wir haben ein repo mit allen schulungsunterlagen und einem in go geschriebenen kommandozeilen tool
+</aside>
 
 +++
 
-# Install Tools
+## Install Tools
 Kubernetes Dokumentation:​
 - kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
 - krew <!-- .element: class="fragment" data-fragment-index="2" -->
 - helm <!-- .element: class="fragment" data-fragment-index="3" -->
 - kind <!-- .element: class="fragment" data-fragment-index="4" -->
 - k9s <!-- .element: class="fragment" data-fragment-index="5" -->
+
+<aside class="notes">
+  kurze hintergrundinfos über einzelne tools
+
+  kubectl: basis tool zum interagieren mit kubernetes cluster
+
+  krew: kubectl plugin manager
+
+  helm: package manager für kubernetes
+
+  kind: kubernetes in docker, um kleine test cluster aufzubauen und kleine manifeste in kubernetes zu deployen
+
+  k9s: beschreibung von Sandro gebraucht
+</aside>
+
++++
+
+## Install kubectl plugins
+- kns
+- 
+
+---
+
+# Objekttypen in K8s
+
+<aside class="notes">
+  gestern schon was gehört über Objekttypen
+  
+  heute genaue erklärung mit übungen
+</aside>
++++
+
+### Pod
+- umfasst einen oder meherere Container
+
+---
+
+# Fragen
+- Hab ihr noch Fragen an uns?
