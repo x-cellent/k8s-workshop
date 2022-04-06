@@ -1,7 +1,6 @@
-Erzeugt einen nginx Docker Container mit einer hello-world welcome page und anschließendem zugriff zu diesen Container
+1. Erzeuge einen `nginx` Docker Container names `web`, der auf der Welcome Page `Hello World!` ausgibt.
+Starte den Container dabei so, dass du die Welcome Page unter `http://localhost:8080` erreichen kannst.
 
-Hello-World datei:
+2. Verbinde dich mit dem Container via Bash-Shell und lasse dir die `nginx` Version ausgeben
 
-```html
-<h1>Hello World!</h1>
-```
+3. Lösche den Container wieder
