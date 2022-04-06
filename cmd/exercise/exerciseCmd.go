@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/x-cellent/k8s-workshop/cmd/cluster/exercise/flag"
+	"github.com/x-cellent/k8s-workshop/cmd/exercise/flag"
 	"gopkg.in/yaml.v2"
 	"os"
 	"os/exec"
