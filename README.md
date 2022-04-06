@@ -21,6 +21,10 @@ Simply press `F5` in your browser after any update to [slides.md](./docs/slides.
 ### Export to PDF
 
 ```
+make pdf
+```
+or
+```
 bin/w6p slides export
 ```
 
@@ -30,7 +34,7 @@ bin/w6p slides export
 Run
 ```
 bin/w6p exercise docker -nX
-´``
+```
 to start the Docker exercise number `X`.
 
 ### Kubernetes exercises
