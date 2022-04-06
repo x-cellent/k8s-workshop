@@ -34,18 +34,6 @@
 1. Monolithen vs. Microservices
 1. Container-Orchestrierung
 1. Prinzipien hinter Kubernetes 
-1. Kubernetes
-1. Setup
-    1. Install Tools
-    1. Aliases
-        - k=kubectl
-        - dy='--dry-run=client -o yaml'
-    1. Cluster
-```sh
-git clone https://github.com/x-cellent/k8s-workshop.git
-cd k8s-workshop
-make
-```
 
 ---
 
@@ -256,6 +244,7 @@ Zeit: ca 10 min
   StatefulSet: dazu da, eine statische anwendung zu deployen, nicht austauschbar datenbanken zum beispiel
 
   Job: ein pod welcher kurzzeitig für eine aufgabe ausgeführt wird
+  
   weiterführung zum cronjob zum beispiel um backups auszuführen
 </aside>
 
@@ -270,6 +259,18 @@ Zeit: ca 10 min
 # Ausblick auf Morgen
 - Architektur von Kubernetes
 - Basis Objekte von Kubernetes
+
+---
+
+# Agenda
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+## Tag 2
+1. Architektur von Kubernetes
+1. Einrichtung euerer Umgebung
+1. Basisobjekte Kubernetes mit Übungen
 
 ---
 
@@ -475,6 +476,19 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+## Namepsaces
+- separierungseinheit in Kubernetes
+
+<aside class="notes">
+  Namespaces sind ein ganz wichtiger punkt in Kubernetes
+  
+  separiert im Cluster verschiedene Anwendungen
+
+  Gleiche Anwendung kann im Cluster in verschiedenen Namespaces mit gleichen Namen laufen
+</aside>
+
++++
+
 ## Ausfallsicherheit
 
 1. Container Health Check
@@ -482,6 +496,26 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
     1. liveness
 1. Hostsystemausfall
 1. Update
+
+<aside class="notes">
+  Kubernetes hat den großen Vorteil, dass die deployten Anwendungen Ausfallsicher sind
+
+  dies wird erziehlt, indem man bei container 
+
+  readyness checks, also checks die prüfen ob der container gestartet ist
+
+  und liveness checks, also checks die fortlaufend prüfen, ob der container noch läuft
+
+  definieren kann.
+
+  Sollte dies einmal nicht der fall sein, dann versucht das Kubelet den status wieder herzustellen
+
+  Bei einem Node ausfall sorgt der scheduler, dass die pods auf einem anderen Node gestartet wird
+
+  updates werden bei kubernetes normalerweise so gemacht, dass die replicas nach und nach ausgetauscht werden
+
+  dadurch ist die anwendung niemals komplett heruntergefahren und durchgehend erreichbar
+</aside>
 
 ---
 
@@ -496,11 +530,21 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 ---
 
-# Setup
+# Setup euerer Umgebung
+- clonen dieses Repos und erstellen des kommandozeilen-tools
+```sh
+git clone https://github.com/x-cellent/k8s-workshop.git
+cd k8s-workshop
+make
+```
+
+<aside class="notes">
+  wir haben ein repo mit allen schulungsunterlagen und einem in go geschriebenen kommandozeilen tool
+</aside>
 
 +++
 
-# Install Tools
+## Install Tools
 Kubernetes Dokumentation:​
 - kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
 - krew <!-- .element: class="fragment" data-fragment-index="2" -->
@@ -508,11 +552,39 @@ Kubernetes Dokumentation:​
 - kind <!-- .element: class="fragment" data-fragment-index="4" -->
 - k9s <!-- .element: class="fragment" data-fragment-index="5" -->
 
+<aside class="notes">
+  kurze hintergrundinfos über einzelne tools
+
+  kubectl: basis tool zum interagieren mit kubernetes cluster
+
+  krew: kubectl plugin manager
+
+  helm: package manager für kubernetes
+
+  kind: kubernetes in docker, um kleine test cluster aufzubauen und kleine manifeste in kubernetes zu deployen
+
+  k9s: beschreibung von Sandro gebraucht
+</aside>
+
++++
+
+## Install kubectl plugins
+- kns
+- 
+
 ---
 
 # Objekttypen in K8s
 
+<aside class="notes">
+  gestern schon was gehört über Objekttypen
+  
+  heute genaue erklärung mit übungen
+</aside>
 +++
+
+### Pod
+- umfasst einen oder meherere Container
 
 ---
 
