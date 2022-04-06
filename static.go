@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/x-cellent/k8s-workshop/cmd/slides"
+	"github.com/x-cellent/k8s-workshop/cmd/slides/show"
 	"log"
 	"net/http"
 )
@@ -13,5 +13,5 @@ func main() {
 }
 
 func runStaticSlidesServer() error {
-	return slides.Run("", 8080, http.Dir("docs"))
+	return show.Run("", 8080, http.Dir("docs"), true)
 }
