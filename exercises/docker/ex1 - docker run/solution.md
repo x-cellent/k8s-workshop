@@ -18,8 +18,13 @@ docker run -d -p 8080:80 --name web --volume $PWD/index.html:/usr/share/nginx/ht
 ```
 
 2.
+Verbindung mit dem Container via Bash-Shell:
 ```sh
 docker exec -it web bash
+```
+
+Ausgabe der NginX Version:
+```sh
 nginx -v
 ```
 
