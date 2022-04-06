@@ -1,4 +1,4 @@
-15m
+10m
 1.
 Anlegen einer `index.html`:
 ```html
