@@ -1,4 +1,4 @@
-5s
+15m
 1.
 Anlegen einer `index.html`:
 ```html
