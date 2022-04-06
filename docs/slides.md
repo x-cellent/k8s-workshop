@@ -473,6 +473,26 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+## Weitere Komponenten
+- CNI
+- Container-Runtime
+
+<aside class="notes">
+  es gibt noch weiter komponente
+
+  Network Plugin, also CNI schreibt Network interfaces in die
+
+  Container Runtime
+
+  dies ist z.B. containerd, cri-o oder die docker engine
+
+  meistens containerd
+
+  diese Software ist zuständig um die Container laufen zu lassen
+</aside> 
+
++++
+
 ## OpenSource
 
 <aside class="notes">
