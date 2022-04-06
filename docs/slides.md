@@ -24,12 +24,12 @@
 
 ---
 
-# Agenda
+# Tag 1
 
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-## Tag 1
+## Agenda
 1. Container
 1. Monolithen vs. Microservices
 1. Container-Orchestrierung
@@ -37,7 +37,11 @@
 
 ---
 
-# Container
+# Docker
+1. Image
+    - Dockerfile
+1. Container
+1. Image Registry
 
 <aside class="notes">
   
@@ -45,25 +49,26 @@
 
 +++
 
-## Vorteile Containarisierung
-1. kleinere Images <!-- .element: class="fragment" data-fragment-index="1" -->
+## Vorteile Containerisierung
+1. Kleinere Images <!-- .element: class="fragment" data-fragment-index="1" -->
 1. Geringerer Ressourcenverbrauch <!-- .element: class="fragment" data-fragment-index="2" -->
 1. Erhöhte Sicherheit <!-- .element: class="fragment" data-fragment-index="3" -->
-1. Abhängigkeiten mit im Image <!-- .element: class="fragment" data-fragment-index="4" -->
+1. Abhängigkeiten <!-- .element: class="fragment" data-fragment-index="4" -->
 
 <aside class="notes">
   base Ubuntu Server Image ca 2 GB
   base Ubuntu Container Image ca 27 MB
   Alpine noch kleiner ca 2.7 MB
   
-  Da kein Komplettes OS installiert wird
-  Kernel wird sich geteilt mit host system
+  Kein komplettes OS installiert wird
+  Kernel vom Host System wird geteilt (cgroups/namespaces)
 </aside>
 
 +++
 
 ## Das Dockerfile
-1. Datei zum Image bauen
+- **Rezept** eines Images
+- Beispiel
 
 ```Dockerfile
 FROM alpine:3.9 #base Image
@@ -73,15 +78,15 @@ ENTRYPOINT ["mysql"] #Startcommand welcher der container ausführen soll
 
 +++
 
-## Das Dockerfile !TO_DO!
-1. Multi-Stage Dockerfiles auch Möglich <!-- .element: class="fragment" data-fragment-index="1" -->
+## Das Dockerfile
+1. Multi-Stage Dockerfiles auch möglich <!-- .element: class="fragment" data-fragment-index="1" -->
 1. Vorteile des Multi-Stage Dockerfiles <!-- .element: class="fragment" data-fragment-index="2" -->
     1. Vorteil 1 <!-- .element: class="fragment" data-fragment-index="3" -->
     1. Vorteil 2 <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
-## Wichtige Docker befehle
+## Wichtige Docker Befehle
 1. docker run
 1. docker ps 
 1. docker logs
@@ -101,7 +106,7 @@ Zeit: ca 15 min
 
 +++
 
-## Image Builden
+## Image bauen
 
 ```sh
 docker build -t IMAGENAME:IMAGETAG ./location/of/docker-file
@@ -118,7 +123,7 @@ Zeit: ca 10 min
 
 +++
 
-## Nachteile von Containarisierung !TO-DO!
+## Was Docker nicht bietet:
 1. Fehlende Orchestrierung
 1. Fehlende Ausfallsicherheit
 
@@ -160,11 +165,11 @@ Zeit: ca 10 min
 +++
 
 ## Warum Kubernetes?
-- warum nicht docker swarm?
-- mehr flexibilität
-- eingebautes monitoring und logging
+- Warum nicht Docker Swarm?
+- Mehr Flexibilität
+- Eingebautes Monitoring und Logging
 - Bereitstellung von Storage 
-- grösere userbase
+- Größere userbase
 
 <aside class="notes">
   da wir einiges über docker gehört haben kann man sich fragen warum nicht docker swarm?
@@ -189,6 +194,7 @@ Zeit: ca 10 min
 - beinhaltet mindestens einen Container
 - kann init container beinhalten
 - kann sidecar container beinhalten
+- kleinste Einheit in Kubernetes
 
 <aside class="notes">
   oft werden pods mit containern verglichen
@@ -211,7 +217,7 @@ Zeit: ca 10 min
 +++
 
 ### Wo laufen Pods?
-- Auf Nodes
+- Auf (Worker-)Nodes
 
 <aside class="notes">
   Die pods laufen auf sogenannten nodes, dies sind die server auf welchen die diversen Kubernetes core programme laufen, dies wird morgen genauer behandelt
@@ -220,32 +226,31 @@ Zeit: ca 10 min
 +++
 
 ### Ordnungselemente
-- deployment <!-- .element: class="fragment" data-fragment-index="1" -->
-- daemonSet <!-- .element: class="fragment" data-fragment-index="2" -->
-- ReplicaSet <!-- .element: class="fragment" data-fragment-index="3" -->
-- StatefulSet <!-- .element: class="fragment" data-fragment-index="4" -->
+- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+- Deployment <!-- .element: class="fragment" data-fragment-index="2" -->
+- StatefulSet <!-- .element: class="fragment" data-fragment-index="3" -->
+- DaemonSet <!-- .element: class="fragment" data-fragment-index="4" -->
 - Job <!-- .element: class="fragment" data-fragment-index="5" -->
+- CronJob <!-- .element: class="fragment" data-fragment-index="6" -->
 
 <aside class="notes">
-  wie man sehen kann, ist das wichtigste element der pod
+  Wie man sehen kann, ist das wichtigste Element der Pod
 
-  seltenst setzt man ihn einzeln ein
+  Selten setzt man ihn einzeln ein
 
-  normalerweise nutzt man ein übergeortnetes ordnungselement
+  Normalerweise nutzt man ein übergeortnetes Ordnungselement:
 
-  welche sind
+  ReplicaSet: Stellt eine genaue Anzahl an Pods sicher, wird äußerst selten explizit verwenden. Statt dessen:
 
-  ReplicaSet: zum sicherstellen, eine genaue anzahl an pods zu haben, wird nur seltenst genutzt ansonsten:
+  Deployment: Kombiniert ReplicaSets mit Versionierung für `stateless` Pods und bietet die Möglichkeit zum `staged rollout`
 
-  deployment: wird genutzt um replicasets auszurollen, da dies automatisierte rolling updates anbietet
+  StatefulSet: Wie Deployment, nur für für `stateful` Pods, d.h. Pods, die zur Laufzeit CRUD Operationen auf persistenten Daten ausführen
 
-  daemonset: vergewissert, dass auf allen nodes ein pod läuft
+  DaemonSet: Garantiert, dass auf allen Nodes genau ein Pod läuft
 
-  StatefulSet: dazu da, eine statische anwendung zu deployen, nicht austauschbar datenbanken zum beispiel
+  Job: Ein Pod, der nur einmal gestartet wird, um eine bestimmte Aufgabe zu erledigen
 
-  Job: ein pod welcher kurzzeitig für eine aufgabe ausgeführt wird
-
-  weiterführung zum cronjob zum beispiel um backups auszuführen
+  CronJob: Für wiederkehrende Tasks zu bestimmten Zeitpunkten, z.B. um regelmäßige Backups zu erstellen
 </aside>
 
 
@@ -256,18 +261,18 @@ Zeit: ca 10 min
 
 ---
 
-# Ausblick auf Morgen
+# Ausblick Tag 2
 - Architektur von Kubernetes
 - Basis Objekte von Kubernetes
 
 ---
 
-# Agenda
+# Tag 2
 
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-## Tag 2
+# Agenda
 1. Architektur von Kubernetes
 1. Einrichtung euerer Umgebung
 1. Basisobjekte Kubernetes mit Übungen
@@ -311,7 +316,7 @@ Zeit: ca 10 min
 
 +++
 
-## Architektur von Kubernetes 
+## Architektur von Kubernetes
 ![image](https://upload.wikimedia.org/wikipedia/commons/b/be/Kubernetes.png)
 
 <aside class="notes">
@@ -336,19 +341,19 @@ Zeit: ca 10 min
   Das Kubernetes Konstrukt ist modular aufgebaut und komplett austauschbar.
 
   zusammengefasst werden einige diese unter dem Namen "ControlPlane" welche nur auf dem Master server laufen
-  
+
   Kernkomponenten sind ...
-  
+
   bei Nodes zählen alle, sowohl master als auch worker nodes
-  
-  Diese Komponenten sind komplett Open Source 
-  
+
+  Diese Komponenten sind komplett Open Source
+
   gleich kommen einzelheiten zu diesen Komponenten
 </aside>
 
 +++
 
-## Control-Plane 
+## Control-Plane
 
 <aside class="notes">
 die Controle Plane Server sind die nodes, welche für die Verwaltung des Clusters zuständig sind, normalerweise keine container auf diesen nodes
@@ -365,35 +370,35 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <aside class="notes">
   wird entwickelt und maintaint von coreos team
-  
+
   open source tool
-  
+
   quasi hardcoded in kubernetes core
-  
+
   wichtigste K8s komponente
-  
+
   speichert configuration, status, und alle metadaten
-  
+
   wenn man etcd backup in neuen Cluster einspielt, baut es den cluster wie zuvor auf
-  
+
   Consistency, also Wiedersruchsfreiheit ist beim etcd notwendig, anosnsten kann es zu ausfällen des Clusters kommen
 </aside>
 
 +++
 
 ### API-Server
-- Ansprechpunkt des Users 
+- Ansprechpunkt des Users
 - Validation der Daten
 - bekanntester ist kube-apiserver
 - horizontale skalierbarkeit
 
 <aside class="notes">
   immer wenn ihr im Cluster was arbeitet sprecht ihr mit dem API Server, egal ob mit kubectl, helm, k9s etc..
-  
+
   Validiert, ob rechte vorhanden sind, und anfragen sinn ergeben
-  
+
   updated values in etcd
-  
+
   bekanntester api server tool kube-apiserver
 </aside>
 
@@ -405,15 +410,15 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <aside class="notes">
   sobald ein neuer Pod am API Server erstellt wurde, von diesem in die etcd db geschrieben wurde
-  
+
   nimmt der scheudler die werte und verteilt diese an nodes
-  
+
   Faktoren bei entscheidung welche node
-  
+
   Ressourcenanforderungen
-  
+
   Hard/Software-einschränkungen
-  
+
   bestimmte Flags z.B. niemals auf master/nur auf master
 </aside>
 
@@ -426,8 +431,8 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <aside class="notes">
   bekommt von scheduler meldung, wenn pod zu node kommen soll und übermittelt dies
-  
-  ueberwacht nodes, wenn einer down ist, mitteilung an scheuduler, node down bitte pods neu verteilen
+
+  überwacht nodes, wenn einer down ist, mitteilung an scheuduler, node down bitte pods neu verteilen
 </aside>
 
 +++
@@ -443,13 +448,13 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 ### Kubelet
 - verwaltet pods
 - auf jeden node installiert
-- verantwortlich für status 
+- verantwortlich für status
 
 <aside class="notes">
   kubelet bekommt info von controller und fürt auf node aus
-  
+
   startet stoppt updated pods auf node
-  
+
   überwacht pods ob sie gewünschten status haben
 </aside>
 
@@ -462,7 +467,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <aside class="notes">
   der kube-proxy wird angefragt sobald eine Netzwerkanfrage zum node kommt und leitet diese weiter zum gewünschten container
-  
+
   übernimmt auch loadbalancing funktionen, sollten meherere Pods das gleiche machen (mehere nginx zum beispiel)
 </aside>
 
@@ -476,12 +481,12 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
-## Namepsaces
+## Namespaces
 - separierungseinheit in Kubernetes
 
 <aside class="notes">
   Namespaces sind ein ganz wichtiger punkt in Kubernetes
-  
+
   separiert im Cluster verschiedene Anwendungen
 
   Gleiche Anwendung kann im Cluster in verschiedenen Namespaces mit gleichen Namen laufen
@@ -500,7 +505,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 <aside class="notes">
   Kubernetes hat den großen Vorteil, dass die deployten Anwendungen Ausfallsicher sind
 
-  dies wird erziehlt, indem man bei container 
+  dies wird erzielt, indem man bei container
 
   readyness checks, also checks die prüfen ob der container gestartet ist
 
@@ -545,7 +550,7 @@ make
 +++
 
 ## Install Tools
-Kubernetes Dokumentation:​
+Kubernetes Dokumentation:
 - kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
 - krew <!-- .element: class="fragment" data-fragment-index="2" -->
 - helm <!-- .element: class="fragment" data-fragment-index="3" -->
@@ -599,7 +604,7 @@ Kubernetes Dokumentation:​
 
 #### Aufgabe
 - Bitte starte aufgabe k8s 1
-```sh 
+```sh
 bin/w6s exercise k8s -n 1
 ```
 +++
@@ -607,7 +612,7 @@ bin/w6s exercise k8s -n 1
 #### Lösungsbesprechung
 
 <aside class="notes">
-  ein teilnehmer erklärt seine lösung 
+  ein teilnehmer erklärt seine lösung
 </aside>
 
 +++
@@ -621,7 +626,7 @@ bin/w6s exercise k8s -n 1
   Services werden genutzt um pods im Netzwerk erreichbar zu machen
 
   hat eine loadbalancing funktion, wenn mehere pods mit gleichem Label im Namespace sind wird die last aufgeteilt
-  
+
   geht an die pods mit einem Label, daher sind dynamische IPs bei Pods keine Probleme
 </aside>
 
@@ -638,7 +643,7 @@ bin/w6s exercise k8s -n 2
 #### Lösungsbesprechung
 
 <aside class="notes">
-  ein teilnehmer erklärt seine lösung 
+  ein teilnehmer erklärt seine lösung
 </aside>
 
 +++
@@ -670,7 +675,7 @@ bin/w6s exercise k8s -n 3
 #### Lösungsbesprechung
 
 <aside class="notes">
-  ein teilnehmer erklärt seine lösung 
+  ein teilnehmer erklärt seine lösung
 </aside>
 
 +++
@@ -678,7 +683,7 @@ bin/w6s exercise k8s -n 3
 ### Deployment
 - Bessere art ReplicaSets zu verwalten
 - Updates
-- am weitesten verbreitete art 
+- am weitesten verbreitete art
 
 <aside class="notes">
   wie ihr herausgefunden habt, ist ein Deployment die bessere art ReplicaSets zu verwalten
