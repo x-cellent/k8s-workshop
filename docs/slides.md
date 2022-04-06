@@ -144,8 +144,11 @@ Zeit: ca 10 min
 
 <aside class="notes">
   wie man auf diesem bild erkennen kann, ist ein microservice deutlich kleiner als ein Monolith system
+
   liegt daran, dass sich alle systeme ein host os teilen können
+
   dazu zählen kernel aufgaben
+
   deployments schneller da nicht alle prozesse beendet und neugestartet werden müssen
 </aside>
 
@@ -160,7 +163,9 @@ Zeit: ca 10 min
 
 <aside class="notes">
   Unter Orchestrierung versteht man das Deployment Maintainance und Scaling
+
   Vorteile: Besser ressourcen nutzung
+
   bessere Bereitsstellung von Containern -> zero Downtime Updates
 </aside>
 
@@ -175,9 +180,13 @@ Zeit: ca 10 min
 
 <aside class="notes">
   da wir einiges über docker gehört haben kann man sich fragen warum nicht docker swarm?
+
   es hat ja eine leichtere installation und kommt aus dem gleichen haus wie docker
+
   bei kubernetes hat man eine größere flexibilitaet, sodass man anwendungen bereitstellen kann, wie man möchtet
+
   kubernetes hat ein eingebautes monitoring und logging, docker swarm nicht
+
   speicher kann man bei kubernetes so hinzufügen, dass es als einzeiler genutzt werden kann
 </aside>
 
@@ -207,7 +216,7 @@ Zeit: ca 10 min
   init container kann script vor start ausführen
 
   sidecar container kann daten im pod aktualisieren
-  
+
   dazu morgen mehr
 </aside>
 
@@ -243,8 +252,8 @@ Zeit: ca 10 min
 
 <aside class="notes">
   Weiterentwicklung von Google Borg
-  aktuelle version 1.23.5
 
+  aktuelle version 1.23.5
 </aside>
 
 +++
@@ -257,8 +266,11 @@ Zeit: ca 10 min
 
 <aside class="notes">
   CNCF ist die Cloud Native Computung Foundation
+
   untergeordnet der Linux Fondation
+
   Größte Unternehmen sind Amazon, Google, Apple, Microsoft
+
   x-cellent ist auch teil der CNCF
 </aside>
 
@@ -288,10 +300,15 @@ Zeit: ca 10 min
 
 <aside class="notes">
   Das Kubernetes Konstrukt ist modular aufgebaut und komplett austauschbar.
+
   zusammengefasst werden einige diese unter dem Namen "ControlPlane" welche nur auf dem Master server laufen
+  
   Kernkomponenten sind ...
+  
   bei Nodes zählen alle, sowohl master als auch worker nodes
+  
   Diese Komponenten sind komplett Open Source 
+  
   gleich kommen einzelheiten zu diesen Komponenten
 </aside>
 
@@ -314,11 +331,17 @@ die Controle Plane Server sind die nodes, welche fuer die Verwaltung des Cluster
 
 <aside class="notes">
   wird entwickelt und maintaint von coreos team
+  
   open source tool
+  
   quasi hardcoded in kubernetes core
+  
   wichtigste K8s komponente
+  
   speichert configuration, status, und alle metadaten
+  
   wenn man etcd backup in neuen Cluster einspielt, baut es den cluster wie zuvor auf
+  
   Consistency, also Wiedersruchsfreiheit ist beim etcd notwendig, anosnsten kann es zu ausfällen des Clusters kommen
 </aside>
 
@@ -332,8 +355,11 @@ die Controle Plane Server sind die nodes, welche fuer die Verwaltung des Cluster
 
 <aside class="notes">
   immer wenn ihr im Cluster was arbeitet sprecht ihr mit dem API Server, egal ob mit kubectl, helm, k9s etc..
+  
   Validiert, ob rechte vorhanden sind, und anfragen sinn ergeben
+  
   updated values in etcd
+  
   bekanntester api server tool kube-apiserver
 </aside>
 
@@ -345,10 +371,15 @@ die Controle Plane Server sind die nodes, welche fuer die Verwaltung des Cluster
 
 <aside class="notes">
   sobald ein neuer Pod am API Server erstellt wurde, von diesem in die etcd db geschrieben wurde
+  
   nimmt der scheudler die werte und verteilt diese an nodes
+  
   Faktoren bei entscheidung welche node
+  
   Ressourcenanforderungen
+  
   Hard/Software-einschränkungen
+  
   bestimmte Flags z.B. niemals auf master/nur auf master
 </aside>
 
@@ -361,6 +392,7 @@ die Controle Plane Server sind die nodes, welche fuer die Verwaltung des Cluster
 
 <aside class="notes">
   bekommt von scheduler meldung, wenn pod zu node kommen soll und übermittelt dies
+  
   ueberwacht nodes, wenn einer down ist, mitteilung an scheuduler, node down bitte pods neu verteilen
 </aside>
 
@@ -381,7 +413,9 @@ die Controle Plane Server sind die nodes, welche fuer die Verwaltung des Cluster
 
 <aside class="notes">
   kubelet bekommt info von controller und fuert auf node aus
+  
   startet stoppt updated pods auf node
+  
   ueberwacht pods ob sie gewuenschten status haben
 </aside>
 
@@ -394,6 +428,7 @@ die Controle Plane Server sind die nodes, welche fuer die Verwaltung des Cluster
 
 <aside class="notes">
   der kube-proxy wird angefragt sobald eine Netzwerkanfrage zum node kommt und leitet diese weiter zum gewuenschten container
+  
   uebernimmt auch loadbalancing funktionen, sollten meherere Pods das gleiche machen (mehere nginx zum beispiel)
 </aside>
 
