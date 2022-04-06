@@ -1,5 +1,3 @@
-Damit wir Konfigurationsdateien in Kubernetes einbinden können, gibt es configmaps, im Cluster ex6 liegt eine configmap namens `nginx-configmap`
+Erstelle ein daemonSet im Namespace ex6 welches ein fluentd-logging deployt.
 
-schaue diese an, exportiere diese in eine yaml und update die `worker-connection`
-
-Anschließend baue sie in das Deployment `web` als ReadOnly VolumeMount ein.
+Wie viele Pods wurden erstellt und warum diese Anzahl?

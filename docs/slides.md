@@ -244,7 +244,7 @@ Zeit: ca 10 min
   StatefulSet: dazu da, eine statische anwendung zu deployen, nicht austauschbar datenbanken zum beispiel
 
   Job: ein pod welcher kurzzeitig für eine aufgabe ausgeführt wird
-  
+
   weiterführung zum cronjob zum beispiel um backups auszuführen
 </aside>
 
@@ -569,8 +569,7 @@ Kubernetes Dokumentation:​
 +++
 
 ## Install kubectl plugins
-- kns
-- 
+- node-shell
 
 ---
 
@@ -585,6 +584,131 @@ Kubernetes Dokumentation:​
 
 ### Pod
 - umfasst einen oder meherere Container
+- niedrigstes verwaltbares Objekt
+- jeder Pod bekommt IP addresse
+
+<aside class="notes">
+  wie ihr gestern schon erfahren habt, ist der pod das so ziemlich niedrigeste verwaltbare Objekt
+
+  ein pod umfasst mindestens ein container kann aber auch mehrere umfassen
+
+  pods haben ip addressen, da die aber dynamisch sind haben sie bei einem erneuten deploy eine neue IP
+</aside>
+
++++
+
+#### Aufgabe
+- Bitte starte aufgabe k8s 1
+```sh 
+bin/w6s exercise k8s -n 1
+```
++++
+
+#### Lösungsbesprechung
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+</aside>
+
++++
+
+### Service
+- Objekt um Pod im Netzwerk erreichbar zu machen
+- Loadbalancing
+- Dynamische IP's von Pods
+
+<aisde class="notes">
+  Services werden genutzt um pods im Netzwerk erreichbar zu machen
+
+  hat eine loadbalancing funktion, wenn mehere pods mit gleichem Label im Namespace sind wird die last aufgeteilt
+  
+  geht an die pods mit einem Label, daher sind dynamische IPs bei Pods keine Probleme
+</aside>
+
++++
+
+#### Aufgabe
+- Bitte starte aufgabe k8s 2
+```sh
+bin/w6s exercise k8s -n 2
+```
+
++++
+
+#### Lösungsbesprechung
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+</aside>
+
++++
+
+### ReplicaSets
+- Pods Replizieren
+- Nachträglich nicht änderbar
+
+<aside class="notes">
+  ein replicaset wird genutzt um mehere identische Pods zu deployen
+
+  problem bei replicaset ist, dass es nachträglich nicht änderbar ist
+
+  um neue version von pod zu deployen muss erst das alte replicaset gelöscht und das neue deployt werden
+
+  frage an teilnehmer: zu was führt das? > Downtime
+</aside>
+
++++
+
+#### Aufgabe
+- Bitte starte aufgabe k8s 3
+```sh
+bin/w6s exercise k8s -n 3
+```
+
++++
+
+#### Lösungsweg
+
+<aside class="notes">
+  ein teilnehmer erklärt seine lösung 
+</aside>
+
++++
+
+### Deployment
+- Bessere art ReplicaSets zu verwalten
+- Updates
+- am weitesten verbreitete art 
+
+<aside class="notes">
+  wie ihr herausgefunden habt, ist ein Deployment die bessere art ReplicaSets zu verwalten
+
+  ein Deployment kann man Unterbrechungsfrei Updaten (wenn zumindestes 2 Replicas verfügbar)
+
+  deployments werden am häufigsten genutzt um pods zu deployen
+</aside>
+
++++
+
+### DaemonSet
+- jede Node bekommt ein Replica
+- enorm ausfallsicher
+- logs
+- monitoring
+
+<aside class="notes">
+  daemonSets starten eine Replica auf jeder Node
+
+  kann nicht passieren, dass bei einem Node ausfall die pods erst auf einer neuen node deployt wird
+
+  oft verwendet für log collector, da diese die logs von allen pods auf allen nodes braucht
+
+  ebenso bei monitoring collectorn, da diese das monitoring von allen nodes braucht
+</aside>
+
++++
+
+#### Aufgabe
 
 ---
 

@@ -1,4 +1,4 @@
-10m
+15m
 ```yaml
 apiVersion: apps/v1
 kind: Deployment

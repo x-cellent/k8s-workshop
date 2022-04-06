@@ -1,3 +1,5 @@
-Um einen Pod zu skalieren, gibt es ReplicaSets, die von Deployments automatisch verwaltet werden.
+Um einen Pod zu skalieren, gibt es ReplicaSets.
 
-Deploye ein nginx als deployment, nutze die Kubernetes Dokumentation um eine Lösung zu finden.
+Diese sollten aber nicht genutzt werden, da sie nicht modifizierbar sind.
+
+Erstelle in namespace ex5 ein Objekt, welches Repliziert, aber auch Modifizierbar ist.

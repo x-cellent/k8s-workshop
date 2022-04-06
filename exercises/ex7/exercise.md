@@ -1,5 +1,5 @@
-da configmaps nicht verschluesselt werden eignen diese sich nicht als storage fuer sensible daten wie passwoerter etc.
+Damit wir Konfigurationsdateien in Kubernetes einbinden können, gibt es configmaps, im Cluster ex6 liegt eine configmap namens `nginx-configmap`
 
-Welches andere API Objekt gibt es, um sensible daten zu speichern?
+schaue diese an, exportiere diese in eine yaml und update die `worker-connection`
 
-erstelle ein solches objekt in Namespace ex7 mit dem key `db-password` und einem eigen festgelegtes passwort.
+Anschließend baue sie in das Deployment `web` als ReadOnly VolumeMount ein.
