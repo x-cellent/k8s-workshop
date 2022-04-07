@@ -269,7 +269,7 @@ docker build -t [REPOSITORY_HOST/]IMAGENAME:IMAGETAG \
 ## Aufgabe 1
 
 ```sh
-bin/w6p exercise docker -n1
+bin/w6p exercise docker -n 1
 ```
 Zeit: ca. 5 min
 
