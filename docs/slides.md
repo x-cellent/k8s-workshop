@@ -44,6 +44,7 @@
 ## Setup
 
 ```sh
+sudo usermod -aG docker ${USER}
 git clone https://github.com/x-cellent/k8s-workshop.git
 cd k8s-workshop
 make
