@@ -12,4 +12,9 @@ node_modules/
 .sass-cache
 k8s-workshop.kind.yaml
 k8s-workshop.kubeconfig
+script.sh
 manifest.yaml
+docker-ex*
+docker-sol*
+k8s-ex*
+k8s-sol*

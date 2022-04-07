@@ -1,15 +1,18 @@
 10m
 Erst die ConfigMap anschauen:
+
 ```sh
 kubectl get cm -n ex6 nginx-configmap
 ```
 
 und als yaml file ausgeben:
+
 ```sh
 kubectl get cm -n ex6 nginx-configmap -o yaml
 ```
 
 und Deployment anpassen mit volumeMounts:
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment

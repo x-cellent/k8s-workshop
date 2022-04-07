@@ -1,6 +1,4 @@
 15m
-
-
 ```yaml
 apiVersion: batch/v1
 kind: CronJob

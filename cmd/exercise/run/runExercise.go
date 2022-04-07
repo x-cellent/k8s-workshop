@@ -65,9 +65,74 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		return fmt.Errorf("Example %d not found", n)
 	}
 
+	ss, err := getExerciseScripts(exercises, exDir)
+	if err != nil {
+		return err
+	}
+
+	folder := ""
+	if len(ss) > 0 {
+		wd, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+
+		folder = filepath.Join(".", fmt.Sprintf("%s-ex%d", kind, n))
+		err = os.RemoveAll(folder)
+		if err != nil {
+			return err
+		}
+
+		err = os.Mkdir(folder, 0700)
+		if err != nil {
+			return err
+		}
+
+		err = os.Chdir(folder)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Executing script(s) in local folder %s...\n", folder)
+
+		script := "script.sh"
+		defer os.Remove(script)
+
+		for _, bb := range ss {
+			err = os.WriteFile(script, bb, 0700)
+			if err != nil {
+				return err
+			}
+
+			err = exec.Command("./" + script).Run()
+			if err != nil {
+				return err
+			}
+		}
+		_ = os.Remove(script)
+
+		err = os.Chdir(wd)
+		if err != nil {
+			return err
+		}
+
+		ff, err := os.ReadDir(folder)
+		if err != nil {
+			return err
+		}
+
+		if len(ff) == 0 {
+			_ = os.Remove(folder)
+			folder = ""
+		}
+	}
+
 	err = printExercise(exercises, exDir, n)
 	if err != nil {
 		return err
+	}
+
+	if folder != "" {
+		fmt.Printf("---> Wechsel dafür ins Unterverzeichnis %q und benutze die dort hinterlegte(n) Datei(n)!\n", folder)
 	}
 
 	if kind == K8s {
@@ -88,6 +153,7 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		fmt.Printf("Deploying exercise manifests into namespace %s...\n", ns)
 
 		manifestFile := "manifest.yaml"
+		defer os.Remove(manifestFile)
 
 		err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0600)
 		if err != nil {
@@ -116,10 +182,10 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		}
 	}
 
-	return runSolutionTimer(exercises, exDir)
+	return runSolutionTimer(exercises, exDir, kind, n)
 }
 
-func printExercise(fs embed.FS, exampleDir string, number int) error {
+func printExercise(fs embed.FS, exampleDir string, n int) error {
 	bb, err := fs.ReadFile(filepath.Join(exampleDir, "exercise.md"))
 	if err != nil {
 		return err
@@ -129,20 +195,77 @@ func printExercise(fs embed.FS, exampleDir string, number int) error {
 	if !strings.HasSuffix(ex, "\n\n") {
 		ex += "\n"
 	}
-	fmt.Printf("%s\nAufgabe %d:%s\n\n%s\n", delim, number, delim, ex)
+	title := "Vorbereitung"
+	if n > 0 {
+		title = fmt.Sprintf("Aufgabe %d", n)
+	}
+	fmt.Printf("%s\n%s:%s\n\n%s\n", delim, title, delim, ex)
 
 	return nil
 }
 
-func runSolutionTimer(fs embed.FS, exampleDir string) error {
+func runSolutionTimer(fs embed.FS, exampleDir string, kind Kind, n int) error {
 	bb, err := fs.ReadFile(filepath.Join(exampleDir, "solution.md"))
 	if err != nil {
-		return err
+		return nil
 	}
 
 	lines := strings.Split(string(bb), "\n")
 	if len(lines) == 0 {
 		return nil
+	}
+
+	folder := ""
+	bb, err = fs.ReadFile(filepath.Join(exampleDir, "solution.sh"))
+	if err == nil {
+		wd, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+
+		folder = filepath.Join(".", fmt.Sprintf("%s-sol%d", kind, n))
+		err = os.RemoveAll(folder)
+		if err != nil {
+			return err
+		}
+
+		err = os.Mkdir(folder, 0700)
+		if err != nil {
+			return err
+		}
+
+		err = os.Chdir(folder)
+		if err != nil {
+			return err
+		}
+
+		script := "script.sh"
+		defer os.Remove(script)
+		err = os.WriteFile(script, bb, 0700)
+		if err != nil {
+			return err
+		}
+
+		err = exec.Command("./" + script).Run()
+		if err != nil {
+			return err
+		}
+		_ = os.Remove(script)
+
+		err = os.Chdir(wd)
+		if err != nil {
+			return err
+		}
+
+		ff, err := os.ReadDir(folder)
+		if err != nil {
+			return err
+		}
+
+		if len(ff) == 0 {
+			_ = os.Remove(folder)
+			folder = ""
+		}
 	}
 
 	d, err := time.ParseDuration(strings.TrimSpace(lines[0]))
@@ -158,7 +281,46 @@ func runSolutionTimer(fs embed.FS, exampleDir string) error {
 
 	fmt.Println(strings.Join(lines, "\n"))
 
+	if folder != "" {
+		fmt.Printf("---> Die Lösungsdateien liegen im Unterverzeichnis %q\n", folder)
+	}
+
 	return nil
+}
+
+func getExerciseScripts(fs embed.FS, embeddedDir string) ([][]byte, error) {
+	dd, err := fs.ReadDir(embeddedDir)
+	if err != nil {
+		return nil, err
+	}
+
+	var ss [][]byte
+
+	for _, d := range dd {
+		path := filepath.Join(embeddedDir, d.Name())
+
+		if d.IsDir() {
+			scripts, err := getExerciseScripts(fs, path)
+			if err != nil {
+				return nil, err
+			}
+			ss = append(ss, scripts...)
+			continue
+		}
+
+		if filepath.Ext(path) != ".sh" || filepath.Base(path) == "solution.sh" {
+			continue
+		}
+
+		bb, err := fs.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+
+		ss = append(ss, bb)
+	}
+
+	return ss, nil
 }
 
 func getManifests(fs embed.FS, embeddedDir string) ([]*manifest, error) {
@@ -173,11 +335,11 @@ func getManifests(fs embed.FS, embeddedDir string) ([]*manifest, error) {
 		path := filepath.Join(embeddedDir, d.Name())
 
 		if d.IsDir() {
-			ff, err := getManifests(fs, path)
+			manifests, err := getManifests(fs, path)
 			if err != nil {
 				return nil, err
 			}
-			mm = append(mm, ff...)
+			mm = append(mm, manifests...)
 			continue
 		}
 

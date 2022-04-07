@@ -1,5 +1,6 @@
 Um einen Pod zu skalieren, gibt es ReplicaSets.
 
-Diese sollten aber nicht genutzt werden, da sie nicht modifizierbar sind.
+Diese sollten aber nicht genutzt werden, da sie normalerweise automatisch gemanaged werden.
+Andernfalls könnte ein etwaiges Scaling ohne Wirkung sein.
 
-Erstelle in namespace ex3 ein Objekt, welches Repliziert, aber auch Modifizierbar ist.
+Erstelle ein Objekt, welches repliziert UND problemlos gescaled werden kann.

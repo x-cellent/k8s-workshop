@@ -43,7 +43,7 @@ func exportToPDF(cmd *cobra.Command, args []string) error {
 	go func() {
 		docs := cmd.Context().Value("docs").(embed.FS)
 		wg.Done()
-		err = show.Run("/docs", port, http.FS(docs), false)
+		err = show.Run("/docs", port, http.FS(docs), false, "")
 	}()
 	wg.Wait()
 	time.Sleep(time.Second)

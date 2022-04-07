@@ -22,8 +22,6 @@ func init() {
 
 	Cmd.PersistentFlags().IntP(flag.Number, flag.NumberShort, 0, "exercise number")
 
-	_ = Cmd.MarkPersistentFlagRequired(flag.Number)
-
 	Cmd.AddCommand(docker.Cmd)
 	Cmd.AddCommand(k8s.Cmd)
 }
