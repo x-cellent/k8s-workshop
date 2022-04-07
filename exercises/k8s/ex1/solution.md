@@ -1,4 +1,4 @@
-5s
+10m
 ```yaml
 apiVersion: v1
 kind: Pod
