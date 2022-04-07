@@ -625,9 +625,14 @@ Zeit: ca. 15 min
 
 <!-- .slide: style="text-align: left;"> -->
 ## Agenda
+1. Rewind
 1. Architektur von Kubernetes
 1. Einrichtung euerer Umgebung
 1. Basisobjekte Kubernetes mit Übungen
+
+---
+
+# Rewind
 
 ---
 
