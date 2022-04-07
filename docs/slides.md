@@ -998,7 +998,7 @@ Zeit: ca. 5m
 - Loadbalancing
 - Dynamische IP's von Pods
 
-<aisde class="notes">
+<aside class="notes">
   Services werden genutzt um pods im Netzwerk erreichbar zu machen
 
   hat eine loadbalancing funktion, wenn mehere pods mit gleichem Label im Namespace sind wird die last aufgeteilt
