@@ -899,32 +899,6 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
   dadurch ist die anwendung niemals komplett heruntergefahren und durchgehend erreichbar
 </aside>
 
----
-
-# Fragen
-- Hab ihr noch Fragen an uns?
-
----
-
-## Wichtige Ressourcen
-1. kubectl cheat sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet
-1. kubernetes docs: https://kubernetes.io/docs/concepts/overview
-
----
-
-# Setup euerer Umgebung
-- clonen dieses Repos und erstellen des kommandozeilen-tools
-
-```sh
-git clone https://github.com/x-cellent/k8s-workshop.git
-cd k8s-workshop
-make
-```
-
-<aside class="notes">
-  wir haben ein repo mit allen schulungsunterlagen und einem in go geschriebenen kommandozeilen tool
-</aside>
-
 +++
 
 ## Install Tools
