@@ -4,7 +4,7 @@ default: build
 .PHONY .SILENT: build
 build:
 	git pull >/dev/null 2>&1 || true
-	docker run --net host --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
+	docker run --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && GO111MODULE=off go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
 
 .PHONY .SILENT: up
 up: down

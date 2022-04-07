@@ -37,8 +37,8 @@ nodes:
 const (
 	NetworkName       = "k8s-workshop"
 	ClusterName       = "k8s-workshop-cluster"
-	clusterConfigFile = "k8s-workshop.kind.yaml"
-	kubeconfigFile    = "k8s-workshop.kubeconfig"
+	ClusterConfigFile = "k8s-workshop.kind.yaml"
+	KubeconfigFile    = "k8s-workshop.kubeconfig"
 )
 
 func runCluster(cmd *cobra.Command, args []string) error {
@@ -55,25 +55,25 @@ func runCluster(cmd *cobra.Command, args []string) error {
 	fmt.Println("Create Docker network named kind (10.10.10.0/24)")
 	_ = exec.Command(docker, "network", "create", NetworkName, "--subnet", "10.10.10.0/24").Run()
 
-	fmt.Printf("Write KinD config file %q\n", clusterConfigFile)
-	err = os.WriteFile(clusterConfigFile, []byte(kindConfig), 0600)
+	fmt.Printf("Write KinD config file %q\n", ClusterConfigFile)
+	err = os.WriteFile(ClusterConfigFile, []byte(kindConfig), 0600)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println("Starting cluster (this may take some time)...")
-	err = exec.Command(kind, "create", "cluster", "--name", ClusterName, "--config", clusterConfigFile).Run()
+	err = exec.Command(kind, "create", "cluster", "--name", ClusterName, "--config", ClusterConfigFile).Run()
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Write workshop cluster kubeconfig to %q\n", kubeconfigFile)
+	fmt.Printf("Write workshop cluster kubeconfig to %q\n", KubeconfigFile)
 	bb, err := exec.Command(kind, "get", "kubeconfig", "--name", ClusterName).CombinedOutput()
 	if err != nil {
 		return err
 	}
 
-	err = os.WriteFile(kubeconfigFile, bb, 0600)
+	err = os.WriteFile(KubeconfigFile, bb, 0600)
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func runCluster(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	kubeconfigPath := filepath.Join(wd, kubeconfigFile)
+	kubeconfigPath := filepath.Join(wd, KubeconfigFile)
 	fmt.Printf("\nWorkshop cluster is ready to be used. Run\n\n    export KUBECONFIG=%s\n\nto autoconnect to the workshop cluster using kubectl, helm or k9s.\n", kubeconfigPath)
 
 	return nil

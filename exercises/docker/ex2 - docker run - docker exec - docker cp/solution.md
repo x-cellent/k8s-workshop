@@ -37,8 +37,8 @@ nginx -v
 ```sh
 docker exec web /bin/bash -c "sed -i 's@World@Kubernetes@g' /usr/share/nginx/html/index.html"
 ```
-O
-der (weil wir die `index.html` in den Container gemounted haben):
+
+oder (weil wir die `index.html` in den Container gemounted haben):
 
 ```sh
 sed -i 's@World@Kubernetes@g' index.html

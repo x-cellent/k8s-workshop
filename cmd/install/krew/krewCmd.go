@@ -73,16 +73,6 @@ func install(cmd *cobra.Command, args []string) error {
 	} else {
 		err = exec.Command(krew, "install", "krew").Run()
 	}
-	if err != nil {
-		return err
-	}
 
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf("You need to add %s/.krew/bin to your PATH environment variable\n", home)
-
-	return nil
+	return err
 }

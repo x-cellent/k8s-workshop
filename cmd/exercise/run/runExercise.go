@@ -3,6 +3,7 @@ package run
 import (
 	"embed"
 	"fmt"
+	"github.com/x-cellent/k8s-workshop/cmd/cluster/run"
 	"gopkg.in/yaml.v2"
 	"os"
 	"os/exec"
@@ -40,13 +41,6 @@ metadata:
 )
 
 func Exercise(exercises embed.FS, n int, kind Kind) error {
-	if kind == K8s {
-		kubeconfig := os.Getenv("KUBECONFIG")
-		if filepath.Base(kubeconfig) != "k8s-workshop.kubeconfig" {
-			return fmt.Errorf("Please set KUBECONFIG environment variable pointing to path of workshop cluster kubeconfig")
-		}
-	}
-
 	ns := fmt.Sprintf("ex%d", n)
 
 	exercisesDir := filepath.Join("exercises", kind)
@@ -77,13 +71,17 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 			return err
 		}
 
-		folder = filepath.Join(".", fmt.Sprintf("%s-ex%d", kind, n))
+		if kind == K8s {
+			folder = fmt.Sprintf("ex%d", n)
+		} else {
+			folder = fmt.Sprintf("%s-ex%d", kind, n)
+		}
 		err = os.RemoveAll(folder)
 		if err != nil {
 			return err
 		}
 
-		err = os.Mkdir(folder, 0700)
+		err = os.MkdirAll(folder, 0755)
 		if err != nil {
 			return err
 		}
@@ -92,13 +90,13 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Executing script(s) in local folder %s...\n", folder)
+		fmt.Printf("Executing script(s) in folder %s...\n", folder)
 
 		script := "script.sh"
 		defer os.Remove(script)
 
 		for _, bb := range ss {
-			err = os.WriteFile(script, bb, 0700)
+			err = os.WriteFile(script, bb, 0755)
 			if err != nil {
 				return err
 			}
@@ -141,6 +139,20 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 			return err
 		}
 
+		kindBin, err := exec.LookPath("kind")
+		if err != nil {
+			return err
+		}
+
+		out, err := exec.Command(kindBin, "get", "kubeconfig", "--name", run.ClusterName).CombinedOutput()
+		if err != nil {
+			return err
+		}
+		err = os.WriteFile(run.KubeconfigFile, out, 0600)
+		if err != nil {
+			return err
+		}
+
 		mm, err := getManifests(exercises, exDir)
 		if err != nil {
 			return err
@@ -155,23 +167,23 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		manifestFile := "manifest.yaml"
 		defer os.Remove(manifestFile)
 
-		err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0600)
+		err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0644)
 		if err != nil {
 			return err
 		}
-		_ = exec.Command(kubectl, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
-		err = exec.Command(kubectl, "apply", "-f", manifestFile).Run()
+		_ = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
+		err = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile).Run()
 		if err != nil {
 			return err
 		}
 
 		for _, m := range mm {
-			err = os.WriteFile(manifestFile, m.content, 0600)
+			err = os.WriteFile(manifestFile, m.content, 0644)
 			if err != nil {
 				return err
 			}
 
-			args := []string{"apply", "-f", manifestFile}
+			args := []string{"--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile}
 			if m.fragment.Kind != "Namespace" {
 				args = append([]string{"-n", ns}, args...)
 			}
@@ -223,13 +235,17 @@ func runSolutionTimer(fs embed.FS, exampleDir string, kind Kind, n int) error {
 			return err
 		}
 
-		folder = filepath.Join(".", fmt.Sprintf("%s-sol%d", kind, n))
+		if kind == K8s {
+			folder = fmt.Sprintf("sol%d", n)
+		} else {
+			folder = fmt.Sprintf("%s-sol%d", kind, n)
+		}
 		err = os.RemoveAll(folder)
 		if err != nil {
 			return err
 		}
 
-		err = os.Mkdir(folder, 0700)
+		err = os.MkdirAll(folder, 0755)
 		if err != nil {
 			return err
 		}
@@ -241,7 +257,7 @@ func runSolutionTimer(fs embed.FS, exampleDir string, kind Kind, n int) error {
 
 		script := "script.sh"
 		defer os.Remove(script)
-		err = os.WriteFile(script, bb, 0700)
+		err = os.WriteFile(script, bb, 0755)
 		if err != nil {
 			return err
 		}
@@ -250,7 +266,11 @@ func runSolutionTimer(fs embed.FS, exampleDir string, kind Kind, n int) error {
 		if err != nil {
 			return err
 		}
-		_ = os.Remove(script)
+
+		err = os.Remove(script)
+		if err != nil {
+			return err
+		}
 
 		err = os.Chdir(wd)
 		if err != nil {
