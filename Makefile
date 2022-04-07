@@ -3,6 +3,7 @@ default: build
 
 .PHONY .SILENT: build
 build:
+	git pull >/dev/null 2>&1 || true
 	docker run --rm -v $(shell pwd):/src golang:1.18 sh -c 'cd /src && go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
 
 .PHONY .SILENT: up
@@ -15,7 +16,7 @@ down:
 
 .PHONY .SILENT: slides
 slides: up
-	echo "Browse slides at http://localhost:8080 in 3 seconds..."
+	echo "Will browse slides at http://localhost:8080 in 3 seconds..."
 	sleep 3
 	xdg-open http://localhost:8080
 	echo "Stop slides server with 'make down' or 'docker rm -f k8s-workshop-slides'"

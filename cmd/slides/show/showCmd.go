@@ -26,18 +26,22 @@ func init() {
 	}
 
 	Cmd.PersistentFlags().IntP(flag.Port, flag.PortShort, defaultPort, "HTTP port of local workshop slides server")
+	Cmd.PersistentFlags().StringP(flag.Jump, flag.JumpShort, "", "jump to slide: horizontal_slide/vertical_slide/fragment, e.g. '2' or '3/1' or '4/3/2'")
 }
 
 func runServer(cmd *cobra.Command, args []string) error {
 	docs := cmd.Context().Value("docs").(embed.FS)
-	return Run("/docs", viper.GetInt(flag.Port), http.FS(docs), true)
+	return Run("/docs", viper.GetInt(flag.Port), http.FS(docs), true, viper.GetString(flag.Jump))
 }
 
-func Run(path string, port int, fs http.FileSystem, openInBrowser bool) error {
+func Run(path string, port int, fs http.FileSystem, openInBrowser bool, jump string) error {
 	http.Handle("/", http.FileServer(fs))
 
 	if openInBrowser {
-		slidesURL := fmt.Sprintf("http://localhost:%d%s", port, path)
+		if jump != "" {
+			jump = "/#/" + jump
+		}
+		slidesURL := fmt.Sprintf("http://localhost:%d%s%s", port, path, jump)
 		fmt.Printf("Starting workshop slides server at %s...\n", slidesURL)
 
 		go func() {

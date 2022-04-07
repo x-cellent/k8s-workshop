@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/x-cellent/k8s-workshop/cmd/cluster"
+	"github.com/x-cellent/k8s-workshop/cmd/exercise"
 	"github.com/x-cellent/k8s-workshop/cmd/install"
 	"github.com/x-cellent/k8s-workshop/cmd/slides"
 )
@@ -26,6 +27,7 @@ func init() {
 	rootCmd.AddCommand(slides.Cmd)
 	rootCmd.AddCommand(install.Cmd)
 	rootCmd.AddCommand(cluster.Cmd)
+	rootCmd.AddCommand(exercise.Cmd)
 }
 
 func Execute(docs, exercises embed.FS) error {

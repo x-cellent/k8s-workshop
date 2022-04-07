@@ -13,5 +13,5 @@ func main() {
 }
 
 func runStaticSlidesServer() error {
-	return show.Run("", 8080, http.Dir("docs"), true)
+	return show.Run("", 8080, http.Dir("docs"), true, "")
 }
