@@ -18,3 +18,7 @@ docker-ex*
 docker-sol*
 k8s-ex*
 k8s-sol*
+helm
+k9s
+kind
+kubectl
