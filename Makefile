@@ -4,7 +4,7 @@ default: build
 .PHONY .SILENT: build
 build:
 	git pull >/dev/null 2>&1 || true
-	docker run -e HTTP_PROXY=172.16.203.62:8080 -e HTTPS_PROXY=172.16.203.62:8080 -e http_proxy=172.16.203.62:8080 -e https_proxy=172.16.203.62:8080 --net host --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
+	docker run --net host --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
 
 .PHONY .SILENT: up
 up: down
