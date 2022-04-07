@@ -153,17 +153,6 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 			return err
 		}
 
-		mm, err := getManifests(exercises, exDir)
-		if err != nil {
-			return err
-		}
-
-		if len(mm) == 0 {
-			return nil
-		}
-
-		fmt.Printf("Deploying exercise manifests into namespace %s...\n", ns)
-
 		manifestFile := "manifest.yaml"
 		defer os.Remove(manifestFile)
 
@@ -176,6 +165,17 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		if err != nil {
 			return err
 		}
+
+		mm, err := getManifests(exercises, exDir)
+		if err != nil {
+			return err
+		}
+
+		if len(mm) == 0 {
+			return nil
+		}
+
+		fmt.Printf("Deploying exercise manifests into namespace %s...\n", ns)
 
 		for _, m := range mm {
 			err = os.WriteFile(manifestFile, m.content, 0644)
@@ -376,7 +376,6 @@ func getManifests(fs embed.FS, embeddedDir string) ([]*manifest, error) {
 		}
 		err = yaml.Unmarshal(bb, &m.fragment)
 		if err != nil {
-			fmt.Println(err.Error())
 			continue
 		}
 
