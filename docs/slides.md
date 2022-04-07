@@ -93,8 +93,8 @@ Software wird schon seit Jahrzehnten in Archive oder Single-Binaries verpackt
 
 <!-- .slide: style="text-align: left;"> -->
 ## Lösung
-- Verpacken der Software MITSAMT aller Dependencies (Image)  <!-- .element: class="fragment" data-fragment-index="1" -->
-- Und nicht mehr als das (Betriebssytem notwendig?)  <!-- .element: class="fragment" data-fragment-index="2" -->
+- Verpacken der Software *mitsamt* aller Dependencies (Image)  <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Nichts darüber hinaus (Betriebssytem notwendig?)  <!-- .element: class="fragment" data-fragment-index="2" -->
 - Container-Runtime für alle Plattformen  <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
