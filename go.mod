@@ -1,6 +1,6 @@
 module github.com/x-cellent/k8s-workshop
 
-go 1.18
+go 1.17
 
 require (
 	github.com/spf13/cobra v1.1.3
