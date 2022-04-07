@@ -20,6 +20,8 @@
 
 - Kurze Vorstellung
 - Erfahrungen?
+    - Docker
+    - Kubernetes
 - Erwartungen?
 
 ---
@@ -30,6 +32,7 @@
 
 <!-- .slide: style="text-align: left;"> -->
 ## Agenda
+1. Setup
 1. Container
 1. Monolithen vs. Microservices
 1. Container-Orchestrierung
@@ -38,42 +41,76 @@
 ---
 
 <!-- .slide: style="text-align: left;"> -->
+## Setup
+
+```sh
+git clone https://github.com/x-cellent/k8s-workshop.git
+cd k8s-workshop
+make
+```
+
+=> bin/w6p <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Binary
+
+```sh
+Usage:
+  w6p [flags]
+  w6p [command]
+
+Available Commands:
+  cluster     Runs the workshop cluster or exercises
+  exercise    Runs the given exercise
+  help        Help about any command
+  install     Installs tools on local machine
+  slides      Shows or exports workshop slides
+
+Flags:
+  -h, --help   help for w6p
+```
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
 ## Container
 
-Software wird schon seit Jahrzehnten in Archive oder Binaries verpackt
-- Einfache Auslieferung
-- Einfache Verteilung
+Software wird schon seit Jahrzehnten in Archive oder Single-Binaries verpackt
+- Einfache Auslieferung  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Einfache Verteilung  <!-- .element: class="fragment" data-fragment-index="2" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aber
-- Installation notwendig
-- Dependency Hell
-- No cross platform functionality
+- Installation notwendig  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Dependency Hell  <!-- .element: class="fragment" data-fragment-index="2" -->
+- No cross platform functionality  <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Lösung
-- Verpacken der Software MITSAMT aller Dependencies (Image)
-- Und nicht mehr als das (Betriebssytem notwendig?)
-- Container-Runtime für alle Plattformen
+- Verpacken der Software MITSAMT aller Dependencies (Image)  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Und nicht mehr als das (Betriebssytem notwendig?)  <!-- .element: class="fragment" data-fragment-index="2" -->
+- Container-Runtime für alle Plattformen  <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Umsetzung
-- Linux
-- Idee: Container teilen sich Kernel
-- LXC; basierend auf Kernel-Funktionalitäten
-    - namespaces
-    - cgroups
-- Docker erweitert LXC um
-    - CLI zum Starten und Verwalten von Containern
-    - Image Registry
-    - Networking
-    - docker-compose
+- Linux  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Idee: Container teilen sich Kernel  <!-- .element: class="fragment" data-fragment-index="2" -->
+- LXC; basierend auf Kernel-Funktionalitäten  <!-- .element: class="fragment" data-fragment-index="3" -->
+    - namespaces  <!-- .element: class="fragment" data-fragment-index="4" -->
+    - cgroups  <!-- .element: class="fragment" data-fragment-index="5" -->
+- Docker erweitert LXC um  <!-- .element: class="fragment" data-fragment-index="6" -->
+    - CLI zum Starten und Verwalten von Containern  <!-- .element: class="fragment" data-fragment-index="7" -->
+    - Image Registry  <!-- .element: class="fragment" data-fragment-index="8" -->
+    - Networking  <!-- .element: class="fragment" data-fragment-index="9" -->
+    - docker-compose  <!-- .element: class="fragment" data-fragment-index="10" -->
 
 <aside class="notes">
   Kein komplettes OS installiert wird
@@ -89,8 +126,8 @@ Software wird schon seit Jahrzehnten in Archive oder Binaries verpackt
 1. Geringere Größe <!-- .element: class="fragment" data-fragment-index="1" -->
 1. Erhöhte Sicherheit <!-- .element: class="fragment" data-fragment-index="2" -->
 1. Funktional auf allen Systemen <!-- .element: class="fragment" data-fragment-index="3" -->
-1. Baukastenprinzip (DRY) <!-- .element: class="fragment" data-fragment-index="4" -->
-1. Immutable <!-- .element: class="fragment" data-fragment-index="5" -->
+1. Immutable <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Damit Baukastenprinzip möglich (DRY) <!-- .element: class="fragment" data-fragment-index="5" -->
 
 <aside class="notes">
   Beinhaltet kein komplettes OS =>
@@ -126,11 +163,11 @@ Container und VMs schließen sich aber nicht gegenseitig aus <!-- .element: clas
 
 <!-- .slide: style="text-align: left;"> -->
 ## Docker Komponenten
-1. Image
-    - Layer
-    - [Dockerfile](https://docs.docker.com/engine/reference/builder/)
-1. Container
-1. Image Registry
+1. Image <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Layer <!-- .element: class="fragment" data-fragment-index="2" -->
+    - [Dockerfile](https://docs.docker.com/engine/reference/builder/) <!-- .element: class="fragment" data-fragment-index="3" -->
+1. Container <!-- .element: class="fragment" data-fragment-index="4" -->
+1. Image Registry <!-- .element: class="fragment" data-fragment-index="5" -->
 
 +++
 
@@ -292,7 +329,7 @@ Zeit: ca. 20 min
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-## Inspecting
+## Metadaten
 
 ```sh
 docker inspect IMAGE|CONTAINER
