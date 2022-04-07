@@ -901,6 +901,175 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+### Manifeste
+- in yaml definiert
+
++++
+
+### Beispiel
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: nginx # has to match .spec.template.metadata.labels
+  serviceName: "nginx"
+  replicas: 3 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: nginx # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        image: nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: 1Gi
+```
+
+<aside class="notes">
+  erklären was in der yaml steht
+
+  spaces als seperator, wenn es eingerückt drunter steht dann wird es weitergegeben
+
+  step für step
+</aside>
+
++++
+
+```yaml
+    metadata:
+      labels:
+        app: nginx # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        image: nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+```
+<aside class="notes">
+  containers
+
+  kennt man schon von docker
+
+  name wie `--name` bei docker run 
+
+  image: ist wie bei docker das image
+
+  ports leitet den port aus dem container in den cluster
+
+  volumeMounts: mountet ein volume in ein container
+
+  metadata.labels hier werden labels definiert, welche mit selectoren genutzt werden können
+
+  in dem fall app aber kann auch alles andere sein
+
+  spec: der status in welchem das objekt sein soll, in diesem fall wird ein container definiert
+</aside>
+
++++
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+  namespace: testing
+```
+
+<aside class="notes">
+  definition des statefulSets
+
+  apiVersion: nicht wichtig. diverse ressourcen haben andere apiVersionen. Werden im laufe der zeit mehr kennenlernen
+
+  kind: in diesem fall statefulset
+
+  metadata: 
+    name: eindeutiger identifier
+    namespace: Namespace in welches es deployt werden soll
+</aside>
+
++++
+
+```yaml
+spec:
+  selector:
+    matchLabels:
+      app: nginx # has to match .spec.template.metadata.labels
+  replicas: 3 # by default is 1
+```
+
+<aside class="notes">
+  spec: unterschiedlich bei jedem object definiert, welchen status das object bekommen soll in dem fall ein statefulset
+  
+  selector: auf welche objekte das object matchen soll
+
+  in diesem fall soll es labels matchen, welche den namen app hat
+
+  wie unser container von vorhin
+
+  replicas, definiert wie viele gleiche pods deployt werden sollen
+</aside>
+
++++
+
+```yaml
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: 1Gi
+```
+<aside class="notes">
+  Volume Claimes
+
+  damit die pods auch daten schreiben können gibt es volume claims
+
+  diese definieren, auf welchem filesystem diese daten abgelegt werden sollen
+
+  braucht im hintergrund kubernetes object PersistantVolume
+
+  metadata name, definiert wieder den namen des volumeclaims
+
+  spec: wieder wie dieses object aussehen soll
+
+  accessMode: ReadWriteOnce, gibt noch Many, wird aber seltenst genutzt
+
+  storageClassName name von persistat volume
+
+  ressources. request.storage wie viel speicherplatz reserviert werden soll
+</aside>
+
+---
+
 ## Install Tools
 Kubernetes Dokumentation:
 - kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
@@ -937,6 +1106,7 @@ Kubernetes Dokumentation:
   
   heute genaue erklärung mit übungen
 </aside>
+
 +++
 
 ### Pod
