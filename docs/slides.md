@@ -1005,7 +1005,13 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ## Namespaces
-- separierungseinheit in Kubernetes
+- separierungseinheit in Kubernetes  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Objekte können welche in anderem Namespace nicht sehen  <!-- .element: class="fragment" data-fragment-index="2" -->
+- 4 standart Namespaces  <!-- .element: class="fragment" data-fragment-index="3" -->
+    - default  <!-- .element: class="fragment" data-fragment-index="4" -->
+    - kube-node-lease <!-- .element: class="fragment" data-fragment-index="5" -->
+    - kube-public <!-- .element: class="fragment" data-fragment-index="6" -->
+    -kube-system <!-- .element: class="fragment" data-fragment-index="7" -->
 
 <aside class="notes">
   Namespaces sind ein ganz wichtiger punkt in Kubernetes
@@ -1013,6 +1019,17 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
   separiert im Cluster verschiedene Anwendungen
 
   Gleiche Anwendung kann im Cluster in verschiedenen Namespaces mit gleichen Namen laufen
+  
+  default: Objekte welche keinem Anderen Namespace zugeordnet werden
+
+  kuube-node-lease: hält objecte welche mit jedem node zusammenhängen
+
+  erlaubt dem kubelet hearbeats an die control plane zu schicken
+
+  kube-public: wenn anwendungen im kompletten cluster sichtbar sein sollen
+
+  kube-system objekte, welche vom Kubernetes system erstellt wurden
+
 </aside>
 
 +++
@@ -1020,11 +1037,11 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 <!-- .slide: style="text-align: left;"> -->
 ## Ausfallsicherheit
 
-1. Container Health Check
-    1. readyness
-    1. liveness
-1. Hostsystemausfall
-1. Update
+- Container Health Check  <!-- .element: class="fragment" data-fragment-index="1" -->
+    - readyness <!-- .element: class="fragment" data-fragment-index="2" -->
+    - liveness <!-- .element: class="fragment" data-fragment-index="3" -->
+- Hostsystemausfall <!-- .element: class="fragment" data-fragment-index="4" -->
+- Update <!-- .element: class="fragment" data-fragment-index="5" -->
 
 <aside class="notes">
   Kubernetes hat den großen Vorteil, dass die deployten Anwendungen Ausfallsicher sind
@@ -1057,7 +1074,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
     - kubectl apply -f spec.yaml  <!-- .element: class="fragment" data-fragment-index="3" -->
         - Schickt den Inhalt von spec.yaml an k8s API Server  <!-- .element: class="fragment" data-fragment-index="4" -->
         - API Server prüft Inhalt und Berechtigungen (Admission Control)  <!-- .element: class="fragment" data-fragment-index="5" -->
-        - Wenn ok -> API Server sorgt für Anlage/Update des Objekts  <!-- .element: class="fragment" data-fragment-index="6" -->
+        - Wenn ok -> API Server sorgt für Anlage/Update  <!-- .element: class="fragment" data-fragment-index="6" -->
         - Wenn nicht ok -> Reject  <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
