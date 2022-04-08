@@ -41,5 +41,3 @@ k -n my-web delete pod webserver
 ```sh
 k -n my-web create deploy --image nginx webserver $do > nginx-pod.yaml
 ```
-
-oder

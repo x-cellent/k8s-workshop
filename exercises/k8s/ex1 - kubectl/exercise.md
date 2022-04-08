@@ -16,5 +16,3 @@
 
 6. Erstelle nun ein Deployment, dass den obigen Pod deployed.
    Hinweis: Verwende dazu die Umgebungsvariable $do
-
-7.
