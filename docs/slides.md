@@ -94,7 +94,7 @@ Software wird schon seit Jahrzehnten in Archive oder Single-Binaries verpackt
 
 <!-- .slide: style="text-align: left;"> -->
 ## Lösung
-- Verpacken der Software *mitsamt* aller Dependencies (Image)  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Verpacken der Software mitsamt aller Dependencies (Image)  <!-- .element: class="fragment" data-fragment-index="1" -->
     - Nichts darüber hinaus (Betriebssytem notwendig?)  <!-- .element: class="fragment" data-fragment-index="2" -->
 - Container-Runtime für alle Plattformen  <!-- .element: class="fragment" data-fragment-index="3" -->
 
@@ -104,14 +104,14 @@ Software wird schon seit Jahrzehnten in Archive oder Single-Binaries verpackt
 ## Umsetzung
 - Linux  <!-- .element: class="fragment" data-fragment-index="1" -->
 - Idee: Container teilen sich Kernel  <!-- .element: class="fragment" data-fragment-index="2" -->
-- LXC; basierend auf Kernel-Funktionalitäten  <!-- .element: class="fragment" data-fragment-index="3" -->
+- LXC: basierend auf Kernel-Funktionalitäten  <!-- .element: class="fragment" data-fragment-index="3" -->
     - namespaces  <!-- .element: class="fragment" data-fragment-index="4" -->
     - cgroups  <!-- .element: class="fragment" data-fragment-index="5" -->
 - Docker erweitert LXC um  <!-- .element: class="fragment" data-fragment-index="6" -->
-    - CLI zum Starten und Verwalten von Containern  <!-- .element: class="fragment" data-fragment-index="7" -->
-    - Image Registry  <!-- .element: class="fragment" data-fragment-index="8" -->
-    - Networking  <!-- .element: class="fragment" data-fragment-index="9" -->
-    - docker-compose  <!-- .element: class="fragment" data-fragment-index="10" -->
+    - ...CLI zum Starten und Verwalten von Containern  <!-- .element: class="fragment" data-fragment-index="6" -->
+    - Image Registry  <!-- .element: class="fragment" data-fragment-index="7" -->
+    - Networking  <!-- .element: class="fragment" data-fragment-index="8" -->
+    - docker-compose  <!-- .element: class="fragment" data-fragment-index="9" -->
 
 <aside class="notes">
   Kein komplettes OS installiert wird
@@ -166,7 +166,7 @@ Container und VMs schließen sich aber nicht gegenseitig aus <!-- .element: clas
 ## Docker Komponenten
 1. Image <!-- .element: class="fragment" data-fragment-index="1" -->
     - Layer <!-- .element: class="fragment" data-fragment-index="2" -->
-    - [Dockerfile](https://docs.docker.com/engine/reference/builder/) <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Dockerfile <!-- .element: class="fragment" data-fragment-index="3" -->
 1. Container <!-- .element: class="fragment" data-fragment-index="4" -->
 1. Image Registry <!-- .element: class="fragment" data-fragment-index="5" -->
 
@@ -174,7 +174,8 @@ Container und VMs schließen sich aber nicht gegenseitig aus <!-- .element: clas
 
 <!-- .slide: style="text-align: left;"> -->
 ## Dockerfile
-- Image-*Rezept* mit u.a. folgenden Instruktionen:
+- [Referenz](https://docs.docker.com/engine/reference/builder/)
+- Image-*Rezept* mit u.a. folgenden *Zutaten*:
     - FROM <!-- .element: class="fragment" data-fragment-index="1" -->
     - COPY/ADD <!-- .element: class="fragment" data-fragment-index="2" -->
     - RUN <!-- .element: class="fragment" data-fragment-index="3" -->
@@ -284,21 +285,22 @@ docker run [--name NAME] [-i] [-t] [-d|--rm] [--net host|NETWORK] [-v HOST_PATH:
     [-p HOST_PORT:CONTAINER_PORT] [-u UID:GID] IMAGE [arg(s)]
 ```
 
-- Noch viel mehr Flags möglich <!-- .element: class="fragment" data-fragment-index="1" -->
-- [Referenz](https://docs.docker.com/engine/reference/run/) <!-- .element: class="fragment" data-fragment-index="2" -->
+- Mehr Optionen möglich
+- [Referenz](https://docs.docker.com/engine/reference/run/)
 
 +++
 
-## Command in Container triggern
+<!-- .slide: style="text-align: left;"> -->
+## Execute CMD in Container
 
 ```sh
 docker exec [-i] [-t] CONTAINER COMMAND
 ```
 
-Via Shell in den Container "springen":
+Via Bash in den Container "springen":
 
 ```sh
-docker exec [-i] [-t] CONTAINER COMMAND
+docker exec -it CONTAINER /bin/bash
 ```
 
 +++
@@ -311,10 +313,24 @@ docker exec [-i] [-t] CONTAINER COMMAND
 docker cp HOST_FILE CONTAINER_NAME:CONTAINER_FILE
 ```
 
+z.B.:
+
+```sh stretch
+docker cp ~/local-index.html my-server:/static/index.html
+```
+
++++
+
 ...vom Container in das Host-FS:
 
 ```sh
 docker cp CONTAINER_NAME:CONTAINER_FILE HOST_FILE
+```
+
+z.B.:
+
+```sh stretch
+docker cp my-server:/static/index.html ~/local-index.html
 ```
 
 +++
@@ -517,11 +533,11 @@ Zeit: ca. 15 min
 +++
 
 ## Warum Kubernetes?
-- Warum nicht Docker Swarm?
-- Mehr Flexibilität
-- Eingebautes Monitoring und Logging
-- Bereitstellung von Storage 
-- Größere userbase
+- Warum nicht Docker Swarm? <!-- .element: class="fragment" data-fragment-index="1" -->
+- Mehr Flexibilität <!-- .element: class="fragment" data-fragment-index="2" -->
+- Eingebautes Monitoring und Logging <!-- .element: class="fragment" data-fragment-index="3" -->
+- Bereitstellung von Storage <!-- .element: class="fragment" data-fragment-index="4" -->
+- Größere User-Base <!-- .element: class="fragment" data-fragment-index="5" -->
 
 <aside class="notes">
   da wir einiges über docker gehört haben kann man sich fragen warum nicht docker swarm?
@@ -634,13 +650,81 @@ Zeit: ca. 15 min
 
 # Rewind
 
----
++++
 
-# Kubernetes
-*Kubernetes ist ein Open-Source-System  zur Automatisierung der Bereitstellung, Skalierung und Verwaltung von Container-Anwendungen*
+<!-- .slide: style="text-align: left;"> -->
+### Docker
+- Container Runtime Engine <!-- .element: class="fragment" data-fragment-index="1" -->
+- docker CLi <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Bau von Images <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Start von Images (Container) <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Image Registry (Verteilung von Images, vgl. AppStore) <!-- .element: class="fragment" data-fragment-index="5" -->
+    - ... <!-- .element: class="fragment" data-fragment-index="5" -->
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
+### Image bauen
+- Schreibe ein Dockerfile (Rezept) <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Instruktionen (Zutaten) <!-- .element: class="fragment" data-fragment-index="2" -->
+        - FROM, COPY, RUN, ENTRYPOINT, ... <!-- .element: class="fragment" data-fragment-index="3" -->
+        - jede Instruktion = neuer Layer (vgl. mit Binärdatei) <!-- .element: class="fragment" data-fragment-index="4" -->
+- docker build [-t TAG] CONTEXT <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Image = N übereinander gelegte RO Layer (overlay FS) <!-- .element: class="fragment" data-fragment-index="6" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Image starten
+- docker run [OPTS] IMAGE [COMMAND] [ARGS]
+    - Container = N Image RO Layers plus ein leerer RW Layer on top <!-- .element: class="fragment" data-fragment-index="1" -->
+    - RW Layer kann zur Laufzeit modifiziert werden <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Delete File/Dir <!-- .element: class="fragment" data-fragment-index="3" -->
+        - Löscht, wenn im RW Layer vorhanden <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Versteckt, wenn in einem darunter liegenden RO Layer <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Stirbt PID 1, stirbt der Container <!-- .element: class="fragment" data-fragment-index="6" -->
+        - docker rm CONTAINER => RW Layer wird gelöscht <!-- .element: class="fragment" data-fragment-index="7" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Kubernetes
+- Container Orchestrierungstool <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Verwaltet Pods <!-- .element: class="fragment" data-fragment-index="2" -->
+        - besteht aus 1 bis N Containern <!-- .element: class="fragment" data-fragment-index="3" -->
+        - eigene IP, eigenes Netzwerk <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Started, stoppt und überwacht Pods <!-- .element: class="fragment" data-fragment-index="5" -->
+        - Verteilung auf Worker-Nodes <!-- .element: class="fragment" data-fragment-index="6" -->
+        - Garantiert Pods Ressourcen (CPU/Memory) <!-- .element: class="fragment" data-fragment-index="7" -->
+    - Self-Healing <!-- .element: class="fragment" data-fragment-index="8" -->
+    - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="9" -->
+    - ... <!-- .element: class="fragment" data-fragment-index="9" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Kubernetes Tools
+- kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
+    - CLI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
+- krew <!-- .element: class="fragment" data-fragment-index="2" -->
+    - kubectl Plugin Manager <!-- .element: class="fragment" data-fragment-index="2" -->
+- k9s <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Terminal UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="3" -->
+- kind (Kubernetes in Docker) <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Single-Node k8s Cluster in Docker Container <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+- helm
+    - Paket-Manager für Kubernetes
+    - vgl. mit apt für Ubuntu oder apk für Alpine
+- Lens <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Graphical UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Nicht Teil des Workshops <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
 ### Kubernetes
 
 - Ursprünglich 2014 entwickelt von Google
@@ -654,6 +738,7 @@ Zeit: ca. 15 min
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### CNCF
 
 - Cloud Native Computing Foundation
@@ -670,9 +755,9 @@ Zeit: ca. 15 min
   x-cellent ist auch teil der CNCF
 </aside>
 
-
 +++
 
+<!-- .slide: style="text-align: left;" class="stretch"> -->
 ## Architektur von Kubernetes
 ![image](https://upload.wikimedia.org/wikipedia/commons/b/be/Kubernetes.png)
 
@@ -682,6 +767,7 @@ Zeit: ca. 15 min
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Architektur des Clusters
 1. Modular und austauschbar <!-- .element: class="fragment" data-fragment-index="1" -->
     1. Control-Plane <!-- .element: class="fragment" data-fragment-index="2" -->
@@ -710,6 +796,7 @@ Zeit: ca. 15 min
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Control-Plane
 
 <aside class="notes">
@@ -743,6 +830,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### API-Server
 - Ansprechpunkt des Users
 - Validation der Daten
@@ -761,6 +849,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 #### scheduler
 - Verteilt workload
 - verantworlich für pods ohne node
@@ -781,6 +870,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Kube-Controller-Manager
 - bringt cluster von "ist" -> "soll"
 - Managed Nodes
@@ -794,6 +884,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Nodes
 
 <aside class="notes">
@@ -802,6 +893,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Kubelet
 - verwaltet pods
 - auf jeden node installiert
@@ -817,6 +909,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Kube Proxy
 - verwaltet Netzwerkanfragen
 - routet traffic zu gewünschten pod
@@ -830,6 +923,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Weitere Komponenten
 - CNI
 - Container-Runtime
@@ -850,6 +944,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## OpenSource
 
 <aside class="notes">
@@ -858,6 +953,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Namespaces
 - separierungseinheit in Kubernetes
 
@@ -871,6 +967,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Ausfallsicherheit
 
 1. Container Health Check
@@ -901,6 +998,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Manifeste
 - in yaml definiert
 
@@ -955,6 +1053,7 @@ spec:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ```yaml
     metadata:
       labels:
@@ -971,6 +1070,7 @@ spec:
         - name: www
           mountPath: /usr/share/nginx/html
 ```
+
 <aside class="notes">
   containers
 
@@ -993,6 +1093,7 @@ spec:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ```yaml
 apiVersion: apps/v1
 kind: StatefulSet
@@ -1015,6 +1116,7 @@ metadata:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ```yaml
 spec:
   selector:
@@ -1037,6 +1139,7 @@ spec:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ```yaml
   volumeClaimTemplates:
   - metadata:
@@ -1070,13 +1173,14 @@ spec:
 
 ---
 
+<!-- .slide: style="text-align: left;"> -->
 ## Install Tools
 Kubernetes Dokumentation:
 - kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
 - krew <!-- .element: class="fragment" data-fragment-index="2" -->
-- helm <!-- .element: class="fragment" data-fragment-index="3" -->
-- kind <!-- .element: class="fragment" data-fragment-index="4" -->
-- k9s <!-- .element: class="fragment" data-fragment-index="5" -->
+- kind <!-- .element: class="fragment" data-fragment-index="3" -->
+- k9s <!-- .element: class="fragment" data-fragment-index="4" -->
+- helm <!-- .element: class="fragment" data-fragment-index="5" -->
 
 <aside class="notes">
   kurze hintergrundinfos über einzelne tools
@@ -1094,32 +1198,31 @@ Kubernetes Dokumentation:
 
 +++
 
-## Install kubectl plugins
-- node-shell
+<!-- .slide: style="text-align: left;"> -->
+## kubectl plugins
+- [krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)
+- [Liste](https://krew.sigs.k8s.io/plugins/) von verfügbaren Plugins
+
+### Install <!-- .element: class="fragment" data-fragment-index="1" -->
+- node-shell <!-- .element: class="fragment" data-fragment-index="1" -->
+- df-pv <!-- .element: class="fragment" data-fragment-index="2" -->
 
 ---
 
 # Objekttypen in K8s
 
-<aside class="notes">
-  gestern schon was gehört über Objekttypen
-  
-  heute genaue erklärung mit übungen
-</aside>
-
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Pod
-- umfasst einen oder meherere Container
-- niedrigstes verwaltbares Objekt
-- jeder Pod bekommt IP addresse
+- Umfasst einen oder meherere Container
+- Kleinste verwaltbares Objekt
+- Jeder Pod bekommt eine IP Addresse (ClusterIP)
 
 <aside class="notes">
-  wie ihr gestern schon erfahren habt, ist der pod das so ziemlich niedrigeste verwaltbare Objekt
+  Ein Pod beinhaltet 1 bis n Container
 
-  ein pod umfasst mindestens ein container kann aber auch mehrere umfassen
-
-  pods haben ip addressen, da die aber dynamisch sind haben sie bei einem erneuten deploy eine neue IP
+  Pods haben ip addressen, da die aber dynamisch sind haben sie bei Neustart eine neue IP
 </aside>
 
 +++
@@ -1134,14 +1237,7 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbesprechung
-
-<aside class="notes">
-  ein teilnehmer erklärt seine lösung
-</aside>
-
-+++
-
+<!-- .slide: style="text-align: left;"> -->
 ### Service
 - Objekt um Pod im Netzwerk erreichbar zu machen
 - Loadbalancing
@@ -1167,14 +1263,7 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbesprechung
-
-<aside class="notes">
-  ein teilnehmer erklärt seine lösung
-</aside>
-
-+++
-
+<!-- .slide: style="text-align: left;"> -->
 ### ReplicaSets
 - Pods Replizieren
 - Nachträglich nicht änderbar
@@ -1201,16 +1290,9 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbesprechung
-
-<aside class="notes">
-  ein teilnehmer erklärt seine lösung
-</aside>
-
-+++
-
+<!-- .slide: style="text-align: left;"> -->
 ### Deployment
-- Bessere art ReplicaSets zu verwalten
+- Art ReplicaSets zu verwalten
 - Updates
 - am weitesten verbreitete art
 
@@ -1224,11 +1306,11 @@ Zeit: ca. 5m
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### DaemonSet
-- jede Node bekommt ein Replica
-- enorm ausfallsicher
-- logs
-- monitoring
+- Jeder Node bekommt ein Replica
+    - Log-Shipper
+    - Monitoring Agent
 
 <aside class="notes">
   daemonSets starten eine Replica auf jeder Node
@@ -1252,21 +1334,10 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbesprechung
-- deamonSet aus kubernetes Doku
-- kubernetes Doku ist immer gut
-
-<aside class="notes">
-  ein teilnehmer erklärt seine lösung 
-  
-  kubernetes Doku ist immer ein guter ort sich infos zu holen, deployments anzuschauen/abzuschauen
-</aside>
-
-+++
-
+<!-- .slide: style="text-align: left;"> -->
 ### StatefulSet
-- persistente Pods
-- geordnetes Updaten
+- Persistente Pods
+- Geordnetes Update/Shutdown
 
 <aside class="notes">
   StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine anwendung ihren status nicht verliert
@@ -1276,9 +1347,10 @@ Zeit: ca. 5m
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Job
-- ausführung eines commandes in einem pod
-- datenbank backups
+- Einmalige Ausführung eines Commands in einem Pod
+    - Datenbank Backup
 
 <aside class="notes">
   jobs sind praktisch um einzelne kommandos auszuführen
@@ -1298,13 +1370,11 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbeschreibung
-
-+++
-
-### Cronjobs
-- Mischung aus klassischen Cronjobs und Jobs
-- regelmäßige ausführung eines jobs
+<!-- .slide: style="text-align: left;"> -->
+### CronJobs
+- Mischung aus klassischen CronJobs und Jobs
+- Regelmäßige Ausführung eines Jobs
+    - Datenbank Backups
 
 <aside class="notes">
   wie klassische Linux Cronjobs 
@@ -1324,25 +1394,20 @@ bin/w6s exercise k8s -n6
 ```
 Zeit: ca. 5m
 
-+++
-
-#### Lösungsbesprechung
-
 <aside class="notes">
-  ein teilnehmer erklärt seine lösung 
-
   kubectl create job nicht in cronjob k8s doku
 </aside>
 
 +++
 
-### Configmaps
-- speicherung von nicht vertraulichen daten
-- einbindung in pods als
-    - enviroment-variable
+<!-- .slide: style="text-align: left;"> -->
+### ConfigMaps
+- Speicherung von nicht vertraulichen daten
+- Einbindung in Pods als
+    - Umgebungsvariable
     - command-line argument
-    - als datei in Volume
-- kein reload von pods bei änderung von configmap
+    - Datei (Volume)
+- Kein Reload der Pods bei Änderung
 
 <aside class="notes">
   in configmaps sollen nur nicht vertrauliche daten gespeichert werden
@@ -1364,14 +1429,6 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbesprechung
-
-<aside class="notes">
-  ein teilnehmer erklärt seine lösung 
-</aside>
-
-+++
-
 <!-- .slide: style="text-align: left;"> -->
 ## Aufgabe 8
 
@@ -1388,17 +1445,10 @@ Zeit: ca. 5m
 
 +++
 
-#### Lösungsbesprechung
-
-<aside class="notes">
-  ein teilnehmer erklärt seine lösung 
-</aside>
-
-+++
-
+<!-- .slide: style="text-align: left;"> -->
 ### Secret
-- speicherung vertraulicher daten
-- unentschlüsselt in etcd db
+- Speicherung vertraulicher Daten
+- Unverschlüsselt in etcd DB
 
 <aside class="notes">
   secrets gibt es um vertrauliche daten zu speichern
@@ -1407,6 +1457,13 @@ Zeit: ca. 5m
 
   einbindung ähnlich wie bei configmaps
 </aside>
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Buchempfehlungen
+- [Kubernetes Up & Running](https://www.amazon.de/Kubernetes-Up-Running-Brendan-Burns/dp/1492046531)
+- [Kubernetes Best Practices](https://www.amazon.de/Kubernetes-Best-Practices-Blueprints-Applications/dp/1492056472)
 
 ---
 
