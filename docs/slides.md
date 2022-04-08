@@ -741,6 +741,7 @@ Zeit: ca. 15 min
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 - helm
     - Paket-Manager für Kubernetes
     - vgl. mit apt für Ubuntu oder apk für Alpine
@@ -853,6 +854,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### etcd
 - entwickelt von CoreOS
 - key-value Database
