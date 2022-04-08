@@ -1032,6 +1032,37 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+## Namespaces
+- separierungseinheit in Kubernetes  <!-- .element: class="fragment" data-fragment-index="1" -->
+- Objekte können welche in anderem Namespace nicht sehen  <!-- .element: class="fragment" data-fragment-index="2" -->
+- 4 standart Namespaces  <!-- .element: class="fragment" data-fragment-index="3" -->
+    - default  <!-- .element: class="fragment" data-fragment-index="4" -->
+    - kube-node-lease <!-- .element: class="fragment" data-fragment-index="5" -->
+    - kube-public <!-- .element: class="fragment" data-fragment-index="6" -->
+    -kube-system <!-- .element: class="fragment" data-fragment-index="7" -->
+
+<aside class="notes">
+  Namespaces sind ein ganz wichtiger punkt in Kubernetes
+
+  separiert im Cluster verschiedene Anwendungen
+
+  Gleiche Anwendung kann im Cluster in verschiedenen Namespaces mit gleichen Namen laufen
+  
+  default: Objekte welche keinem Anderen Namespace zugeordnet werden
+
+  kuube-node-lease: hält objecte welche mit jedem node zusammenhängen
+
+  erlaubt dem kubelet hearbeats an die control plane zu schicken
+
+  kube-public: wenn anwendungen im kompletten cluster sichtbar sein sollen
+
+  kube-system objekte, welche vom Kubernetes system erstellt wurden
+
+</aside>
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 ## Weitere Komponenten
 - CNI <!-- .element: class="fragment" data-fragment-index="1" -->
 - Container-Runtime <!-- .element: class="fragment" data-fragment-index="2" -->
@@ -1088,36 +1119,6 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
   Alle diese Komponenten sind opensource und theoretisch austauschbar, auch wenn einige so sehr in den kubernetes core eingebaut sind, dass diese nur mit sehr hohen aufwand getauscht werden können
 </aside>
 
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Namespaces
-- separierungseinheit in Kubernetes  <!-- .element: class="fragment" data-fragment-index="1" -->
-- Objekte können welche in anderem Namespace nicht sehen  <!-- .element: class="fragment" data-fragment-index="2" -->
-- 4 standart Namespaces  <!-- .element: class="fragment" data-fragment-index="3" -->
-    - default  <!-- .element: class="fragment" data-fragment-index="4" -->
-    - kube-node-lease <!-- .element: class="fragment" data-fragment-index="5" -->
-    - kube-public <!-- .element: class="fragment" data-fragment-index="6" -->
-    -kube-system <!-- .element: class="fragment" data-fragment-index="7" -->
-
-<aside class="notes">
-  Namespaces sind ein ganz wichtiger punkt in Kubernetes
-
-  separiert im Cluster verschiedene Anwendungen
-
-  Gleiche Anwendung kann im Cluster in verschiedenen Namespaces mit gleichen Namen laufen
-  
-  default: Objekte welche keinem Anderen Namespace zugeordnet werden
-
-  kuube-node-lease: hält objecte welche mit jedem node zusammenhängen
-
-  erlaubt dem kubelet hearbeats an die control plane zu schicken
-
-  kube-public: wenn anwendungen im kompletten cluster sichtbar sein sollen
-
-  kube-system objekte, welche vom Kubernetes system erstellt wurden
-
-</aside>
 
 +++
 
