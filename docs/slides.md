@@ -1032,6 +1032,27 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+## Weitere Komponenten
+- CNI <!-- .element: class="fragment" data-fragment-index="1" -->
+- Container-Runtime <!-- .element: class="fragment" data-fragment-index="2" -->
+
+<aside class="notes">
+  es gibt noch weiter komponente
+
+  Network Plugin, also CNI schreibt Network interfaces in die
+
+  Container Runtime
+
+  dies ist z.B. containerd, cri-o oder die deprecated docker engine
+
+  meistens containerd
+
+  diese Software ist zuständig um die Container laufen zu lassen
+</aside> 
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 ## Namespaces
 - separierungseinheit in Kubernetes  <!-- .element: class="fragment" data-fragment-index="1" -->
 - Objekte können welche in anderem Namespace nicht sehen  <!-- .element: class="fragment" data-fragment-index="2" -->
@@ -1059,27 +1080,6 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
   kube-system objekte, welche vom Kubernetes system erstellt wurden
 
 </aside>
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Weitere Komponenten
-- CNI <!-- .element: class="fragment" data-fragment-index="1" -->
-- Container-Runtime <!-- .element: class="fragment" data-fragment-index="2" -->
-
-<aside class="notes">
-  es gibt noch weiter komponente
-
-  Network Plugin, also CNI schreibt Network interfaces in die
-
-  Container Runtime
-
-  dies ist z.B. containerd, cri-o oder die deprecated docker engine
-
-  meistens containerd
-
-  diese Software ist zuständig um die Container laufen zu lassen
-</aside> 
 
 +++
 
