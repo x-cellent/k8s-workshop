@@ -4,13 +4,13 @@ default: build
 .PHONY .SILENT: build
 build:
 	git pull >/dev/null 2>&1 || true
-	docker run --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && GO111MODULE=off go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
+	docker run --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && GO111MODULE=off go fmt ./... && go build -o bin/w6p'
 	mkdir -p $(HOME)/bin
 	cp bin/w6p $(HOME)/bin/
 
 .PHONY .SILENT: up
 up: down
-	docker run -d --name k8s-workshop-slides --net host -v $(shell pwd):/k8s-workshop golang:1.18 sh -c 'cd /k8s-workshop && go run static.go' >/dev/null
+	docker run -d --name k8s-workshop-slides --net host -v $(shell pwd):/k8s-workshop golang:1.17 sh -c 'cd /k8s-workshop && go run static.go' >/dev/null
 
 .PHONY .SILENT: down
 down:
