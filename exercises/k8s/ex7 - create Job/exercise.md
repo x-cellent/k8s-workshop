@@ -1,1 +1,1 @@
-erstelle einen Job in Namespace ex5, welcher pi auf 5000 stellen berechnet
+Erstelle einen Job im Namespace ex7, welcher die Zahl Pi auf 5000 Stellen genau berechnet.

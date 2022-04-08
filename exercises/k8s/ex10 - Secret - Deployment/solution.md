@@ -1,6 +1,5 @@
 15m
-
-das Objekt ist ein sogenanntes Secret.
+Das Objekt ist ein sogenanntes Secret.
 
 ```yaml
 apiVersion: v1

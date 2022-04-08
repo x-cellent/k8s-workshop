@@ -1,5 +1,6 @@
-15m
-```yaml
+#!/usr/bin/env bash
+
+cat <<EOF > cronjob.yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -25,15 +26,4 @@ spec:
             - -c
             - date; echo Pascal
           restartPolicy: OnFailure
-```
-
-```sh
-k apply -f cronjob.yaml
-k create job -n ex8 --from=cronjob/hello hello-test
-```
-
-Test via:
-
-```sh
-k logs -n ex8 -l cronjob=hello
-```
+EOF

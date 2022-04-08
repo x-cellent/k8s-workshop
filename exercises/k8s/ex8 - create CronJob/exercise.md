@@ -1,3 +1,5 @@
-Erstelle ein CronJob in Namespace ex6 welcher alle 10 Minuten ausgeführt wird und alle 10 minuten das datum und dein Namen ausgibt, dieser soll 5 gelungene und 8 failed jobs aufheben
+Erstelle ein CronJob im Namespace `ex8`, welcher jede Minute ausgeführt wird
+und dann das Datum und deinen Vornamen ausgibt.
+Dieser soll bis zu 5 erfolgreiche und bis zu 8 fehlgeschlagene Durchläufe cachen.
 
-Teste diesen Cronjob
+Teste diesen Cronjob.

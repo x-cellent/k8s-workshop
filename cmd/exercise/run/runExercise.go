@@ -64,13 +64,13 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		return err
 	}
 
+	wd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
 	folder := ""
 	if len(ss) > 0 {
-		wd, err := os.Getwd()
-		if err != nil {
-			return err
-		}
-
 		if kind == K8s {
 			folder = fmt.Sprintf("ex%d", n)
 		} else {
@@ -90,6 +90,7 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		if err != nil {
 			return err
 		}
+
 		fmt.Printf("Executing script(s) in folder %s...\n", folder)
 
 		script := "script.sh"
@@ -171,25 +172,23 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 			return err
 		}
 
-		if len(mm) == 0 {
-			return nil
-		}
+		if len(mm) > 0 {
+			fmt.Printf("Deploying exercise manifests into namespace %s...\n", ns)
 
-		fmt.Printf("Deploying exercise manifests into namespace %s...\n", ns)
+			for _, m := range mm {
+				err = os.WriteFile(manifestFile, m.content, 0644)
+				if err != nil {
+					return err
+				}
 
-		for _, m := range mm {
-			err = os.WriteFile(manifestFile, m.content, 0644)
-			if err != nil {
-				return err
-			}
-
-			args := []string{"--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile}
-			if m.fragment.Kind != "Namespace" {
-				args = append([]string{"-n", ns}, args...)
-			}
-			err = exec.Command(kubectl, args...).Run()
-			if err != nil {
-				return err
+				args := []string{"--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile}
+				if m.fragment.Kind != "Namespace" {
+					args = append([]string{"-n", ns}, args...)
+				}
+				err = exec.Command(kubectl, args...).Run()
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}

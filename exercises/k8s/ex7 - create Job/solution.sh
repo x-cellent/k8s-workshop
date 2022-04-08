@@ -1,7 +1,6 @@
-5m
-Von der Kubernetes Dokumentation bzgl. Jobs das Manifest übernehmen und anpassen:
+#!/usr/bin/env bash
 
-```yaml
+cat <<EOF > job.yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -19,10 +18,4 @@ spec:
         command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(5000)"]
       restartPolicy: Never
   backoffLimit: 4
-```
-
-Test via:
-
-```sh
-k -n ex7 logs -l job=pi
-```
+EOF
