@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+
+cat <<EOF > broken-pod.yaml
 apiVersion: v1
 Kind: pod
 metadata:
@@ -18,3 +21,4 @@ containers:
       limits:
        cpu: "1.0"
         memory: "1G"
+EOF
