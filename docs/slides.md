@@ -856,11 +856,11 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ### etcd
-- entwickelt von CoreOS
-- key-value Database
-- kann nicht getauscht werden
-- speichert stand von cluster
-- Consistency notwending
+- entwickelt von CoreOS <!-- .element: class="fragment" data-fragment-index="1" -->
+- key-value Database <!-- .element: class="fragment" data-fragment-index="2" -->
+- kann nicht getauscht werden <!-- .element: class="fragment" data-fragment-index="3" -->
+- speichert stand von cluster <!-- .element: class="fragment" data-fragment-index="4" -->
+- Consistency notwending <!-- .element: class="fragment" data-fragment-index="5" -->
 
 <aside class="notes">
   wird entwickelt und maintaint von coreos team
@@ -882,10 +882,10 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ### API-Server
-- Ansprechpunkt des Users
-- Validation der Daten
-- bekanntester ist kube-apiserver
-- horizontale skalierbarkeit
+- Ansprechpunkt des Users <!-- .element: class="fragment" data-fragment-index="1" -->
+- Validation der Daten <!-- .element: class="fragment" data-fragment-index="2" -->
+- bekanntester ist kube-apiserver <!-- .element: class="fragment" data-fragment-index="3" -->
+- horizontale skalierbarkeit <!-- .element: class="fragment" data-fragment-index="4" -->
 
 <aside class="notes">
   immer wenn ihr im Cluster was arbeitet sprecht ihr mit dem API Server, egal ob mit kubectl, helm, k9s etc..
@@ -901,8 +901,8 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 #### scheduler
-- Verteilt workload
-- verantworlich für pods ohne node
+- Verteilt workload <!-- .element: class="fragment" data-fragment-index="1" -->
+- verantworlich für pods ohne node <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
   sobald ein neuer Pod am API Server erstellt wurde, von diesem in die etcd db geschrieben wurde
@@ -922,9 +922,9 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ### Kube-Controller-Manager
-- bringt cluster von "ist" -> "soll"
-- Managed Nodes
-- mitteilung an scheuduler wenn node down
+- bringt cluster von "ist" -> "soll" <!-- .element: class="fragment" data-fragment-index="1" -->
+- Managed Nodes <!-- .element: class="fragment" data-fragment-index="2" -->
+- mitteilung an scheuduler wenn node down <!-- .element: class="fragment" data-fragment-index="3" -->
 
 <aside class="notes">
   bekommt von scheduler meldung, wenn pod zu node kommen soll und übermittelt dies
@@ -945,9 +945,9 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ### Kubelet
-- verwaltet pods
-- auf jeden node installiert
-- verantwortlich für status
+- verwaltet pods <!-- .element: class="fragment" data-fragment-index="1" -->
+- auf jeden node installiert <!-- .element: class="fragment" data-fragment-index="2" -->
+- verantwortlich für status <!-- .element: class="fragment" data-fragment-index="3" -->
 
 <aside class="notes">
   kubelet bekommt info von controller und fürt auf node aus
@@ -961,9 +961,9 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ### Kube Proxy
-- verwaltet Netzwerkanfragen
-- routet traffic zu gewünschten pod
-- loadbalancer
+- verwaltet Netzwerkanfragen <!-- .element: class="fragment" data-fragment-index="1" -->
+- routet traffic zu gewünschten pod <!-- .element: class="fragment" data-fragment-index="2" -->
+- loadbalancer <!-- .element: class="fragment" data-fragment-index="3" -->
 
 <aside class="notes">
   der kube-proxy wird angefragt sobald eine Netzwerkanfrage zum node kommt und leitet diese weiter zum gewünschten container
@@ -975,8 +975,8 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
 <!-- .slide: style="text-align: left;"> -->
 ## Weitere Komponenten
-- CNI
-- Container-Runtime
+- CNI <!-- .element: class="fragment" data-fragment-index="1" -->
+- Container-Runtime <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
   es gibt noch weiter komponente
@@ -985,12 +985,41 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 
   Container Runtime
 
-  dies ist z.B. containerd, cri-o oder die docker engine
+  dies ist z.B. containerd, cri-o oder die deprecated docker engine
 
   meistens containerd
 
   diese Software ist zuständig um die Container laufen zu lassen
 </aside> 
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### DNS
+- CoreDNS und KubeDNS <!-- .element: class="fragment" data-fragment-index="1" -->
+- FQDN in cluster <!-- .element: class="fragment" data-fragment-index="2" -->
+    - POD.NAMESPACE.pod.cluster.local <!-- .element: class="fragment" data-fragment-index="2" -->
+    - SERVICE.NAMESPACE.svc.cluster.local <!-- .element: class="fragment" data-fragment-index="3" -->
+
+<aside class="notes">
+  CoreDNS und KubeDNS sind die beiden größten DNS services in Kubernetes
+
+  CoreDNS neuer und mittlererweile standart seit kubernetes 1.12
+
+  KubeDNS ist mit interner Namensauflösung ca 10% schneller
+
+  CoreDNS mit externer Namensauflösung ca 3x besser
+
+  CoreDNS Ressourcen schonender
+
+  im cluster kann man auch eine FQDN auflösung machen
+
+  entweder zum pod mit dem podnamen.namespacenamen.pod.cluster.local
+
+  oder die bessere art, zum service mit servicename.namespace.svc.cluster.local
+
+  man kann wenn man im gleichen namespace ist alles nach servicename weg lassen
+</aside>
 
 +++
 
