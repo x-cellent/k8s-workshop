@@ -5,6 +5,8 @@ default: build
 build:
 	git pull >/dev/null 2>&1 || true
 	docker run --rm -v $(shell pwd):/src golang:1.17 sh -c 'cd /src && GO111MODULE=off go fmt ./... && go mod download && go mod tidy && go build -o bin/w6p'
+	mkdir -p $(HOME)/bin
+	cp bin/w6p $(HOME)/bin/
 
 .PHONY .SILENT: up
 up: down

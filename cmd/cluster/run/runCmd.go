@@ -52,7 +52,7 @@ func runCluster(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Println("Create Docker network named kind (10.10.10.0/24)")
+	fmt.Printf("Create Docker network named %s (10.10.10.0/24)", NetworkName)
 	_ = exec.Command(docker, "network", "create", NetworkName, "--subnet", "10.10.10.0/24").Run()
 
 	fmt.Printf("Write KinD config file %q\n", ClusterConfigFile)

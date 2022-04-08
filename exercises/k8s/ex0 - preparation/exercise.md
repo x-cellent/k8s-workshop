@@ -33,6 +33,14 @@ helm version --short >/dev/null 2>&1 && echo "helm works" || echo "helm does not
 
 
 ======================================================================================================
+Installiere die kubectl Plugins node-shell und df-pv:
+
+```sh
+kubectl krew install node-shell df-pv
+```
+
+
+======================================================================================================
 Erstelle sinnvolle Aliase:
 
 ```sh
@@ -49,7 +57,7 @@ Exportiere häufig verwendete env Variablen und installiere kubectl Bash-Complet
 
 ```sh
 cat <<EOF >> ~/.bashrc
-export dy='--dry-run=client -o yaml'
+export do='--dry-run=client -o yaml'
 export force='--grace-period=0 --force'
 source <(kubectl completion bash)
 complete -F __start_kubectl k

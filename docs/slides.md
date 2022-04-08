@@ -79,9 +79,9 @@ Flags:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Was ist w6p
+## Was ist w6p?
 
-CLI Tool nur für diesen Workshop entwickelt  <!-- .element: class="fragment" data-fragment-index="1" -->
+Go CLI executable ausschließlich für diesen Workshop  <!-- .element: class="fragment" data-fragment-index="1" -->
 - w6p install TOOL  <!-- .element: class="fragment" data-fragment-index="2" -->
     - lokale Installation von gebräuchlichen k8s Tools  <!-- .element: class="fragment" data-fragment-index="2" -->
 - w6p exercise CONTEXT -n NUMBER  <!-- .element: class="fragment" data-fragment-index="3" -->
@@ -666,9 +666,10 @@ Zeit: ca. 15 min
 <!-- .slide: style="text-align: left;"> -->
 ## Agenda
 1. Rewind
-1. Setup
 1. Architektur von Kubernetes
 1. Einrichtung euerer Umgebung
+1. kubectl
+1. k9s
 1. Basisobjekte Kubernetes mit Übungen
 
 ---
@@ -747,14 +748,27 @@ Zeit: ca. 15 min
     - Graphical UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
     - Nicht Teil des Workshops <!-- .element: class="fragment" data-fragment-index="1" -->
 
----
++++
 
 <!-- .slide: style="text-align: left;"> -->
-## Setup
+## kubectl Plugins
 
-```sh
-w6p exercise k8s
-```
+- [Liste](https://krew.sigs.k8s.io/plugins/) von verfügbaren Plugins
+- Installation
+    - kubectl krew install NAME [NAME...]
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Was ist w6p?
+
+Go CLI executable ausschließlich für diesen Workshop  <!-- .element: class="fragment" data-fragment-index="1" -->
+- w6p install TOOL  <!-- .element: class="fragment" data-fragment-index="2" -->
+    - lokale Installation von gebräuchlichen k8s Tools  <!-- .element: class="fragment" data-fragment-index="2" -->
+- w6p exercise CONTEXT -n NUMBER  <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Startet Aufgaben aus dem jeweiligen Kontext (docker oder k8s)  <!-- .element: class="fragment" data-fragment-index="3" -->
+- w6p cluster  <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Startet/stoppt Single-Node Kubernetes Cluster in Container  <!-- .element: class="fragment" data-fragment-index="4" -->
 
 ---
 
@@ -1033,12 +1047,21 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Manifeste
-- in yaml definiert
+### YAML
+- Alle k8s Objekte werden in [YAML](https://learn.getgrav.org/17/advanced/yaml) definiert
+    - Wird Manifest genannt
+    - Jedes Objekt hat eigene YAML Spec  <!-- .element: class="fragment" data-fragment-index="1" -->
+- API Server versteht diese Specs  <!-- .element: class="fragment" data-fragment-index="2" -->
+    - kubectl apply -f spec.yaml  <!-- .element: class="fragment" data-fragment-index="3" -->
+        - Schickt den Inhalt von spec.yaml an k8s API Server  <!-- .element: class="fragment" data-fragment-index="4" -->
+        - API Server prüft Inhalt und Berechtigungen (Admission Control)  <!-- .element: class="fragment" data-fragment-index="5" -->
+        - Wenn ok -> API Server sorgt für Anlage/Update des Objekts  <!-- .element: class="fragment" data-fragment-index="6" -->
+        - Wenn nicht ok -> Reject  <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
-### Beispiel
+<!-- .slide: style="text-align: left;"> -->
+### Manifest: Beispiele
 
 ```yaml
 apiVersion: apps/v1
@@ -1208,56 +1231,75 @@ spec:
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-## Install Tools
-Kubernetes Dokumentation:
-- kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
-- krew <!-- .element: class="fragment" data-fragment-index="2" -->
-- kind <!-- .element: class="fragment" data-fragment-index="3" -->
-- k9s <!-- .element: class="fragment" data-fragment-index="4" -->
-- helm <!-- .element: class="fragment" data-fragment-index="5" -->
+## Einrichtung eurer Umgebung
 
-<aside class="notes">
-  kurze hintergrundinfos über einzelne tools
-
-  kubectl: basis tool zum interagieren mit kubernetes cluster
-
-  krew: kubectl plugin manager
-
-  helm: package manager für kubernetes
-
-  kind: kubernetes in docker, um kleine test cluster aufzubauen und kleine manifeste in kubernetes zu deployen
-
-  k9s: beschreibung von Sandro gebraucht
-</aside>
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## kubectl plugins
-- [krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)
-- [Liste](https://krew.sigs.k8s.io/plugins/) von verfügbaren Plugins
-
-### Install <!-- .element: class="fragment" data-fragment-index="1" -->
-- node-shell <!-- .element: class="fragment" data-fragment-index="1" -->
-- df-pv <!-- .element: class="fragment" data-fragment-index="2" -->
+```sh
+w6p exercise k8s
+```
 
 ---
 
-# Objekttypen in K8s
+<!-- .slide: style="text-align: left;"> -->
+## kubectl
+CLI Tool für das Management von k8s Clustern
+
+Man kann kubectl über folgende Wege mitteilen, mit welchem Cluster es sich verbinden soll: <!-- .element: class="fragment" data-fragment-index="1" -->
+- via Command-Line Argument '--kubeconfig path/to/kubeconfig' <!-- .element: class="fragment" data-fragment-index="2" -->
+- via Umgebungsvariable KUBECONFIG <!-- .element: class="fragment" data-fragment-index="3" -->
+- via Default Kubeconfig-Datei ~/.kube/config <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Pod
-- Umfasst einen oder meherere Container
-- Kleinste verwaltbares Objekt
-- Jeder Pod bekommt eine IP Addresse (ClusterIP)
+## Weitere Parameter
+- Welcher Namespace?
+    - Alle: '--all-namespaces' oder '-A'
+    - X: '--namespace X' oder '-n X'
+- Was will ich tun? <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Ressource anschauen: 'get' <!-- .element: class="fragment" data-fragment-index="2" -->
+        - 'get pod', 'get deploy', 'get secret' <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Ressource erstellen: 'create' <!-- .element: class="fragment" data-fragment-index="3" -->
+        - 'run pod', 'create deploy', 'create cm' <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Ressource löschen: 'delete' <!-- .element: class="fragment" data-fragment-index="4" -->
+        - 'delete pod', 'delete ds', 'delete sts' <!-- .element: class="fragment" data-fragment-index="4" -->
 
-<aside class="notes">
-  Ein Pod beinhaltet 1 bis n Container
++++
 
-  Pods haben ip addressen, da die aber dynamisch sind haben sie bei Neustart eine neue IP
-</aside>
+<!-- .slide: style="text-align: left;"> -->
+## Konkrete Beispiele
+- Anlegen einer ConfigMap im NS 'webapp':
+
+```sh
+kubectl create -n webapp cm db-config \
+    --from-literal=db-user=dba \
+    --from-literal=db-password=OH-NO
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Erstelle Pod Manifest:
+
+```sh
+kubectl run pod --image=nginx $do > pod.yaml
+```
+
+Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Erstelle Deployment Manifest:
+
+```sh
+kubectl create deploy --image=nginx my-deploy $do > dp.yaml
+```
+
+- Umwandung in DaemonSet (Warum geht das?):
+
+```sh
+ sed 's/Deployment/DaemonSet/' dp.yaml > ds.yaml
+```
 
 +++
 
@@ -1267,7 +1309,112 @@ Kubernetes Dokumentation:
 ```sh
 w6p exercise k8s -n1
 ```
-Zeit: ca. 5m
+Zeit: ca. 15m
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+## k9s
+
+Terminal UI zum Management eines k8s Clusters
+- Start
+```sh
+k9s [--kubeconfig path/to/kubeconfig] [-n NAMESPACE]
+```
+- Stop: Ctrl^c <!-- .element: class="fragment" data-fragment-index="1" -->
+- Hilfe: '?' <!-- .element: class="fragment" data-fragment-index="2" -->
+- Navigation mit Pfeiltasten <!-- .element: class="fragment" data-fragment-index="3" -->
+- Tiefer reinspringen mit ENTER <!-- .element: class="fragment" data-fragment-index="4" -->
+    - z.B. von selektiertem Deployment zu allen darüber verwalteten Pods <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Zurück mit ESC <!-- .element: class="fragment" data-fragment-index="6" -->
+
++++
+
+- Ressourcen-Navigation
+    - ':'
+    - Gefolgt von der gewünschten Ressource
+        - Context: 'context' oder 'ctx' <!-- .element: class="fragment" data-fragment-index="1" -->
+        - Namespace: 'namespace' oder 'ns' <!-- .element: class="fragment" data-fragment-index="2" -->
+        - Pod: 'pod' oder 'po' <!-- .element: class="fragment" data-fragment-index="3" -->
+        - Deployment: 'deployment', 'deploy' oder 'dp' <!-- .element: class="fragment" data-fragment-index="4" -->
+        - PodSecurityPolicy: 'psp' <!-- .element: class="fragment" data-fragment-index="5" -->
+        - ... <!-- .element: class="fragment" data-fragment-index="5" -->
+    - TAB sensitiv bei Auto-Vorschlägen <!-- .element: class="fragment" data-fragment-index="6" -->
+    - Mit ENTER bestätigen <!-- .element: class="fragment" data-fragment-index="7" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Context-Switch
+    - ':ctx' ENTER Navigiere-zu-Context ENTER
+    - Verbindet sich mit dem ausgewählten Cluster <!-- .element: class="fragment" data-fragment-index="1" -->
+    - In der Folge werden nur noch Objekte dieses Clusters angezeigt <!-- .element: class="fragment" data-fragment-index="2" -->
+- Namespace-Switch <!-- .element: class="fragment" data-fragment-index="3" -->
+    - ':ns' ENTER Navigiere-zu-Namespace ENTER <!-- .element: class="fragment" data-fragment-index="3" -->
+    - In der Folge wird die Sichtbarkeit <!-- .element: class="fragment" data-fragment-index="4" -->
+        - erweitert auf alle Namespaces, wenn NS='all' <!-- .element: class="fragment" data-fragment-index="4" -->
+        - eingeschränkt auf gewählten Namespace, sonst <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Wenn eine Ressource X selektiert ist
+    - Describe: 'd' (k describe X) <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Zeige YAML: 'y' (k get X -o yaml) <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Delete: 'Ctrl^d' (k delete X) <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Edit: 'e' (k edit X) <!-- .element: class="fragment" data-fragment-index="4" -->
+        - vi oder vim <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Je nachdem welche Resource ausgewählt ist, weitere Optionen möglich
+    - Für Pods z.B: <!-- .element: class="fragment" data-fragment-index="1" -->
+         - Logs: 'l' (k logs X) <!-- .element: class="fragment" data-fragment-index="1" -->
+         - Shell: 's' (k exec -ti X sh) <!-- .element: class="fragment" data-fragment-index="1" -->
+         - Port Forward: 'Shift^f' (k port-forward X 80) <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Für Deployments z.B: <!-- .element: class="fragment" data-fragment-index="2" -->
+         - Logs: 'l' <!-- .element: class="fragment" data-fragment-index="2" -->
+         - Scale: 's'  <!-- .element: class="fragment" data-fragment-index="2" -->
+         - Restart: 'r'  <!-- .element: class="fragment" data-fragment-index="2" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufgabe 2
+
+```sh
+w6p exercise k8s -n2
+```
+Zeit: ca. 15m
+
+---
+
+# Objekttypen in K8s
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Pod
+- Gruppe von einem oder mehreren Containern
+- Kleinste deploybare Einheit in Kubernetes
+- Jeder Pod bekommt eine IP Addresse (ClusterIP)
+
+<aside class="notes">
+  Ein Pod beinhaltet 1 bis n Container
+
+  Pods haben ip addressen, die sich bei Neustart ändert (Rescheduling)
+</aside>
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufgabe 3
+
+```sh
+w6p exercise k8s -n3
+```
+Zeit: ca. 10m
 
 +++
 
@@ -1288,12 +1435,12 @@ Zeit: ca. 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 2
+## Aufgabe 4
 
 ```sh
-w6p exercise k8s -n2
+w6p exercise k8s -n4
 ```
-Zeit: ca. 5m
+Zeit: ca. 10m
 
 +++
 
@@ -1315,12 +1462,12 @@ Zeit: ca. 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 3
+## Aufgabe 5
 
 ```sh
-w6p exercise k8s -n3
+w6p exercise k8s -n5
 ```
-Zeit: ca. 5m
+Zeit: ca. 15m
 
 +++
 
@@ -1359,12 +1506,12 @@ Zeit: ca. 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 4
+## Aufgabe 6
 
 ```sh
-w6p exercise k8s -n4
+w6p exercise k8s -n6
 ```
-Zeit: ca. 5m
+Zeit: ca. 15m
 
 +++
 
@@ -1395,10 +1542,10 @@ Zeit: ca. 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 5
+## Aufgabe 7
 
 ```sh
-w6p exercise k8s -n5
+w6p exercise k8s -n7
 ```
 Zeit: ca. 5m
 
@@ -1421,12 +1568,12 @@ Zeit: ca. 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 6
+## Aufgabe 8
 
 ```sh
-w6p exercise k8s -n6
+w6p exercise k8s -n8
 ```
-Zeit: ca. 5m
+Zeit: ca. 15m
 
 <aside class="notes">
   kubectl create job nicht in cronjob k8s doku
@@ -1454,22 +1601,22 @@ Zeit: ca. 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 7
+## Aufgabe 9
 
 ```sh
-w6p exercise k8s -n7
+w6p exercise k8s -n9
 ```
-Zeit: ca. 5m
+Zeit: ca. 10m
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 8
+## Aufgabe 10
 
 ```sh
-w6p exercise k8s -n8
+w6p exercise k8s -n10
 ```
-Zeit: ca. 5m
+Zeit: ca. 15m
 
 <aside class="notes">
   Diesmal die Aufgabe vor dem API Objekt
@@ -1513,6 +1660,31 @@ Notes:
 containerd -  Linux-Daemon; Pulled Images aus Registry, verwaltet Speicher und Netzwerke, started/stoppt Containern via runc
 
 runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basierte Implementierung zum Starten und Stoppen von Containern
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+## RBAC
+
+Role Based Access Control
+- Authentifizierung (Wer bin ich?) <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Analogie Ausreise: Perso <!-- .element: class="fragment" data-fragment-index="1" -->
+- Autorisierung (Was darf ich?) <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Analogie Ausreise: Visa <!-- .element: class="fragment" data-fragment-index="2" -->
+- Admission Control <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Stellt Authentifizierung und Autorisierung sicher <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Analogie Ausreise: <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Prüft Perso und Visa <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Zoll: Darf ich mein Gepäck einführen? <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Admission Controller
+-
+Allow/Deny/Change APi-Requests
+- Basiert auf Regeln und Policies
+
 
 ---
 
