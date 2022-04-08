@@ -667,10 +667,10 @@ Lösung nach 15 min
 ## Agenda
 1. Rewind
 1. Architektur von Kubernetes
-1. Einrichtung euerer Umgebung
+1. Einrichtung eurer Umgebung
 1. kubectl
 1. k9s
-1. Basisobjekte Kubernetes mit Übungen
+1. Basisobjekte Kubernetes
 
 ---
 
