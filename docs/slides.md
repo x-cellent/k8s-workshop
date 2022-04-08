@@ -48,14 +48,17 @@ sudo usermod -aG docker ${USER}
 git clone https://github.com/x-cellent/k8s-workshop.git
 cd k8s-workshop
 make
+mkdir -p ~/bin
+mv bin/w6p ~/bin/
+echo "export PATH=$PATH:~/bin" >> ~/.bashrc
+source ~/.bashrc
+w6p
 ```
-
-=> bin/w6p <!-- .element: class="fragment" data-fragment-index="1" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Binary
+## Output
 
 ```sh
 Usage:
@@ -72,6 +75,26 @@ Available Commands:
 Flags:
   -h, --help   help for w6p
 ```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Was ist w6p
+
+CLI Tool nur für diesen Workshop entwickelt  <!-- .element: class="fragment" data-fragment-index="1" -->
+- w6p install TOOL  <!-- .element: class="fragment" data-fragment-index="2" -->
+    - lokale Installation von gebräuchlichen k8s Tools  <!-- .element: class="fragment" data-fragment-index="2" -->
+- w6p exercise CONTEXT -n NUMBER  <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Startet Aufgaben aus dem jeweiligen Kontext (docker oder k8s)  <!-- .element: class="fragment" data-fragment-index="3" -->
+- w6p cluster  <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Startet/stoppt Single-Node Kubernetes Cluster in Container  <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- w6p slides
+    - Startet Webserver Container, der die Workshop Slides hosted
+    - erreichbar unter localhost:8080
 
 ---
 
@@ -271,7 +294,7 @@ docker build -t [REPOSITORY_HOST/]IMAGENAME:IMAGETAG \
 ## Aufgabe 1
 
 ```sh
-bin/w6p exercise docker -n 1
+w6p exercise docker -n 1
 ```
 Zeit: ca. 5 min
 
@@ -339,7 +362,7 @@ docker cp my-server:/static/index.html ~/local-index.html
 ## Aufgabe 2
 
 ```sh
-bin/w6p exercise docker -n2
+w6p exercise docker -n2
 ```
 Zeit: ca. 20 min
 
@@ -376,7 +399,7 @@ docker inspect IMAGE|CONTAINER
 ## Aufgabe 3
 
 ```sh
-bin/w6p exercise docker -n3
+w6p exercise docker -n3
 ```
 Zeit: ca. 15 min
 
@@ -398,7 +421,7 @@ docker run ... hadolint/hadolint hadolint path/to/Dockerfile
 ## Aufgabe 4
 
 ```sh
-bin/w6p exercise docker -n4
+w6p exercise docker -n4
 ```
 Zeit: ca. 5 min
 
@@ -444,7 +467,7 @@ ENTRYPOINT ["/my-app"]
 ## Aufgabe 5
 
 ```sh
-bin/w6p exercise docker -n5
+w6p exercise docker -n5
 ```
 Zeit: ca. 15 min
 
@@ -465,7 +488,7 @@ Zeit: ca. 15 min
 ## Aufgabe 6
 
 ```sh
-bin/w6p exercise docker -n6
+w6p exercise docker -n6
 ```
 Zeit: ca. 15 min
 
@@ -501,6 +524,7 @@ Zeit: ca. 15 min
 
 +++
 
+<!-- .slide: style="text-align: left;" class="stretch"> -->
 ![image](https://i0.wp.com/mjaglan.github.io/images/docker-virtualbox/docker-vs-vm.png?w=840&ssl=1)
 
 <aside class="notes">
@@ -642,6 +666,7 @@ Zeit: ca. 15 min
 <!-- .slide: style="text-align: left;"> -->
 ## Agenda
 1. Rewind
+1. Setup
 1. Architektur von Kubernetes
 1. Einrichtung euerer Umgebung
 1. Basisobjekte Kubernetes mit Übungen
@@ -725,7 +750,16 @@ Zeit: ca. 15 min
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-### Kubernetes
+## Setup
+
+```sh
+w6p exercise k8s
+```
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+## Kubernetes
 
 - Ursprünglich 2014 entwickelt von Google
 - Abgegeben 2015 an die Cloud Native Compute Fondation (CNCF)
@@ -1231,7 +1265,7 @@ Kubernetes Dokumentation:
 ## Aufgabe 1
 
 ```sh
-bin/w6s exercise k8s -n1
+w6p exercise k8s -n1
 ```
 Zeit: ca. 5m
 
@@ -1257,7 +1291,7 @@ Zeit: ca. 5m
 ## Aufgabe 2
 
 ```sh
-bin/w6s exercise k8s -n2
+w6p exercise k8s -n2
 ```
 Zeit: ca. 5m
 
@@ -1284,7 +1318,7 @@ Zeit: ca. 5m
 ## Aufgabe 3
 
 ```sh
-bin/w6s exercise k8s -n3
+w6p exercise k8s -n3
 ```
 Zeit: ca. 5m
 
@@ -1328,7 +1362,7 @@ Zeit: ca. 5m
 ## Aufgabe 4
 
 ```sh
-bin/w6s exercise k8s -n4
+w6p exercise k8s -n4
 ```
 Zeit: ca. 5m
 
@@ -1364,7 +1398,7 @@ Zeit: ca. 5m
 ## Aufgabe 5
 
 ```sh
-bin/w6s exercise k8s -n5
+w6p exercise k8s -n5
 ```
 Zeit: ca. 5m
 
@@ -1390,7 +1424,7 @@ Zeit: ca. 5m
 ## Aufgabe 6
 
 ```sh
-bin/w6s exercise k8s -n6
+w6p exercise k8s -n6
 ```
 Zeit: ca. 5m
 
@@ -1423,7 +1457,7 @@ Zeit: ca. 5m
 ## Aufgabe 7
 
 ```sh
-bin/w6s exercise k8s -n7
+w6p exercise k8s -n7
 ```
 Zeit: ca. 5m
 
@@ -1433,7 +1467,7 @@ Zeit: ca. 5m
 ## Aufgabe 8
 
 ```sh
-bin/w6s exercise k8s -n8
+w6p exercise k8s -n8
 ```
 Zeit: ca. 5m
 
@@ -1461,9 +1495,32 @@ Zeit: ca. 5m
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-# Buchempfehlungen
+## Container Runtime Interface
+- API für Container Verwaltung (Starten/Stoppen)
+- Wird von Kubernetes unterstützt
+    - Konkrete Implemetierung damit austauschbar
+- [Container Runtimes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
+    - containerd
+    - CRI-O
+    - Docker Engine
+
++++
+
+<!-- .slide: style="text-align: left;" class="stretch"> -->
+![image](images/docker-CRI-O-containerd-runc.png)
+
+Notes:
+containerd -  Linux-Daemon; Pulled Images aus Registry, verwaltet Speicher und Netzwerke, started/stoppt Containern via runc
+
+runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basierte Implementierung zum Starten und Stoppen von Containern
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Literatur
 - [Kubernetes Up & Running](https://www.amazon.de/Kubernetes-Up-Running-Brendan-Burns/dp/1492046531)
 - [Kubernetes Best Practices](https://www.amazon.de/Kubernetes-Best-Practices-Blueprints-Applications/dp/1492056472)
+- [Online](https://kubernetes.io/docs)
 
 ---
 

@@ -1,4 +1,4 @@
-da configmaps nicht verschluesselt werden eignen diese sich nicht als storage fuer sensible daten wie passwoerter etc.
+da configmaps nicht verschlüsselt werden eignen diese sich nicht als storage für sensible daten wie passwoerter etc.
 
 Welches andere API Objekt gibt es, um sensible daten zu speichern?
 

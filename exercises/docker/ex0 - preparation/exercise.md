@@ -1,7 +1,15 @@
-Erweitere die Gruppe `docker` um den eigenen Benutzer:
+Falls noch nicht geschehen, erweitere die Gruppe `docker` um den eigenen Benutzer:
 
 ```sh
 sudo usermod -aG docker ${USER}
+```
+
+Beende anschließend deine aktuelle User-Session und melde
+dich erneut an.
+Folgender Befehl sollte jetzt keinen Fehler werfen:
+
+```sh
+docker images
 ```
 
 Dies erleichtert den Umgang mit der `docker` CLI, da auf ein
