@@ -1,2 +1,4 @@
-Im Cluster ex2 läuft der reparierte web Pod, dieser soll per Service erreichbar gemacht werden.
-Hinweis: Konsultiere die Kubernetes Docs bzgl. dem Service Objekt.
+Im Namespace `ex4` läuft der reparierte web Pod.
+
+Dieser soll nun per Service erreichbar gemacht werden.
+Hinweis: Konsultiere die Kubernetes Docs.

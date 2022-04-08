@@ -10,7 +10,7 @@ metadata:
   labels:
     app: frontend
   name: web
-  namespace: ex3
+  namespace: ex5
 spec:
   replicas: 3
   selector:
@@ -33,4 +33,8 @@ spec:
           limits:
             cpu: "1.0"
             memory: "1G"
+```
+
+```sh
+k apply -f deploy.yaml
 ```

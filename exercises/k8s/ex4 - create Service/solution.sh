@@ -1,5 +1,6 @@
-10m
-```yaml
+#!/usr/bin/env bash
+
+cat <<EOF > svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,8 +13,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-```
-
-```sh
-k apply -f svc.yaml
-```
+EOF

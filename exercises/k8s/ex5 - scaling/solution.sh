@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-cat <<EOF > deployment.yaml
+cat <<EOF > deploy.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: frontend
   name: web
-  namespace: ex3
+  namespace: ex5
 spec:
   replicas: 3
   selector:
