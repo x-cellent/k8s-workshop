@@ -296,7 +296,7 @@ docker build -t [REPOSITORY_HOST/]IMAGENAME:IMAGETAG \
 ```sh
 w6p exercise docker -n 1
 ```
-Zeit: ca. 5 min
+Lösung nach 5 min
 
 +++
 
@@ -364,7 +364,7 @@ docker cp my-server:/static/index.html ~/local-index.html
 ```sh
 w6p exercise docker -n2
 ```
-Zeit: ca. 20 min
+Lösung nach 20 min
 
 ---
 
@@ -401,7 +401,7 @@ docker inspect IMAGE|CONTAINER
 ```sh
 w6p exercise docker -n3
 ```
-Zeit: ca. 15 min
+Lösung nach 15 min
 
 ---
 
@@ -423,7 +423,7 @@ docker run ... hadolint/hadolint hadolint path/to/Dockerfile
 ```sh
 w6p exercise docker -n4
 ```
-Zeit: ca. 5 min
+Lösung nach 5 min
 
 ---
 
@@ -469,7 +469,7 @@ ENTRYPOINT ["/my-app"]
 ```sh
 w6p exercise docker -n5
 ```
-Zeit: ca. 15 min
+Lösung nach 15 min
 
 ---
 
@@ -490,7 +490,7 @@ Zeit: ca. 15 min
 ```sh
 w6p exercise docker -n6
 ```
-Zeit: ca. 15 min
+Lösung nach 15 min
 
 ---
 
@@ -725,6 +725,64 @@ Zeit: ca. 15 min
     - Self-Healing <!-- .element: class="fragment" data-fragment-index="8" -->
     - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="9" -->
     - ... <!-- .element: class="fragment" data-fragment-index="9" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Kubernetes Objekte
+- Pod
+    - kleinste deploybare Einheit
+    - beinhaltet 1 bis N Container
+    - eigener Netzbereich und IP
+- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Deployment
+    - Managed ein ReplicaSet
+    - Bietet Versionierung und zero downtime Rollouts
+- DeamonSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Spec wie Deployment nur ohne Replica Count <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Managed damit kein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stattdessen je ein Replica pro Node <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Service
+    - Loadbalancer für Pods
+    - Auch hier Matching via Labels
+    - Typen <!-- .element: class="fragment" data-fragment-index="1" -->
+        - None (headless) <!-- .element: class="fragment" data-fragment-index="1" -->
+        - ClusterIP (Default) <!-- .element: class="fragment" data-fragment-index="2" -->
+        - NodePort <!-- .element: class="fragment" data-fragment-index="3" -->
+        - Loadbalancer <!-- .element: class="fragment" data-fragment-index="4" -->
+
+Note:
+Service - headless (erstellt für jeden Pod einen DNS entry innerhalb des Clusters (coredns), kein externer Zugriff möglich)
+
+Service - ClusterIP (routet über die clusterinternen Pod IPs, kein externer Zugiff möglich)
+
+Service - NodePort (öffnet auf jedem Node denselben Port, über den von außen der Service erreicht werden kann)
+
+Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- StatefulSet
+    - Spec ähnlich zu Deployment
+    - Geordnetes Starten (einer nach dem anderen)
+    - Geordnetes Stoppen in umgekehrter Reihenfolge
+- ConfigMap <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Plain-Text Key-Value Store <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="2" -->
+- Secret <!-- .element: class="fragment" data-fragment-index="3" -->
+    - base64 encoded Data Store <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
@@ -1256,12 +1314,12 @@ Man kann kubectl über folgende Wege mitteilen, mit welchem Cluster es sich verb
     - Alle: '--all-namespaces' oder '-A'
     - X: '--namespace X' oder '-n X'
 - Was will ich tun? <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Ressource anschauen: 'get' <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Ressource anschauen <!-- .element: class="fragment" data-fragment-index="2" -->
         - 'get pod', 'get deploy', 'get secret' <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Ressource erstellen: 'create' <!-- .element: class="fragment" data-fragment-index="3" -->
-        - 'run pod', 'create deploy', 'create cm' <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Ressource löschen: 'delete' <!-- .element: class="fragment" data-fragment-index="4" -->
-        - 'delete pod', 'delete ds', 'delete sts' <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Ressource erstellen <!-- .element: class="fragment" data-fragment-index="3" -->
+        - 'run', 'create deploy', 'create ns' <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Ressource löschen <!-- .element: class="fragment" data-fragment-index="4" -->
+        - 'delete pod', 'delete deploy', 'delete sts' <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
@@ -1281,7 +1339,8 @@ kubectl create -n webapp cm db-config \
 - Erstelle Pod Manifest:
 
 ```sh
-kubectl run pod --image=nginx $do > pod.yaml
+export do='--dry-run=client -o yaml'
+kubectl run my-pod --image ubuntu:20.04 $do > pod.yaml
 ```
 
 Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .element: class="fragment" data-fragment-index="1" -->
@@ -1292,13 +1351,8 @@ Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .elemen
 - Erstelle Deployment Manifest:
 
 ```sh
-kubectl create deploy --image=nginx my-deploy $do > dp.yaml
-```
-
-- Umwandung in DaemonSet (Warum geht das?):
-
-```sh
- sed 's/Deployment/DaemonSet/' dp.yaml > ds.yaml
+export do='--dry-run=client -o yaml'
+kubectl create deploy --image alpine:3.15 my-deploy $do > dp.yaml
 ```
 
 +++
@@ -1309,7 +1363,7 @@ kubectl create deploy --image=nginx my-deploy $do > dp.yaml
 ```sh
 w6p exercise k8s -n1
 ```
-Zeit: ca. 15m
+Lösung nach 20m
 
 ---
 
@@ -1386,7 +1440,7 @@ k9s [--kubeconfig path/to/kubeconfig] [-n NAMESPACE]
 ```sh
 w6p exercise k8s -n2
 ```
-Zeit: ca. 15m
+Lösung nach 20m
 
 ---
 
@@ -1414,7 +1468,7 @@ Zeit: ca. 15m
 ```sh
 w6p exercise k8s -n3
 ```
-Zeit: ca. 10m
+Lösung nach 10m
 
 +++
 
@@ -1440,7 +1494,7 @@ Zeit: ca. 10m
 ```sh
 w6p exercise k8s -n4
 ```
-Zeit: ca. 10m
+Lösung nach 10m
 
 +++
 
@@ -1467,7 +1521,7 @@ Zeit: ca. 10m
 ```sh
 w6p exercise k8s -n5
 ```
-Zeit: ca. 15m
+Lösung nach 15m
 
 +++
 
@@ -1511,7 +1565,7 @@ Zeit: ca. 15m
 ```sh
 w6p exercise k8s -n6
 ```
-Zeit: ca. 15m
+Lösung nach 15m
 
 +++
 
@@ -1547,7 +1601,7 @@ Zeit: ca. 15m
 ```sh
 w6p exercise k8s -n7
 ```
-Zeit: ca. 5m
+Lösung nach 5m
 
 +++
 
@@ -1573,7 +1627,7 @@ Zeit: ca. 5m
 ```sh
 w6p exercise k8s -n8
 ```
-Zeit: ca. 15m
+Lösung nach 15m
 
 <aside class="notes">
   kubectl create job nicht in cronjob k8s doku
@@ -1606,7 +1660,7 @@ Zeit: ca. 15m
 ```sh
 w6p exercise k8s -n9
 ```
-Zeit: ca. 10m
+Lösung nach 10m
 
 +++
 
@@ -1616,7 +1670,7 @@ Zeit: ca. 10m
 ```sh
 w6p exercise k8s -n10
 ```
-Zeit: ca. 15m
+Lösung nach 15m
 
 <aside class="notes">
   Diesmal die Aufgabe vor dem API Objekt
