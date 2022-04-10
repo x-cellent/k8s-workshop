@@ -155,16 +155,19 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		}
 
 		manifestFile := "manifest.yaml"
-		defer os.Remove(manifestFile)
 
-		err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0644)
-		if err != nil {
-			return err
-		}
-		_ = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
-		err = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile).Run()
-		if err != nil {
-			return err
+		if n > 0 {
+			err = os.WriteFile(manifestFile, []byte(fmt.Sprintf(nsPattern, n)), 0644)
+			if err != nil {
+				return err
+			}
+			defer os.Remove(manifestFile)
+
+			_ = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
+			err = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile).Run()
+			if err != nil {
+				return err
+			}
 		}
 
 		mm, err := getManifests(exercises, exDir)
@@ -180,6 +183,7 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 				if err != nil {
 					return err
 				}
+				defer os.Remove(manifestFile)
 
 				args := []string{"--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile}
 				if m.fragment.Kind != "Namespace" {

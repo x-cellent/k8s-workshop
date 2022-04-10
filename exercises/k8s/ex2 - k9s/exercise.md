@@ -4,7 +4,7 @@
 2. Skaliere das Deployment `werbserver` aus Aufgabe 1 hoch auf 2 Replicas.
 
 3. Lasse dir alle ReplicaSets im Namespace `my-web` anzeigen.
-   Es gibt nur eins. Skaliere dieses runter auf 1.
+   Skaliere dieses runter auf 1.
    Warum hat das keinen Effekt?
 
 4. Wechlse zur Podansicht. Lösche einen der beiden webserver Pods.
