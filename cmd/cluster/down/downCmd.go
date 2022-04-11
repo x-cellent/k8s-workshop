@@ -3,7 +3,7 @@ package down
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/x-cellent/k8s-workshop/cmd/cluster/run"
+	"github.com/x-cellent/k8s-workshop/cmd/cluster/cluster"
 	"os/exec"
 )
 
@@ -15,12 +15,23 @@ var Cmd = &cobra.Command{
 }
 
 func shutdown(cmd *cobra.Command, args []string) error {
+	err := Shutdown()
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Workshop cluster deleted")
+
+	return nil
+}
+
+func Shutdown() error {
 	kind, err := exec.LookPath("kind")
 	if err != nil {
 		return err
 	}
 
-	err = exec.Command(kind, "delete", "cluster", "--name", run.ClusterName).Run()
+	err = exec.Command(kind, "delete", "cluster", "--name", cluster.ClusterName).Run()
 	if err != nil {
 		return err
 	}
@@ -30,9 +41,7 @@ func shutdown(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	_ = exec.Command(docker, "network", "rm", run.NetworkName)
-
-	fmt.Println("Workshop cluster deleted")
+	_ = exec.Command(docker, "network", "rm", cluster.NetworkName)
 
 	return nil
 }

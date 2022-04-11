@@ -1491,8 +1491,12 @@ w6p exercise k8s -n2
 ```
 Lösung nach 20m
 
+Note:
+Ende Tag 2
+
 ---
 
+<!-- .slide: style="text-align: left;"> -->
 # Objekttypen in K8s
 
 +++

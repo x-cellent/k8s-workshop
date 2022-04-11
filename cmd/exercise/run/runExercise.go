@@ -3,7 +3,7 @@ package run
 import (
 	"embed"
 	"fmt"
-	"github.com/x-cellent/k8s-workshop/cmd/cluster/run"
+	"github.com/x-cellent/k8s-workshop/cmd/cluster/cluster"
 	"gopkg.in/yaml.v2"
 	"os"
 	"os/exec"
@@ -145,11 +145,11 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 			return err
 		}
 
-		out, err := exec.Command(kindBin, "get", "kubeconfig", "--name", run.ClusterName).CombinedOutput()
+		out, err := exec.Command(kindBin, "get", "kubeconfig", "--name", cluster.ClusterName).CombinedOutput()
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile(run.KubeconfigFile, out, 0600)
+		err = os.WriteFile(cluster.KubeconfigFile, out, 0600)
 		if err != nil {
 			return err
 		}
@@ -163,8 +163,8 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 			}
 			defer os.Remove(manifestFile)
 
-			_ = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
-			err = exec.Command(kubectl, "--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile).Run()
+			_ = exec.Command(kubectl, "--kubeconfig", cluster.KubeconfigFile, "delete", "-f", manifestFile, "--force", "--grace-period", "0").Run()
+			err = exec.Command(kubectl, "--kubeconfig", cluster.KubeconfigFile, "apply", "-f", manifestFile).Run()
 			if err != nil {
 				return err
 			}
@@ -185,7 +185,7 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 				}
 				defer os.Remove(manifestFile)
 
-				args := []string{"--kubeconfig", run.KubeconfigFile, "apply", "-f", manifestFile}
+				args := []string{"--kubeconfig", cluster.KubeconfigFile, "apply", "-f", manifestFile}
 				if m.fragment.Kind != "Namespace" {
 					args = append([]string{"-n", ns}, args...)
 				}
