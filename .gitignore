@@ -16,8 +16,8 @@ script.sh
 manifest.yaml
 docker-ex*
 docker-sol*
-k8s-ex*
-k8s-sol*
+ex*
+sol*
 helm
 k9s
 kind

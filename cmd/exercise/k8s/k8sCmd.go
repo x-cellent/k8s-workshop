@@ -8,9 +8,10 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "k8s",
-	Short: "Runs the given Kubernetes exercise",
-	RunE:  runExercise,
+	Use:     "k8s",
+	Aliases: []string{"k"},
+	Short:   "Runs the given Kubernetes exercise",
+	RunE:    runExercise,
 }
 
 func runExercise(cmd *cobra.Command, args []string) error {
@@ -18,6 +19,10 @@ func runExercise(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	showSolution, err := cmd.Flags().GetBool(flag.ShowSolution)
+	if err != nil {
+		showSolution = false
+	}
 	fs := cmd.Context().Value("exercises").(embed.FS)
-	return run.Exercise(fs, n, run.K8s)
+	return run.Exercise(fs, n, run.K8s, showSolution)
 }

@@ -21,6 +21,9 @@ func init() {
 	}
 
 	Cmd.PersistentFlags().IntP(flag.Number, flag.NumberShort, 0, "exercise number")
+	Cmd.PersistentFlags().Bool(flag.ShowSolution, false, "show solution immediately")
+
+	_ = Cmd.PersistentFlags().MarkHidden(flag.ShowSolution)
 
 	Cmd.AddCommand(docker.Cmd)
 	Cmd.AddCommand(k8s.Cmd)

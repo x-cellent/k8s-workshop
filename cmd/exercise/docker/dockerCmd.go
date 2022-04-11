@@ -8,9 +8,10 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "docker",
-	Short: "Runs the given Docker exercise",
-	RunE:  runExercise,
+	Use:     "docker",
+	Aliases: []string{"d"},
+	Short:   "Runs the given Docker exercise",
+	RunE:    runExercise,
 }
 
 func runExercise(cmd *cobra.Command, args []string) error {
@@ -18,6 +19,10 @@ func runExercise(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	showSolution, err := cmd.Flags().GetBool(flag.ShowSolution)
+	if err != nil {
+		showSolution = false
+	}
 	fs := cmd.Context().Value("exercises").(embed.FS)
-	return run.Exercise(fs, n, run.Docker)
+	return run.Exercise(fs, n, run.Docker, showSolution)
 }

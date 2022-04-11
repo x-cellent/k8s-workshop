@@ -40,7 +40,7 @@ metadata:
 `
 )
 
-func Exercise(exercises embed.FS, n int, kind Kind) error {
+func Exercise(exercises embed.FS, n int, kind Kind, showSolutionImmediately bool) error {
 	ns := fmt.Sprintf("ex%d", n)
 
 	exercisesDir := filepath.Join("exercises", kind)
@@ -197,7 +197,7 @@ func Exercise(exercises embed.FS, n int, kind Kind) error {
 		}
 	}
 
-	return runSolutionTimer(exercises, exDir, kind, n)
+	return showSolution(exercises, exDir, kind, n, showSolutionImmediately)
 }
 
 func printExercise(fs embed.FS, exampleDir string, n int) error {
@@ -219,7 +219,7 @@ func printExercise(fs embed.FS, exampleDir string, n int) error {
 	return nil
 }
 
-func runSolutionTimer(fs embed.FS, exampleDir string, kind Kind, n int) error {
+func showSolution(fs embed.FS, exampleDir string, kind Kind, n int, immediately bool) error {
 	bb, err := fs.ReadFile(filepath.Join(exampleDir, "solution.md"))
 	if err != nil {
 		return nil
@@ -293,8 +293,10 @@ func runSolutionTimer(fs embed.FS, exampleDir string, kind Kind, n int) error {
 
 	d, err := time.ParseDuration(strings.TrimSpace(lines[0]))
 	if err == nil {
-		fmt.Printf("\nDie Lösung wird in %s angezeigt\n", d)
-		time.Sleep(d)
+		if !immediately {
+			fmt.Printf("\nDie Lösung wird in %s angezeigt\n", d)
+			time.Sleep(d)
+		}
 		lines[0] = fmt.Sprintf("%s\nLösung:%s\n", delim, delim)
 	} else {
 		fmt.Println(err.Error())
