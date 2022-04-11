@@ -145,7 +145,7 @@ func Exercise(exercises embed.FS, n int, kind Kind, showSolutionImmediately bool
 			return err
 		}
 
-		out, err := exec.Command(kindBin, "get", "kubeconfig", "--name", cluster.ClusterName).CombinedOutput()
+		out, err := exec.Command(kindBin, "get", "kubeconfig", "--name", cluster.Name).CombinedOutput()
 		if err != nil {
 			return err
 		}

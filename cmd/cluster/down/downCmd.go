@@ -31,7 +31,7 @@ func Shutdown() error {
 		return err
 	}
 
-	err = exec.Command(kind, "delete", "cluster", "--name", cluster.ClusterName).Run()
+	err = exec.Command(kind, "delete", "cluster", "--name", cluster.Name).Run()
 	if err != nil {
 		return err
 	}

@@ -56,20 +56,20 @@ func runCluster(cmd *cobra.Command, args []string) error {
 	fmt.Printf("Create Docker network named %s (10.10.10.0/24)", cluster.NetworkName)
 	_ = exec.Command(docker, "network", "create", cluster.NetworkName, "--subnet", "10.10.10.0/24").Run()
 
-	fmt.Printf("Write KinD config file %q\n", cluster.ClusterConfigFile)
-	err = os.WriteFile(cluster.ClusterConfigFile, []byte(kindConfig), 0600)
+	fmt.Printf("Write KinD config file %q\n", cluster.ConfigFile)
+	err = os.WriteFile(cluster.ConfigFile, []byte(kindConfig), 0600)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println("Starting cluster (this may take some time)...")
-	err = exec.Command(kind, "create", "cluster", "--name", cluster.ClusterName, "--config", cluster.ClusterConfigFile).Run()
+	err = exec.Command(kind, "create", "cluster", "--name", cluster.Name, "--config", cluster.ConfigFile).Run()
 	if err != nil {
 		return err
 	}
 
 	fmt.Printf("Write workshop cluster kubeconfig to %q\n", cluster.KubeconfigFile)
-	bb, err := exec.Command(kind, "get", "kubeconfig", "--name", cluster.ClusterName).CombinedOutput()
+	bb, err := exec.Command(kind, "get", "kubeconfig", "--name", cluster.Name).CombinedOutput()
 	if err != nil {
 		return err
 	}
