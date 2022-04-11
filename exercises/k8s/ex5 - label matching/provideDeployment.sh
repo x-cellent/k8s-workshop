@@ -1,9 +1,6 @@
-15m
-Pods werden von ReplicaSets gescaled.
-ReplicaSets wiederum werden üblicherweise von Deployments gemanaged,
-die außerdem noch Versionierung und zero-downtime Rollouts bieten:
+#!/usr/bin/env bash
 
-```yaml
+cat <<EOF > deploy.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,7 +9,7 @@ metadata:
   name: web
   namespace: ex5
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -33,8 +30,4 @@ spec:
           limits:
             cpu: "1.0"
             memory: "1G"
-```
-
-```sh
-k apply -f deploy.yaml
-```
+EOF
