@@ -8,6 +8,10 @@ build:
 	mkdir -p $(HOME)/bin
 	cp bin/w6p $(HOME)/bin/
 
+.PHONY .SILENT: setup
+setup:
+	./setup.sh
+
 .PHONY .SILENT: up
 up: down
 	docker run -d --name k8s-workshop-slides --net host -v $(shell pwd):/k8s-workshop golang:1.17 sh -c 'cd /k8s-workshop && go run static.go' >/dev/null
