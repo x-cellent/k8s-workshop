@@ -21,7 +21,6 @@ const kindConfig = `---
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
-  disableDefaultCNI: true
   podSubnet: "10.10.10.0/24"
   serviceSubnet: "10.10.11.0/24"
 nodes:
@@ -34,10 +33,10 @@ nodes:
         node-labels: ingress-ready=true
   extraPortMappings:
   - containerPort: 30000
-    hostPort: 30000
+    hostPort: 30002
     protocol: TCP
   - containerPort: 30001
-    hostPort: 30001
+    hostPort: 30003
     protocol: TCP
 `
 
