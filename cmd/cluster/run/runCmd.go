@@ -20,6 +20,10 @@ var Cmd = &cobra.Command{
 const kindConfig = `---
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  disableDefaultCNI: true
+  podSubnet: "10.10.10.0/24"
+  serviceSubnet: "10.10.11.0/24"
 nodes:
 - role: control-plane
   kubeadmConfigPatches:
@@ -47,14 +51,6 @@ func runCluster(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-
-	docker, err := exec.LookPath("docker")
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf("Create Docker network named %s (10.10.10.0/24)", cluster.NetworkName)
-	_ = exec.Command(docker, "network", "create", cluster.NetworkName, "--subnet", "10.10.10.0/24").Run()
 
 	fmt.Printf("Write KinD config file %q\n", cluster.ConfigFile)
 	err = os.WriteFile(cluster.ConfigFile, []byte(kindConfig), 0600)

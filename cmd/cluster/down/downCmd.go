@@ -36,12 +36,5 @@ func Shutdown() error {
 		return err
 	}
 
-	docker, err := exec.LookPath("docker")
-	if err != nil {
-		return err
-	}
-
-	_ = exec.Command(docker, "network", "rm", cluster.NetworkName)
-
 	return nil
 }
