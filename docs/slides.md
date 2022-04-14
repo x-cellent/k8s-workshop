@@ -1496,101 +1496,223 @@ Ende Tag 2
 
 ---
 
+# TAG 3
+
++++
+
+# Agenda
+- Recap
+- Weitere Kubernetes Objekte
+
+---
+
 <!-- .slide: style="text-align: left;"> -->
-# Objekttypen in K8s
+# Recap
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Pod
-- Gruppe von einem oder mehreren Containern
-- Kleinste deploybare Einheit in Kubernetes
-- Jeder Pod bekommt eine IP Addresse (ClusterIP)
-
-<aside class="notes">
-  Ein Pod beinhaltet 1 bis n Container
-
-  Pods haben ip addressen, die sich bei Neustart ändert (Rescheduling)
-</aside>
+## Docker
+- Container Runtime Engine
+- Bau von Images
+- Starten von Images
+- Verwalten von Images
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 3
+## Kubernetes
+- Container Orchestrierungstool
+    - Verwalten von Pods
+    - Starten stoppen und Überwachen
+    - Self-Healing 
+    - Dynamische Skalierung
 
-```sh
-w6p exercise k8s -n3
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Objekte
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Pod
+    - kleinste deploybare Einheit
+    - beinhaltet 1 bis N Container
+    - eigener Netzbereich und IP
+- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Deployment
+    - Managed ein ReplicaSet
+    - Bietet Versionierung und zero downtime Rollouts
+- DeamonSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Spec wie Deployment nur ohne Replica Count <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Managed damit kein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stattdessen je ein Replica pro Node <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Service
+    - Loadbalancer für Pods
+    - Auch hier Matching via Labels
+    - Typen <!-- .element: class="fragment" data-fragment-index="1" -->
+        - None (headless) <!-- .element: class="fragment" data-fragment-index="1" -->
+        - ClusterIP (Default) <!-- .element: class="fragment" data-fragment-index="2" -->
+        - NodePort <!-- .element: class="fragment" data-fragment-index="3" -->
+        - Loadbalancer <!-- .element: class="fragment" data-fragment-index="4" -->
+
+Note:
+Service - headless (erstellt für jeden Pod einen DNS entry innerhalb des Clusters (coredns), kein externer Zugriff möglich)
+
+Service - ClusterIP (routet über die clusterinternen Pod IPs, kein externer Zugiff möglich)
+
+Service - NodePort (öffnet auf jedem Node denselben Port, über den von außen der Service erreicht werden kann)
+
+Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- StatefulSet
+    - Spec ähnlich zu Deployment
+    - Geordnetes Starten (einer nach dem anderen)
+    - Geordnetes Stoppen in umgekehrter Reihenfolge
+- ConfigMap <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Plain-Text Key-Value Store <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="2" -->
+- Secret <!-- .element: class="fragment" data-fragment-index="3" -->
+    - base64 encoded Data Store <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Kubernetes Tools
+- kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
+    - CLI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
+- krew <!-- .element: class="fragment" data-fragment-index="2" -->
+    - kubectl Plugin Manager <!-- .element: class="fragment" data-fragment-index="2" -->
+- k9s <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Terminal UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="3" -->
+- kind (Kubernetes in Docker) <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Single-Node k8s Cluster in Docker Container <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- helm
+    - Paket-Manager für Kubernetes
+    - vgl. mit apt für Ubuntu oder apk für Alpine
+- Lens <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Graphical UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Nicht Teil des Workshops <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Weitere Objekttypen in K8s
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Errinnerung Pod
+- Kleinste Deploybare einheit
+- Kann per yaml datei erstellt/modifiziert werden
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Aufgabe:
+- Kaputte pod yaml https://github.com/x-cellent/k8s-workshop/blob/4d12a2b505babef8f0d06875f397aaf9d0147973/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md
+- Reparieren und in Namespace der Wahl deployen
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Lösung
+```yaml
+apiVersion: v1 #Typo in apiVersion, V von Version muss groß sein
+kind: Pod #Typo, kind muss klein sein
+metadata:
+  labels:
+    app: frontend
+  name: web
+  namespace: ex1 # Optional, kann auch kubectl auch via "-n ex1" mitgegeben werden
+spec:
+  containers: #ab hier muss alles eingeruckt sein
+  - name: web #listen in yaml werden beim ersten punkt mit `-`angegeben
+    image: nginx:latest #Image und Tag definiert man in einer zeile mit `:` dazwischen
+    ports:
+    - containerPort: 80 #hier auch falsch eingerückt
+    resources:
+      requests:
+        cpu: "1.0"
+        memory: "1G" # zwischen memory und den 1G muss ein Leerzeichen sein
+      limits:
+        cpu: "1.0"
+        memory: "1G" #1G muss in anführungszeichen sein
 ```
-Lösung nach 10m
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Service
-- Objekt um Pod im Netzwerk erreichbar zu machen
-- Loadbalancing
-- Dynamische IP's von Pods
+## Service
+- Loadbalancer für Pods
+- Matching via Labels
+
++++
+
+![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
 
 <aside class="notes">
-  Services werden genutzt um pods im Netzwerk erreichbar zu machen
-
-  hat eine loadbalancing funktion, wenn mehere pods mit gleichem Label im Namespace sind wird die last aufgeteilt
-
-  geht an die pods mit einem Label, daher sind dynamische IPs bei Pods keine Probleme
+Der Service leitet anfragen welche in die Nodes kommt an die Pods weiter
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 4
+#### Aufgabe
+- erstelle ein Deployment (Objekt) des Pods aus vergangener aufgabe
+    - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
+- erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
+    - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
 
-```sh
-w6p exercise k8s -n4
++++
+
+#### Lösung
+- erst deployment.yaml erstellen und in gewünschten Namespace deployen
+    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
+    - kubectl apply -d deployment.yaml -n web
+- anschließend eine service.yaml erstellen 
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: frontend # selector hier muss dem label des deployments ensprechen
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8081
 ```
-Lösung nach 10m
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### ReplicaSets
-- Pods Replizieren
-- Nachträglich nicht änderbar
-
-<aside class="notes">
-  ein replicaset wird genutzt um mehere identische Pods zu deployen
-
-  problem bei replicaset ist, dass es nachträglich nicht änderbar ist
-
-  um neue version von pod zu deployen muss erst das alte replicaset gelöscht und das neue deployt werden
-
-  frage an teilnehmer: zu was führt das? > Downtime
-</aside>
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Aufgabe 5
-
-```sh
-w6p exercise k8s -n5
-```
-Lösung nach 15m
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-### Deployment
-- Art ReplicaSets zu verwalten
-- Updates
-- am weitesten verbreitete art
-
-<aside class="notes">
-  wie ihr herausgefunden habt, ist ein Deployment die bessere art ReplicaSets zu verwalten
-
-  ein Deployment kann man Unterbrechungsfrei Updaten (wenn zumindestes 2 Replicas verfügbar)
-
-  deployments werden am häufigsten genutzt um pods zu deployen
-</aside>
+- Diese yaml in den gewünsten Namespace deployen
+    - k apply -f service.yaml -n web
 
 +++
 
