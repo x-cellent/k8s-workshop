@@ -1717,6 +1717,38 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+## Port-Forwarding
+- Zugriff in Container erlangen
+- für debugging
+- k9s kann diese Verwalten
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Aufgabe
+- Deployment und service aus letzter Aufgabe muss im selben Namespace deployt sein
+    - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
+    - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml -n web
+- Anschließend bitte ein Port-Forwarding in einen Pod machen
+    - Welche Wege gibt es?
+
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Lösung
+- es gibt den weg mit kubectl
+    - kubectl port-forward -n web service/web 8081:8081
+    - kubectl port-forward -n web deployment/web 8081:80
+    - kubectl port-forward -n web pod/web-6779b45f74-bvc7p 8081:80
+    - kubectl port-forward -n web pod/web-6779b45f74-bvc7p :80 
+        - hier bestimmt kubectl selber den local port
+- mit k9s ist es auch möglich
+
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 ### DaemonSet
 - Jeder Node bekommt ein Replica
     - Log-Shipper
