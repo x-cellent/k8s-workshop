@@ -2042,10 +2042,333 @@ kubectl apply -f deployment.yaml -n ex9
 - gegliedert in sogenannten Charts
 - Große Softwarehersteller schreiben eigene Helm Charts
     - z.B. Gitlab
+- praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen
+    - test/staging/production
+- helm charts sind in sogenannten Repos gespeichert
+    - chart ersteller meistens eigene Repo
+    - nutzung ähnlich wie bei apt in ubuntu
+        - adden, updaten installieren
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ![image](https://developer.ibm.com/developer/default/blogs/kubernetes-helm-3/images/helm3-arch.png)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+```sh
+schulung
+├── charts
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   ├── _helpers.tpl
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── NOTES.txt
+│   ├── serviceaccount.yaml
+│   ├── service.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+- das meiste spielt sich im templates ordner ab
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "schulung.fullname" . }}
+  labels:
+    {{- include "schulung.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "schulung.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "schulung.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "schulung.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+- wie so oft im yaml format
+- das meiste bis alles templates
+- anpassungen in der values.yaml
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+# Default values for schulung.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Beispiel an Container part des Deployment template
+
++++
+
+```yaml
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+```
+
++++
+
+```yaml
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+```
+
++++
+
+## Helm Commands
+- helm install
+    - installiert ein helm chart
+    - mit -n namespace angebbar
+    - mit --dry-run --debug kann man überprüfen ob das deployment klappen sollte
+    - mit --version versionspinning
+    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+
++++
+
+- helm upgrade
+    - upgraden eines helm charts auf neue revision
+    - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist
+    - mit --version versionspinning
+- helm create
+    - erstellen eines helm charts
+    - erstellt die grundlegende ordner struktur
+
++++
+
+- helm uninstall
+    - deinstalliert ein chart, löscht alle ressourcen
+- helm rollback
+    - zurückspielen auf alte version des helm charts
+- helm list
+    - zeigt installierte helm charts
+    - entweder mit -A für alle Namespaces oder -n mit Namespace angabe
+- helm lint
+    - überprüfung ob helm chart template keine fehler hat
+
++++
+
+- helm repo
+    - add 
+        - hinzufügen eines repos
+        - z.B. helm repo add bitnami
+    - update
+        - herunterladen welche charts in repos sind
+        - z.B. in bitnami gibt es ein postgresql chart
+
++++
+
+## Aufgabe:
+1. erstelle ein Helm Chart für ein nginx deployment mit service
+1. deploye dies in ein Namespace deiner wahl
+1. passe die replicas mit helm an
+1. Verifiziere, dass mehr pods laufen
+1. mache ein Rollback auf eine alte Helm version
+
++++
+
+### Lösung
+1. erst das chart erstellen
+```sh
+helm create NAME
+helm create nginx-deployment
+```
+1. dann installieren
+```sh
+helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+helm install -n helm-namespace nginx-deployment ./nginx-deployment
+```
+
++++
+
+1. dann die values yaml anpassen und upgrade
+```sh
+helm upgrade -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+helm upgrade -n helm-namespace nginx-deployment ./nginx-deployment
+```
+1. mit kubectl oder k9s anzeigen, dass die angegebenen Pods da sind
+```sh
+kubectl get pods -n NAMESPACE
+kubectl get pods -n helm-namespace
+```
+
++++
+
+1. mit helm rollback auf alte revision gehen
+```sh
+helm rollback -n NAMESPACE RELEASE_NAME REVISION
+helm rollback -n helm-namespace nginx-deployment 1
+```
+
++++
+
+### Übersicht Helm
+- Ist ein Packetmanager
+- arbeitet mit Templates
+- eine zentrale datei (values.yaml) um komplexe anwendungen zu deployen
+- wird in Repos verwaltet
 
 ---
 
