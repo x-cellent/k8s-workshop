@@ -1503,6 +1503,7 @@ Ende Tag 2
 # Agenda
 - Recap
 - Weitere Kubernetes Objekte
+- Helm
 
 ---
 
@@ -1634,6 +1635,31 @@ Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalanc
 
 +++
 
+```yaml
+apiversion: v1
+Kind: pod
+metadata:
+  labels:
+    app: frontend
+  name: web
+spec:
+containers:
+  name: web
+    image: nginx
+    tag: latest
+    ports:
+  - containerPort: 80
+    resources:
+      requests:
+        cpu: "1.0"
+        memory:"1G"
+      limits:
+       cpu: "1.0"
+        memory: 1G
+```
+
++++
+
 <!-- .slide: style="text-align: left;"> -->
 ### Lösung
 ```yaml
@@ -1727,6 +1753,7 @@ spec:
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe
 - Deployment und service aus letzter Aufgabe muss im selben Namespace deployt sein
+    - kubectl create ns web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml -n web
 - Anschließend bitte ein Port-Forwarding in einen Pod machen
@@ -1749,7 +1776,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### DaemonSet
+## DaemonSet
 - Jeder Node bekommt ein Replica
     - Log-Shipper
     - Monitoring Agent
@@ -1767,17 +1794,52 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 6
+### Aufgabe 
+- Deploye ein DaemonSet mit einem nginx Pod in ein Namespace deiner Wahl
+- Scale das DaemonSet auf 3 Pods
+    - ist dies Möglich?
+    - Warum? Warum nicht?
 
-```sh
-w6p exercise k8s -n6
++++
+
++++
+
+### Lösung
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: web-ds
+  labels:
+    app: web-ds
+spec:
+  selector:
+    matchLabels:
+      name: web-ds
+  template:
+    metadata:
+      labels:
+        name: web-ds
+    spec:
+      containers:
+      - name: web-ds
+        image: nginx:latest
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
 ```
-Lösung nach 15m
+
++++
+
+- scaling ist nicht möglich, da daemonSets mit den Nodes scalen
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### StatefulSet
+## StatefulSet
 - Persistente Pods
 - Geordnetes Update/Shutdown
 
@@ -1790,7 +1852,7 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Job
+## Job
 - Einmalige Ausführung eines Commands in einem Pod
     - Datenbank Backup
 
@@ -1803,17 +1865,47 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 7
-
-```sh
-w6p exercise k8s -n7
-```
-Lösung nach 5m
+### Aufgabe 
+- Erstelle ein Job welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
+- gebe Pi aus
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### CronJobs
+#### Lösung
+- von kubernetes doku das Manifest übernehmen und anpassen
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  template:
+    metadata:
+      labels:
+        job: pi
+    spec:
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(5000)"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- kubectl get logs -n ex7 pi-
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## CronJobs
 - Mischung aus klassischen CronJobs und Jobs
 - Regelmäßige Ausführung eines Jobs
     - Datenbank Backups
@@ -1829,21 +1921,63 @@ Lösung nach 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 8
-
-```sh
-w6p exercise k8s -n8
-```
-Lösung nach 15m
-
-<aside class="notes">
-  kubectl create job nicht in cronjob k8s doku
-</aside>
+### Aufgabe 
+- erstelle einen Cronjob welcher minütlich das datum und deinen Namen ausgibt
+- dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene versuche behalten
+- teste diesen cronjob ohne eine minute zu warten
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### ConfigMaps
+#### Lösung
+- aus kubernetes Doku Manifest kopieren und anpassen
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 8
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            cronjob: hello
+        spec:
+          containers:
+          - name: hello
+            image: busybox:1.28
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - date; echo Pascal
+          restartPolicy: OnFailure
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- erstellen eines einmaligen runs
+```sh
+ kubectl create job -n ex8 --from=cronjob/hello hello-test
+```
+- Output wieder sichtbar mit 
+```sh
+kubectl logs -n ex8 hello-
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## ConfigMaps
 - Speicherung von nicht vertraulichen daten
 - Einbindung in Pods als
     - Umgebungsvariable
@@ -1862,28 +1996,26 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 9
-
-```sh
-w6p exercise k8s -n9
-```
-Lösung nach 10m
+### Aufgabe
+- dieses deployment möchte eine ConfigMap einbinden
+    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml
+- diese ConfigMap
+    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/configmap.yaml
+- ändere die WorkerConnection und deploye die beiden Ressourcen
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 10
-
+#### Lösung
+- WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen
 ```sh
-w6p exercise k8s -n10
+kubectl apply -f configmap.yaml -n ex9
 ```
-Lösung nach 15m
-
-<aside class="notes">
-  Diesmal die Aufgabe vor dem API Objekt
-
-  Teilnehmer sollen secrects finden 
-</aside>
+- anschließend das deployment deplyoen
+```sh
+kubectl apply -f deployment.yaml -n ex9
+```
+- Wichtig! Beides in den gleichen Namespace
 
 +++
 
@@ -1891,6 +2023,8 @@ Lösung nach 15m
 ### Secret
 - Speicherung vertraulicher Daten
 - Unverschlüsselt in etcd DB
+- Bessere Seperierung mittels Rollen
+   - User darf Configmaps sehen aber keine Secrets
 
 <aside class="notes">
   secrets gibt es um vertrauliche daten zu speichern
@@ -1899,6 +2033,19 @@ Lösung nach 15m
 
   einbindung ähnlich wie bei configmaps
 </aside>
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Helm
+- Package Manager für Kubernetes
+- gegliedert in sogenannten Charts
+- Große Softwarehersteller schreiben eigene Helm Charts
+    - z.B. Gitlab
+
++++
+
+![image](https://developer.ibm.com/developer/default/blogs/kubernetes-helm-3/images/helm3-arch.png)
 
 ---
 
