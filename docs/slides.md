@@ -2323,9 +2323,6 @@ resources: {}
 ## Aufgabe:
 1. erstelle ein Helm Chart für ein nginx deployment mit service
 1. deploye dies in ein Namespace deiner wahl
-1. passe die replicas mit helm an
-1. Verifiziere, dass mehr pods laufen
-1. mache ein Rollback auf eine alte Helm version
 
 +++
 
@@ -2343,6 +2340,14 @@ helm install -n helm-namespace nginx-deployment ./nginx-deployment
 
 +++
 
+## Aufgabe:
+1. passe die replicas mit helm an
+1. Verifiziere, dass mehr pods laufen
+
++++
+
+### Lösung
+
 1. dann die values yaml anpassen und upgrade
 ```sh
 helm upgrade -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
@@ -2356,6 +2361,12 @@ kubectl get pods -n helm-namespace
 
 +++
 
+## Aufgabe:
+1. mache ein Rollback auf eine alte Helm version
+
++++
+
+### Lösung
 1. mit helm rollback auf alte revision gehen
 ```sh
 helm rollback -n NAMESPACE RELEASE_NAME REVISION
