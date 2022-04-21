@@ -1802,7 +1802,6 @@ spec:
 
 +++
 
-+++
 
 ### Lösung
 ```yaml
@@ -1998,9 +1997,9 @@ kubectl logs -n ex8 hello-
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe
 - dieses deployment möchte eine ConfigMap einbinden
-    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml
+    - [Deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml)
 - diese ConfigMap
-    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/configmap.yaml
+    - [configmap.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/configmap.yaml)
 - ändere die WorkerConnection und deploye die beiden Ressourcen
 
 +++
@@ -2020,7 +2019,7 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Secret
+## Secret
 - Speicherung vertraulicher Daten
 - Unverschlüsselt in etcd DB
 - Bessere Seperierung mittels Rollen
@@ -2033,6 +2032,177 @@ kubectl apply -f deployment.yaml -n ex9
 
   einbindung ähnlich wie bei configmaps
 </aside>
+
++++
+
+## PersistantVolume (PV)
+- sehr viele Volume Typen
+    - Lightbits, local und s3 bei der FI-TS
+- Speichert Infos über Volumen und Storage
+- überverzeichnis muss bereits erstellt sein
+
+
++++
+
+- ReadWriteOnce oder ReadWriteMany
+    - Once, nur ein Node darf auf das Volume schreiben
+    - Many, mehrere dürfen
+- ReadOnlyMany
+    - mehere Nodes können das Volume ReadOnly Mounten
+
++++
+
+### Aufgabe
+- erstelle ein local PV mit 10 GB Capacity
+- erstelle das Verzeichnis auf der Node
+- dieser soll ReadWriteOnce sein
+- dieser muss einen eindeutigen Namen haben
+
++++
+
+#### Lösung
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-pv
+  labels:
+    storage: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /mnt/disks/ssd1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k8s-workshop-cluster-control-plane
+```
+
++++
+
+## PersistantVolumeClaim (PVC)
+- Reserviert Ressourcen eines PV`s
+- wird anschließend ins deployment eingebaut
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit namen
+    - bei local kein dynamisches (selector) mapping möglich
+- Verknüpfung ist eine 1 zu 1 Verknüpfung
+    - keine 2 PVC an einem PV
+
++++
+
+### Aufgabe
+- erstelle ein PVC
+- erstelle ein postgresql statefulset
+    - Tipp: Configmap und Secret müssen auch erstellt sein
+      um env Variablen in den Container zu übergeben
+- welches das PVC einbindet
+- lasse die daten welche in der DB sind anzeigen
+
++++
+
+#### Lösung
+- Der PV der letzten aufgabe muss erstellt sein
+```yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: standard
+  capacity:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: example-pv
+```
+
++++
+
+- Configmap
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configuration
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: topdb
+  POSTGRES_USER: user23
+```
+- Secret
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+data:
+  POSTGRES_PASSWORD: sicherespasswort
+```
+
++++
+
+- Statefulset
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-statefulset
+  labels:
+    app: postgres
+spec:
+  serviceName: "postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:12
+        envFrom:
+        - configMapRef:
+            name: postgres-configuration
+        - secretRef:
+            name: postgres-secret
+        ports:
+        - containerPort: 5432
+          name: postgresdb
+        volumeMounts:
+        - name: pv-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pv-data
+        persistentVolumeClaim:
+          claimName: postgres-pv-claim
+```
+
++++
+
+- Daten anzeigen lassen
+```sh
+kubectl exec -n postgresql -it postges-statefulset-0 -- /bin/bash
+psql -U user23 topdb
+```
 
 ---
 
