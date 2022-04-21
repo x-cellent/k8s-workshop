@@ -1514,20 +1514,31 @@ Ende Tag 2
 
 <!-- .slide: style="text-align: left;"> -->
 ## Docker
-- Container Runtime Engine
-- Bau von Images
-- Starten von Images
-- Verwalten von Images
+- Container Runtime Engine <!-- .element: class="fragment" data-fragment-index="1" -->
+- Bau von Images <!-- .element: class="fragment" data-fragment-index="2" -->
+- Starten von Images <!-- .element: class="fragment" data-fragment-index="3" -->
+- Verwalten von Images <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+![image](https://aracom.de/wp-content/uploads/2020/05/docker-layer-system.png)
+
++++
+
+![image](https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg)
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Kubernetes
 - Container Orchestrierungstool
-    - Verwalten von Pods
-    - Starten stoppen und Überwachen
-    - Self-Healing 
-    - Dynamische Skalierung
+    - Verwalten von Pods <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Starten stoppen und Überwachen <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Self-Healing <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="5" -->
+
++++
+
+![image](https://cdn.ttgtmedia.com/rms/German/Kubernetes-Cluster-deutsch.png)
 
 +++
 
@@ -1538,23 +1549,35 @@ Ende Tag 2
 
 <!-- .slide: style="text-align: left;"> -->
 - Pod
-    - kleinste deploybare Einheit
-    - beinhaltet 1 bis N Container
-    - eigener Netzbereich und IP
-- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
+    - kleinste deploybare Einheit <!-- .element: class="fragment" data-fragment-index="1" -->
+    - beinhaltet 1 bis N Container <!-- .element: class="fragment" data-fragment-index="2" -->
+    - eigener Netzbereich und IP <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- Deployment
-    - Managed ein ReplicaSet
-    - Bietet Versionierung und zero downtime Rollouts
+- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
+- Deployment <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Managed ein ReplicaSet <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Bietet Versionierung und zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="6" -->
+
++++
+
+![image](https://storage.googleapis.com/cdn.thenewstack.io/media/2017/11/07751442-deployment.png)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 - DeamonSet <!-- .element: class="fragment" data-fragment-index="1" -->
     - Spec wie Deployment nur ohne Replica Count <!-- .element: class="fragment" data-fragment-index="1" -->
     - Managed damit kein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
     - Stattdessen je ein Replica pro Node <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+![image](https://www.bluematador.com/hs-fs/hubfs/blog/new/An%20Introduction%20to%20Kubernetes%20DaemonSets/DaemonSets.png?width=770&name=DaemonSets.png)
 
 +++
 
@@ -1579,17 +1602,36 @@ Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalanc
 
 +++
 
+![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
+
++++
+
 <!-- .slide: style="text-align: left;"> -->
 - StatefulSet
     - Spec ähnlich zu Deployment
     - Geordnetes Starten (einer nach dem anderen)
     - Geordnetes Stoppen in umgekehrter Reihenfolge
+
++++
+
+<!-- .slide: class="stretch"> -->
+<img src="https://www.bluematador.com/hs-fs/hubfs/blog/new/An%20Introduction%20to%20Kubernetes%20StatefulSet/StatefulSets.png?width=770&name=StatefulSets.png" width="800" height="800">
+
+
+
++++
+
 - ConfigMap <!-- .element: class="fragment" data-fragment-index="1" -->
     - Plain-Text Key-Value Store <!-- .element: class="fragment" data-fragment-index="1" -->
     - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="2" -->
 - Secret <!-- .element: class="fragment" data-fragment-index="3" -->
     - base64 encoded Data Store <!-- .element: class="fragment" data-fragment-index="3" -->
     - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+  <img src="https://www.magalix.com/hubfs/Configmap%20pattern.png" >
 
 +++
 
@@ -1630,7 +1672,7 @@ Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalanc
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe:
-- Kaputte pod yaml https://github.com/x-cellent/k8s-workshop/blob/4d12a2b505babef8f0d06875f397aaf9d0147973/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md
+- Kaputte [pod.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md)
 - Reparieren und in Namespace der Wahl deployen
 
 +++
@@ -2212,6 +2254,9 @@ psql -U user23 topdb
 - gegliedert in sogenannten Charts
 - Große Softwarehersteller schreiben eigene Helm Charts
     - z.B. Gitlab
+
++++
+
 - praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen
     - test/staging/production
 - helm charts sind in sogenannten Repos gespeichert
