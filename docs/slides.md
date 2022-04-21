@@ -1496,106 +1496,287 @@ Ende Tag 2
 
 ---
 
+# TAG 3
+
++++
+
+# Agenda
+- Recap
+- Weitere Kubernetes Objekte
+- Helm
+
+---
+
 <!-- .slide: style="text-align: left;"> -->
-# Objekttypen in K8s
+# Recap
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Pod
-- Gruppe von einem oder mehreren Containern
-- Kleinste deploybare Einheit in Kubernetes
-- Jeder Pod bekommt eine IP Addresse (ClusterIP)
-
-<aside class="notes">
-  Ein Pod beinhaltet 1 bis n Container
-
-  Pods haben ip addressen, die sich bei Neustart ändert (Rescheduling)
-</aside>
+## Docker
+- Container Runtime Engine
+- Bau von Images
+- Starten von Images
+- Verwalten von Images
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 3
+## Kubernetes
+- Container Orchestrierungstool
+    - Verwalten von Pods
+    - Starten stoppen und Überwachen
+    - Self-Healing 
+    - Dynamische Skalierung
 
-```sh
-w6p exercise k8s -n3
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Objekte
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Pod
+    - kleinste deploybare Einheit
+    - beinhaltet 1 bis N Container
+    - eigener Netzbereich und IP
+- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Deployment
+    - Managed ein ReplicaSet
+    - Bietet Versionierung und zero downtime Rollouts
+- DeamonSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Spec wie Deployment nur ohne Replica Count <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Managed damit kein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Stattdessen je ein Replica pro Node <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Service
+    - Loadbalancer für Pods
+    - Auch hier Matching via Labels
+    - Typen <!-- .element: class="fragment" data-fragment-index="1" -->
+        - None (headless) <!-- .element: class="fragment" data-fragment-index="1" -->
+        - ClusterIP (Default) <!-- .element: class="fragment" data-fragment-index="2" -->
+        - NodePort <!-- .element: class="fragment" data-fragment-index="3" -->
+        - Loadbalancer <!-- .element: class="fragment" data-fragment-index="4" -->
+
+Note:
+Service - headless (erstellt für jeden Pod einen DNS entry innerhalb des Clusters (coredns), kein externer Zugriff möglich)
+
+Service - ClusterIP (routet über die clusterinternen Pod IPs, kein externer Zugiff möglich)
+
+Service - NodePort (öffnet auf jedem Node denselben Port, über den von außen der Service erreicht werden kann)
+
+Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- StatefulSet
+    - Spec ähnlich zu Deployment
+    - Geordnetes Starten (einer nach dem anderen)
+    - Geordnetes Stoppen in umgekehrter Reihenfolge
+- ConfigMap <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Plain-Text Key-Value Store <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="2" -->
+- Secret <!-- .element: class="fragment" data-fragment-index="3" -->
+    - base64 encoded Data Store <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Kubernetes Tools
+- kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
+    - CLI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
+- krew <!-- .element: class="fragment" data-fragment-index="2" -->
+    - kubectl Plugin Manager <!-- .element: class="fragment" data-fragment-index="2" -->
+- k9s <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Terminal UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="3" -->
+- kind (Kubernetes in Docker) <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Single-Node k8s Cluster in Docker Container <!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- helm
+    - Paket-Manager für Kubernetes
+    - vgl. mit apt für Ubuntu oder apk für Alpine
+- Lens <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Graphical UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Nicht Teil des Workshops <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Weitere Objekttypen in K8s
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Errinnerung Pod
+- Kleinste Deploybare einheit
+- Kann per yaml datei erstellt/modifiziert werden
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Aufgabe:
+- Kaputte pod yaml https://github.com/x-cellent/k8s-workshop/blob/4d12a2b505babef8f0d06875f397aaf9d0147973/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md
+- Reparieren und in Namespace der Wahl deployen
+
++++
+
+```yaml
+apiversion: v1
+Kind: pod
+metadata:
+  labels:
+    app: frontend
+  name: web
+spec:
+containers:
+  name: web
+    image: nginx
+    tag: latest
+    ports:
+  - containerPort: 80
+    resources:
+      requests:
+        cpu: "1.0"
+        memory:"1G"
+      limits:
+       cpu: "1.0"
+        memory: 1G
 ```
-Lösung nach 10m
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Service
-- Objekt um Pod im Netzwerk erreichbar zu machen
-- Loadbalancing
-- Dynamische IP's von Pods
-
-<aside class="notes">
-  Services werden genutzt um pods im Netzwerk erreichbar zu machen
-
-  hat eine loadbalancing funktion, wenn mehere pods mit gleichem Label im Namespace sind wird die last aufgeteilt
-
-  geht an die pods mit einem Label, daher sind dynamische IPs bei Pods keine Probleme
-</aside>
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Aufgabe 4
-
-```sh
-w6p exercise k8s -n4
+### Lösung
+```yaml
+apiVersion: v1 #Typo in apiVersion, V von Version muss groß sein
+kind: Pod #Typo, kind muss klein sein
+metadata:
+  labels:
+    app: frontend
+  name: web
+  namespace: ex1 # Optional, kann auch kubectl auch via "-n ex1" mitgegeben werden
+spec:
+  containers: #ab hier muss alles eingeruckt sein
+  - name: web #listen in yaml werden beim ersten punkt mit `-`angegeben
+    image: nginx:latest #Image und Tag definiert man in einer zeile mit `:` dazwischen
+    ports:
+    - containerPort: 80 #hier auch falsch eingerückt
+    resources:
+      requests:
+        cpu: "1.0"
+        memory: "1G" # zwischen memory und den 1G muss ein Leerzeichen sein
+      limits:
+        cpu: "1.0"
+        memory: "1G" #1G muss in anführungszeichen sein
 ```
-Lösung nach 10m
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### ReplicaSets
-- Pods Replizieren
-- Nachträglich nicht änderbar
+## Service
+- Loadbalancer für Pods
+- Matching via Labels
+
++++
+
+![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
 
 <aside class="notes">
-  ein replicaset wird genutzt um mehere identische Pods zu deployen
-
-  problem bei replicaset ist, dass es nachträglich nicht änderbar ist
-
-  um neue version von pod zu deployen muss erst das alte replicaset gelöscht und das neue deployt werden
-
-  frage an teilnehmer: zu was führt das? > Downtime
+Der Service leitet anfragen welche in die Nodes kommt an die Pods weiter
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 5
+#### Aufgabe
+- erstelle ein Deployment (Objekt) des Pods aus vergangener aufgabe
+    - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
+- erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
+    - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
 
-```sh
-w6p exercise k8s -n5
++++
+
+#### Lösung
+- erst deployment.yaml erstellen und in gewünschten Namespace deployen
+    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
+    - kubectl apply -d deployment.yaml -n web
+- anschließend eine service.yaml erstellen 
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: frontend # selector hier muss dem label des deployments ensprechen
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8081
 ```
-Lösung nach 15m
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Deployment
-- Art ReplicaSets zu verwalten
-- Updates
-- am weitesten verbreitete art
-
-<aside class="notes">
-  wie ihr herausgefunden habt, ist ein Deployment die bessere art ReplicaSets zu verwalten
-
-  ein Deployment kann man Unterbrechungsfrei Updaten (wenn zumindestes 2 Replicas verfügbar)
-
-  deployments werden am häufigsten genutzt um pods zu deployen
-</aside>
+- Diese yaml in den gewünsten Namespace deployen
+    - k apply -f service.yaml -n web
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### DaemonSet
+## Port-Forwarding
+- Zugriff in Container erlangen
+- für debugging
+- k9s kann diese Verwalten
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Aufgabe
+- Deployment und service aus letzter Aufgabe muss im selben Namespace deployt sein
+    - kubectl create ns web
+    - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
+    - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml -n web
+- Anschließend bitte ein Port-Forwarding in einen Pod machen
+    - Welche Wege gibt es?
+
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Lösung
+- es gibt den weg mit kubectl
+    - kubectl port-forward -n web service/web 8081:8081
+    - kubectl port-forward -n web deployment/web 8081:80
+    - kubectl port-forward -n web pod/web-6779b45f74-bvc7p 8081:80
+    - kubectl port-forward -n web pod/web-6779b45f74-bvc7p :80 
+        - hier bestimmt kubectl selber den local port
+- mit k9s ist es auch möglich
+
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## DaemonSet
 - Jeder Node bekommt ein Replica
     - Log-Shipper
     - Monitoring Agent
@@ -1613,17 +1794,51 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 6
+### Aufgabe 
+- Deploye ein DaemonSet mit einem nginx Pod in ein Namespace deiner Wahl
+- Scale das DaemonSet auf 3 Pods
+    - ist dies Möglich?
+    - Warum? Warum nicht?
 
-```sh
-w6p exercise k8s -n6
++++
+
+
+### Lösung
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: web-ds
+  labels:
+    app: web-ds
+spec:
+  selector:
+    matchLabels:
+      name: web-ds
+  template:
+    metadata:
+      labels:
+        name: web-ds
+    spec:
+      containers:
+      - name: web-ds
+        image: nginx:latest
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
 ```
-Lösung nach 15m
+
++++
+
+- scaling ist nicht möglich, da daemonSets mit den Nodes scalen
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### StatefulSet
+## StatefulSet
 - Persistente Pods
 - Geordnetes Update/Shutdown
 
@@ -1636,7 +1851,7 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Job
+## Job
 - Einmalige Ausführung eines Commands in einem Pod
     - Datenbank Backup
 
@@ -1649,17 +1864,47 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 7
-
-```sh
-w6p exercise k8s -n7
-```
-Lösung nach 5m
+### Aufgabe 
+- Erstelle ein Job welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
+- gebe Pi aus
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### CronJobs
+#### Lösung
+- von kubernetes doku das Manifest übernehmen und anpassen
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  template:
+    metadata:
+      labels:
+        job: pi
+    spec:
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(5000)"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- kubectl get logs -n ex7 pi-
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## CronJobs
 - Mischung aus klassischen CronJobs und Jobs
 - Regelmäßige Ausführung eines Jobs
     - Datenbank Backups
@@ -1675,21 +1920,63 @@ Lösung nach 5m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 8
-
-```sh
-w6p exercise k8s -n8
-```
-Lösung nach 15m
-
-<aside class="notes">
-  kubectl create job nicht in cronjob k8s doku
-</aside>
+### Aufgabe 
+- erstelle einen Cronjob welcher minütlich das datum und deinen Namen ausgibt
+- dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene versuche behalten
+- teste diesen cronjob ohne eine minute zu warten
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### ConfigMaps
+#### Lösung
+- aus kubernetes Doku Manifest kopieren und anpassen
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 8
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            cronjob: hello
+        spec:
+          containers:
+          - name: hello
+            image: busybox:1.28
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - date; echo Pascal
+          restartPolicy: OnFailure
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- erstellen eines einmaligen runs
+```sh
+ kubectl create job -n ex8 --from=cronjob/hello hello-test
+```
+- Output wieder sichtbar mit 
+```sh
+kubectl logs -n ex8 hello-
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## ConfigMaps
 - Speicherung von nicht vertraulichen daten
 - Einbindung in Pods als
     - Umgebungsvariable
@@ -1708,35 +1995,35 @@ Lösung nach 15m
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe 9
-
-```sh
-w6p exercise k8s -n9
-```
-Lösung nach 10m
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Aufgabe 10
-
-```sh
-w6p exercise k8s -n10
-```
-Lösung nach 15m
-
-<aside class="notes">
-  Diesmal die Aufgabe vor dem API Objekt
-
-  Teilnehmer sollen secrects finden 
-</aside>
+### Aufgabe
+- dieses deployment möchte eine ConfigMap einbinden
+    - [Deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml)
+- diese ConfigMap
+    - [configmap.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/configmap.yaml)
+- ändere die WorkerConnection und deploye die beiden Ressourcen
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Secret
+#### Lösung
+- WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen
+```sh
+kubectl apply -f configmap.yaml -n ex9
+```
+- anschließend das deployment deplyoen
+```sh
+kubectl apply -f deployment.yaml -n ex9
+```
+- Wichtig! Beides in den gleichen Namespace
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Secret
 - Speicherung vertraulicher Daten
 - Unverschlüsselt in etcd DB
+- Bessere Seperierung mittels Rollen
+   - User darf Configmaps sehen aber keine Secrets
 
 <aside class="notes">
   secrets gibt es um vertrauliche daten zu speichern
@@ -1745,6 +2032,524 @@ Lösung nach 15m
 
   einbindung ähnlich wie bei configmaps
 </aside>
+
++++
+
+## PersistantVolume (PV)
+- sehr viele Volume Typen
+    - Lightbits, local und s3 bei der FI-TS
+- Speichert Infos über Volumen und Storage
+- überverzeichnis muss bereits erstellt sein
+
+
++++
+
+- ReadWriteOnce oder ReadWriteMany
+    - Once, nur ein Node darf auf das Volume schreiben
+    - Many, mehrere dürfen
+- ReadOnlyMany
+    - mehere Nodes können das Volume ReadOnly Mounten
+
++++
+
+### Aufgabe
+- erstelle ein local PV mit 10 GB Capacity
+- erstelle das Verzeichnis auf der Node
+- dieser soll ReadWriteOnce sein
+- dieser muss einen eindeutigen Namen haben
+
++++
+
+#### Lösung
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-pv
+  labels:
+    storage: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /mnt/disks/ssd1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k8s-workshop-cluster-control-plane
+```
+
++++
+
+## PersistantVolumeClaim (PVC)
+- Reserviert Ressourcen eines PV`s
+- wird anschließend ins deployment eingebaut
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit namen
+    - bei local kein dynamisches (selector) mapping möglich
+- Verknüpfung ist eine 1 zu 1 Verknüpfung
+    - keine 2 PVC an einem PV
+
++++
+
+### Aufgabe
+- erstelle ein PVC
+- erstelle ein postgresql statefulset
+    - Tipp: Configmap und Secret müssen auch erstellt sein
+      um env Variablen in den Container zu übergeben
+- welches das PVC einbindet
+- lasse die daten welche in der DB sind anzeigen
+
++++
+
+#### Lösung
+- Der PV der letzten aufgabe muss erstellt sein
+```yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: standard
+  capacity:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: example-pv
+```
+
++++
+
+- Configmap
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configuration
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: topdb
+  POSTGRES_USER: user23
+```
+- Secret
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+data:
+  POSTGRES_PASSWORD: sicherespasswort
+```
+
++++
+
+- Statefulset
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-statefulset
+  labels:
+    app: postgres
+spec:
+  serviceName: "postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:12
+        envFrom:
+        - configMapRef:
+            name: postgres-configuration
+        - secretRef:
+            name: postgres-secret
+        ports:
+        - containerPort: 5432
+          name: postgresdb
+        volumeMounts:
+        - name: pv-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pv-data
+        persistentVolumeClaim:
+          claimName: postgres-pv-claim
+```
+
++++
+
+- Daten anzeigen lassen
+```sh
+kubectl exec -n postgresql -it postges-statefulset-0 -- /bin/bash
+psql -U user23 topdb
+```
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Helm
+- Package Manager für Kubernetes
+- gegliedert in sogenannten Charts
+- Große Softwarehersteller schreiben eigene Helm Charts
+    - z.B. Gitlab
+- praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen
+    - test/staging/production
+- helm charts sind in sogenannten Repos gespeichert
+    - chart ersteller meistens eigene Repo
+    - nutzung ähnlich wie bei apt in ubuntu
+        - adden, updaten installieren
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+![image](https://developer.ibm.com/developer/default/blogs/kubernetes-helm-3/images/helm3-arch.png)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+```sh
+schulung
+├── charts
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   ├── _helpers.tpl
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── NOTES.txt
+│   ├── serviceaccount.yaml
+│   ├── service.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+- das meiste spielt sich im templates ordner ab
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "schulung.fullname" . }}
+  labels:
+    {{- include "schulung.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "schulung.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "schulung.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "schulung.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+- wie so oft im yaml format
+- das meiste bis alles templates
+- anpassungen in der values.yaml
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```yaml
+# Default values for schulung.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Beispiel an Container part des Deployment template
+
++++
+
+```yaml
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+```
+
++++
+
+```yaml
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+```
+
++++
+
+## Helm Commands
+- helm install
+    - installiert ein helm chart
+    - mit -n namespace angebbar
+    - mit --dry-run --debug kann man überprüfen ob das deployment klappen sollte
+    - mit --version versionspinning
+    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+
++++
+
+- helm upgrade
+    - upgraden eines helm charts auf neue revision
+    - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist
+    - mit --version versionspinning
+- helm create
+    - erstellen eines helm charts
+    - erstellt die grundlegende ordner struktur
+
++++
+
+- helm uninstall
+    - deinstalliert ein chart, löscht alle ressourcen
+- helm rollback
+    - zurückspielen auf alte version des helm charts
+- helm list
+    - zeigt installierte helm charts
+    - entweder mit -A für alle Namespaces oder -n mit Namespace angabe
+- helm lint
+    - überprüfung ob helm chart template keine fehler hat
+
++++
+
+- helm repo
+    - add 
+        - hinzufügen eines repos
+        - z.B. helm repo add bitnami
+    - update
+        - herunterladen welche charts in repos sind
+        - z.B. in bitnami gibt es ein postgresql chart
+
++++
+
+## Aufgabe:
+1. erstelle ein Helm Chart für ein nginx deployment mit service
+1. deploye dies in ein Namespace deiner wahl
+
++++
+
+### Lösung
+1. erst das chart erstellen
+```sh
+helm create NAME
+helm create nginx-deployment
+```
+1. dann installieren
+```sh
+helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+helm install -n helm-namespace nginx-deployment ./nginx-deployment
+```
+
++++
+
+## Aufgabe:
+1. passe die replicas mit helm an
+1. Verifiziere, dass mehr pods laufen
+
++++
+
+### Lösung
+
+1. dann die values yaml anpassen und upgrade
+```sh
+helm upgrade -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+helm upgrade -n helm-namespace nginx-deployment ./nginx-deployment
+```
+1. mit kubectl oder k9s anzeigen, dass die angegebenen Pods da sind
+```sh
+kubectl get pods -n NAMESPACE
+kubectl get pods -n helm-namespace
+```
+
++++
+
+## Aufgabe:
+1. mache ein Rollback auf eine alte Helm version
+
++++
+
+### Lösung
+1. mit helm rollback auf alte revision gehen
+```sh
+helm rollback -n NAMESPACE RELEASE_NAME REVISION
+helm rollback -n helm-namespace nginx-deployment 1
+```
+
++++
+
+### Übersicht Helm
+- Ist ein Packetmanager
+- arbeitet mit Templates
+- eine zentrale datei (values.yaml) um komplexe anwendungen zu deployen
+- wird in Repos verwaltet
 
 ---
 
