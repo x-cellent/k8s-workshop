@@ -1525,7 +1525,8 @@ Ende Tag 2
 
 +++
 
-![image](https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg)
+<!-- .slide: data-background="#51565c" -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg" >
 
 +++
 
@@ -1565,7 +1566,8 @@ Ende Tag 2
 
 +++
 
-![image](https://storage.googleapis.com/cdn.thenewstack.io/media/2017/11/07751442-deployment.png)
+<!-- .slide: class="stretch"> -->
+<img src="https://storage.googleapis.com/cdn.thenewstack.io/media/2017/11/07751442-deployment.png" width="800" height="800">
 
 +++
 
@@ -2246,6 +2248,22 @@ kubectl exec -n postgresql -it postges-statefulset-0 -- /bin/bash
 psql -U user23 topdb
 ```
 
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Sicherheit
+
+Role Based Access Control
+- Authentifizierung (Wer bin ich?) <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Analogie Ausreise: Perso <!-- .element: class="fragment" data-fragment-index="1" -->
+- Autorisierung (Was darf ich?) <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Analogie Ausreise: Visa <!-- .element: class="fragment" data-fragment-index="2" -->
+- Admission Control <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Stellt Authentifizierung und Autorisierung sicher <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Analogie Ausreise: <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Prüft Perso und Visa <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Zoll: Darf ich mein Gepäck einführen? <!-- .element: class="fragment" data-fragment-index="4" -->
+
 ---
 
 <!-- .slide: style="text-align: left;"> -->
@@ -2619,22 +2637,6 @@ containerd -  Linux-Daemon; Pulled Images aus Registry, verwaltet Speicher und N
 runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basierte Implementierung zum Starten und Stoppen von Containern
 
 ---
-
-<!-- .slide: style="text-align: left;"> -->
-## RBAC
-
-Role Based Access Control
-- Authentifizierung (Wer bin ich?) <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Analogie Ausreise: Perso <!-- .element: class="fragment" data-fragment-index="1" -->
-- Autorisierung (Was darf ich?) <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Analogie Ausreise: Visa <!-- .element: class="fragment" data-fragment-index="2" -->
-- Admission Control <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Stellt Authentifizierung und Autorisierung sicher <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Analogie Ausreise: <!-- .element: class="fragment" data-fragment-index="4" -->
-        - Prüft Perso und Visa <!-- .element: class="fragment" data-fragment-index="4" -->
-        - Zoll: Darf ich mein Gepäck einführen? <!-- .element: class="fragment" data-fragment-index="4" -->
-
-+++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Admission Controller
