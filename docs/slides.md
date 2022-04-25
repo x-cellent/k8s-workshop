@@ -1496,7 +1496,7 @@ Ende Tag 2
 
 ---
 
-# TAG 3
+# Tag 3
 
 +++
 
@@ -1657,6 +1657,28 @@ Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalanc
 - Lens <!-- .element: class="fragment" data-fragment-index="1" -->
     - Graphical UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
     - Nicht Teil des Workshops <!-- .element: class="fragment" data-fragment-index="1" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Container Runtime Interface
+- API für Container Verwaltung (Starten/Stoppen)
+- Wird von Kubernetes unterstützt
+    - Konkrete Implemetierung damit austauschbar
+- [Container Runtimes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
+    - containerd
+    - CRI-O
+    - Docker Engine
+
++++
+
+<!-- .slide: style="text-align: left;" class="stretch"> -->
+![image](images/docker-CRI-O-containerd-runc.png)
+
+Notes:
+containerd -  Linux-Daemon; Pulled Images aus Registry, verwaltet Speicher und Netzwerke, started/stoppt Containern via runc
+
+runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basierte Implementierung zum Starten und Stoppen von Containern
 
 ---
 
@@ -2264,6 +2286,14 @@ Role Based Access Control
         - Prüft Perso und Visa <!-- .element: class="fragment" data-fragment-index="4" -->
         - Zoll: Darf ich mein Gepäck einführen? <!-- .element: class="fragment" data-fragment-index="4" -->
 
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Admission Controller
+-
+Allow/Deny/Change APi-Requests
+- Basiert auf Regeln und Policies
+
 ---
 
 <!-- .slide: style="text-align: left;"> -->
@@ -2616,34 +2646,11 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 ---
 
-<!-- .slide: style="text-align: left;"> -->
-## Container Runtime Interface
-- API für Container Verwaltung (Starten/Stoppen)
-- Wird von Kubernetes unterstützt
-    - Konkrete Implemetierung damit austauschbar
-- [Container Runtimes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
-    - containerd
-    - CRI-O
-    - Docker Engine
-
-+++
-
-<!-- .slide: style="text-align: left;" class="stretch"> -->
-![image](images/docker-CRI-O-containerd-runc.png)
-
-Notes:
-containerd -  Linux-Daemon; Pulled Images aus Registry, verwaltet Speicher und Netzwerke, started/stoppt Containern via runc
-
-runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basierte Implementierung zum Starten und Stoppen von Containern
+# Finance Cloud Native
 
 ---
 
-<!-- .slide: style="text-align: left;"> -->
-## Admission Controller
--
-Allow/Deny/Change APi-Requests
-- Basiert auf Regeln und Policies
-
+# Prometheus und Loki
 
 ---
 
