@@ -532,7 +532,7 @@ Lösung nach 15 min
 
   liegt daran, dass sich alle systeme ein host os teilen können
 
-  dazu zählen kernel aufgaben
+  dazu zählen kernel Aufgaben
 
   deployments schneller da nicht alle prozesse beendet und neugestartet werden müssen
 </aside>
@@ -1600,7 +1600,7 @@ Service - ClusterIP (routet über die clusterinternen Pod IPs, kein externer Zug
 
 Service - NodePort (öffnet auf jedem Node denselben Port, über den von außen der Service erreicht werden kann)
 
-Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
+Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
 
 +++
 
@@ -1695,7 +1695,7 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe:
+### Aufgabe 1
 - Kaputte [pod.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md)
 - Reparieren und in Namespace der Wahl deployen
 
@@ -1727,7 +1727,7 @@ containers:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
+### Lösung 1
 ```yaml
 apiVersion: v1 #Typo in apiVersion, V von Version muss groß sein
 kind: Pod #Typo, kind muss klein sein
@@ -1763,21 +1763,21 @@ spec:
 ![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
 
 <aside class="notes">
-Der Service leitet anfragen welche in die Nodes kommt an die Pods weiter
+Der Service leitet anfragen welche an die Nodes kommt an die Pods weiter
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Aufgabe
-- erstelle ein Deployment (Objekt) des Pods aus vergangener aufgabe
+#### Aufgabe 2
+- erstelle ein Deployment (Objekt) des Pods aus vorhergegangener Aufgabe
     - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
 - erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
     - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
 
 +++
 
-#### Lösung
+#### Lösung 2
 - erst deployment.yaml erstellen und in gewünschten Namespace deployen
     - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
     - kubectl apply -d deployment.yaml -n web
@@ -1817,7 +1817,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe
+### Aufgabe 3
 - Deployment und service aus letzter Aufgabe muss im selben Namespace deployt sein
     - kubectl create ns web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
@@ -1829,7 +1829,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
+### Lösung 3
 - es gibt den weg mit kubectl
     - kubectl port-forward -n web service/web 8081:8081
     - kubectl port-forward -n web deployment/web 8081:80
@@ -1860,7 +1860,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe 
+### Aufgabe 4
 - Deploye ein DaemonSet mit einem nginx Pod in ein Namespace deiner Wahl
 - Scale das DaemonSet auf 3 Pods
     - ist dies Möglich?
@@ -1869,7 +1869,7 @@ spec:
 +++
 
 
-### Lösung
+### Lösung 4
 ```yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -1930,14 +1930,14 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe 
+### Aufgabe 5
 - Erstelle ein Job welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
 - gebe Pi aus
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Lösung
+#### Lösung 5
 - von kubernetes doku das Manifest übernehmen und anpassen
 
 +++
@@ -1986,7 +1986,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe 
+### Aufgabe 6
 - erstelle einen Cronjob welcher minütlich das datum und deinen Namen ausgibt
 - dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene versuche behalten
 - teste diesen cronjob ohne eine minute zu warten
@@ -1994,7 +1994,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Lösung
+#### Lösung 6
 - aus kubernetes Doku Manifest kopieren und anpassen
 
 +++
@@ -2061,7 +2061,7 @@ kubectl logs -n ex8 hello-
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe
+### Aufgabe 7
 - dieses deployment möchte eine ConfigMap einbinden
     - [Deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml)
 - diese ConfigMap
@@ -2071,7 +2071,7 @@ kubectl logs -n ex8 hello-
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Lösung
+#### Lösung 7
 - WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen
 ```sh
 kubectl apply -f configmap.yaml -n ex9
@@ -2118,7 +2118,7 @@ kubectl apply -f deployment.yaml -n ex9
 
 +++
 
-### Aufgabe
+### Aufgabe 8
 - erstelle ein local PV mit 10 GB Capacity
 - erstelle das Verzeichnis auf der Node
 - dieser soll ReadWriteOnce sein
@@ -2126,7 +2126,7 @@ kubectl apply -f deployment.yaml -n ex9
 
 +++
 
-#### Lösung
+#### Lösung 8
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
@@ -2166,7 +2166,7 @@ spec:
 
 +++
 
-### Aufgabe
+### Aufgabe 10
 - erstelle ein PVC
 - erstelle ein postgresql statefulset
     - Tipp: Configmap und Secret müssen auch erstellt sein
@@ -2176,8 +2176,8 @@ spec:
 
 +++
 
-#### Lösung
-- Der PV der letzten aufgabe muss erstellt sein
+#### Lösung 10
+- Der PV der letzten Aufgabe muss erstellt sein
 ```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -2583,13 +2583,13 @@ resources: {}
 
 +++
 
-## Aufgabe:
+## Aufgabe 11
 1. erstelle ein Helm Chart für ein nginx deployment mit service
 1. deploye dies in ein Namespace deiner wahl
 
 +++
 
-### Lösung
+### Lösung 11
 1. erst das chart erstellen
 ```sh
 helm create NAME
@@ -2603,13 +2603,13 @@ helm install -n helm-namespace nginx-deployment ./nginx-deployment
 
 +++
 
-## Aufgabe:
+## Aufgabe 12
 1. passe die replicas mit helm an
 1. Verifiziere, dass mehr pods laufen
 
 +++
 
-### Lösung
+### Lösung 12
 
 1. dann die values yaml anpassen und upgrade
 ```sh
@@ -2624,12 +2624,12 @@ kubectl get pods -n helm-namespace
 
 +++
 
-## Aufgabe:
+## Aufgabe 13
 1. mache ein Rollback auf eine alte Helm version
 
 +++
 
-### Lösung
+### Lösung 13
 1. mit helm rollback auf alte revision gehen
 ```sh
 helm rollback -n NAMESPACE RELEASE_NAME REVISION
