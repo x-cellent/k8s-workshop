@@ -1689,8 +1689,8 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 
 <!-- .slide: style="text-align: left;"> -->
 ## Errinnerung Pod
-- Kleinste Deploybare einheit
-- Kann per yaml datei erstellt/modifiziert werden
+- Kleinste Deploybare einheit <!-- .element: class="fragment" data-fragment-index="1" -->
+- Kann per yaml datei erstellt/modifiziert werden <!-- .element: class="fragment" data-fragment-index="2" -->
 
 +++
 
@@ -1755,8 +1755,8 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Service
-- Loadbalancer für Pods
-- Matching via Labels
+- Loadbalancer für Pods <!-- .element: class="fragment" data-fragment-index="1" -->
+- Matching via Labels <!-- .element: class="fragment" data-fragment-index="2" -->
 
 +++
 
@@ -1770,7 +1770,7 @@ Der Service leitet anfragen welche in die Nodes kommt an die Pods weiter
 
 <!-- .slide: style="text-align: left;"> -->
 #### Aufgabe
-- erstelle ein Deployment (Objekt) des Pods aus vergangener aufgabe
+- erstelle ein Deployment (Objekt) des Pods aus vergangener aufgabe 
     - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
 - erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
     - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
@@ -1810,9 +1810,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Port-Forwarding
-- Zugriff in Container erlangen
-- für debugging
-- k9s kann diese Verwalten
+- Zugriff in Container erlangen <!-- .element: class="fragment" data-fragment-index="1" -->
+- für debugging <!-- .element: class="fragment" data-fragment-index="2" -->
+- k9s kann diese Verwalten <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
@@ -1905,8 +1905,8 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## StatefulSet
-- Persistente Pods
-- Geordnetes Update/Shutdown
+- Persistente Pods <!-- .element: class="fragment" data-fragment-index="1" -->
+- Geordnetes Update/Shutdown <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
   StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine anwendung ihren status nicht verliert
@@ -1918,8 +1918,8 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Job
-- Einmalige Ausführung eines Commands in einem Pod
-    - Datenbank Backup
+- Einmalige Ausführung eines Commands in einem Pod <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Datenbank Backup <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
   jobs sind praktisch um einzelne kommandos auszuführen
@@ -1971,9 +1971,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## CronJobs
-- Mischung aus klassischen CronJobs und Jobs
-- Regelmäßige Ausführung eines Jobs
-    - Datenbank Backups
+- Mischung aus klassischen CronJobs und Jobs <!-- .element: class="fragment" data-fragment-index="1" -->
+- Regelmäßige Ausführung eines Jobs <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Datenbank Backups <!-- .element: class="fragment" data-fragment-index="3" -->
 
 <aside class="notes">
   wie klassische Linux Cronjobs 
@@ -2043,12 +2043,12 @@ kubectl logs -n ex8 hello-
 
 <!-- .slide: style="text-align: left;"> -->
 ## ConfigMaps
-- Speicherung von nicht vertraulichen daten
-- Einbindung in Pods als
-    - Umgebungsvariable
-    - command-line argument
-    - Datei (Volume)
-- Kein Reload der Pods bei Änderung
+- Speicherung von nicht vertraulichen daten <!-- .element: class="fragment" data-fragment-index="1" -->
+- Einbindung in Pods als <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Umgebungsvariable <!-- .element: class="fragment" data-fragment-index="3" -->
+    - command-line argument <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Datei (Volume) <!-- .element: class="fragment" data-fragment-index="5" -->
+- Kein Reload der Pods bei Änderung <!-- .element: class="fragment" data-fragment-index="6" -->
 
 <aside class="notes">
   in configmaps sollen nur nicht vertrauliche daten gespeichert werden
@@ -2086,10 +2086,10 @@ kubectl apply -f deployment.yaml -n ex9
 
 <!-- .slide: style="text-align: left;"> -->
 ## Secret
-- Speicherung vertraulicher Daten
-- Unverschlüsselt in etcd DB
-- Bessere Seperierung mittels Rollen
-   - User darf Configmaps sehen aber keine Secrets
+- Speicherung vertraulicher Daten <!-- .element: class="fragment" data-fragment-index="1" -->
+- Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="2" -->
+- Bessere Seperierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
+   - User darf Configmaps sehen aber keine Secrets <!-- .element: class="fragment" data-fragment-index="4" -->
 
 <aside class="notes">
   secrets gibt es um vertrauliche daten zu speichern
@@ -2102,19 +2102,19 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 ## PersistantVolume (PV)
-- sehr viele Volume Typen
-    - Lightbits, local und s3 bei der FI-TS
-- Speichert Infos über Volumen und Storage
-- überverzeichnis muss bereits erstellt sein
+- sehr viele Volume Typen <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Lightbits, local und s3 bei der FI-TS <!-- .element: class="fragment" data-fragment-index="2" -->
+- Speichert Infos über Volumen und Storage <!-- .element: class="fragment" data-fragment-index="3" -->
+- überverzeichnis muss bereits erstellt sein <!-- .element: class="fragment" data-fragment-index="4" -->
 
 
 +++
 
-- ReadWriteOnce oder ReadWriteMany
-    - Once, nur ein Node darf auf das Volume schreiben
-    - Many, mehrere dürfen
-- ReadOnlyMany
-    - mehere Nodes können das Volume ReadOnly Mounten
+- ReadWriteOnce oder ReadWriteMany <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Once, nur ein Node darf auf das Volume schreiben <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Many, mehrere dürfen <!-- .element: class="fragment" data-fragment-index="3" -->
+- ReadOnlyMany <!-- .element: class="fragment" data-fragment-index="4" -->
+    - mehere Nodes können das Volume ReadOnly Mounten <!-- .element: class="fragment" data-fragment-index="5" -->
 
 +++
 
@@ -2157,12 +2157,12 @@ spec:
 +++
 
 ## PersistantVolumeClaim (PVC)
-- Reserviert Ressourcen eines PV`s
-- wird anschließend ins deployment eingebaut
-- Verknüpfung PV und PVC mit Selector labels oder direkt mit namen
-    - bei local kein dynamisches (selector) mapping möglich
-- Verknüpfung ist eine 1 zu 1 Verknüpfung
-    - keine 2 PVC an einem PV
+- Reserviert Ressourcen eines PV`s <!-- .element: class="fragment" data-fragment-index="1" -->
+- wird anschließend ins deployment eingebaut <!-- .element: class="fragment" data-fragment-index="2" -->
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit namen <!-- .element: class="fragment" data-fragment-index="3" -->
+    - bei local kein dynamisches (selector) mapping möglich <!-- .element: class="fragment" data-fragment-index="4" -->
+- Verknüpfung ist eine 1 zu 1 Verknüpfung <!-- .element: class="fragment" data-fragment-index="5" -->
+    - keine 2 PVC an einem PV <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
@@ -2298,19 +2298,19 @@ Allow/Deny/Change APi-Requests
 
 <!-- .slide: style="text-align: left;"> -->
 # Helm
-- Package Manager für Kubernetes
-- gegliedert in sogenannten Charts
-- Große Softwarehersteller schreiben eigene Helm Charts
-    - z.B. Gitlab
+- Package Manager für Kubernetes <!-- .element: class="fragment" data-fragment-index="1" -->
+- gegliedert in sogenannten Charts <!-- .element: class="fragment" data-fragment-index="2" -->
+- Große Softwarehersteller schreiben eigene Helm Charts <!-- .element: class="fragment" data-fragment-index="3" -->
+    - z.B. Gitlab <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
-- praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen
-    - test/staging/production
-- helm charts sind in sogenannten Repos gespeichert
-    - chart ersteller meistens eigene Repo
-    - nutzung ähnlich wie bei apt in ubuntu
-        - adden, updaten installieren
+- praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen <!-- .element: class="fragment" data-fragment-index="1" -->
+    - test/staging/production <!-- .element: class="fragment" data-fragment-index="2" -->
+- helm charts sind in sogenannten Repos gespeichert <!-- .element: class="fragment" data-fragment-index="3" -->
+    - chart ersteller meistens eigene Repo <!-- .element: class="fragment" data-fragment-index="4" -->
+    - nutzung ähnlich wie bei apt in ubuntu <!-- .element: class="fragment" data-fragment-index="5" -->
+        - adden, updaten installieren <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
@@ -2411,9 +2411,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- wie so oft im yaml format
-- das meiste bis alles templates
-- anpassungen in der values.yaml
+- wie so oft im yaml format <!-- .element: class="fragment" data-fragment-index="1" -->
+- das meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
+- anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
@@ -2544,47 +2544,47 @@ resources: {}
 
 <!-- .slide: style="text-align: left;"> -->
 ## Helm Commands
-- helm install
-    - installiert ein helm chart
-    - mit -n namespace angebbar
-    - mit --dry-run --debug kann man überprüfen ob das deployment klappen sollte
-    - mit --version versionspinning
-    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+- helm install <!-- .element: class="fragment" data-fragment-index="1" -->
+    - installiert ein helm chart <!-- .element: class="fragment" data-fragment-index="2" -->
+    - mit -n namespace angebbar <!-- .element: class="fragment" data-fragment-index="3" -->
+    - mit --dry-run --debug kann man überprüfen ob das deployment klappen sollte <!-- .element: class="fragment" data-fragment-index="4" -->
+    - mit --version versionspinning <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART` <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- helm upgrade
-    - upgraden eines helm charts auf neue revision
-    - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist
-    - mit --version versionspinning
-- helm create
-    - erstellen eines helm charts
-    - erstellt die grundlegende ordner struktur
+- helm upgrade <!-- .element: class="fragment" data-fragment-index="1" -->
+    - upgraden eines helm charts auf neue revision <!-- .element: class="fragment" data-fragment-index="2" -->
+    - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist <!-- .element: class="fragment" data-fragment-index="3" -->
+    - mit --version versionspinning <!-- .element: class="fragment" data-fragment-index="4" -->
+- helm create <!-- .element: class="fragment" data-fragment-index="5" -->
+    - erstellen eines helm charts <!-- .element: class="fragment" data-fragment-index="6" -->
+    - erstellt die grundlegende ordner struktur <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- helm uninstall
-    - deinstalliert ein chart, löscht alle ressourcen
-- helm rollback
-    - zurückspielen auf alte version des helm charts
-- helm list
-    - zeigt installierte helm charts
-    - entweder mit -A für alle Namespaces oder -n mit Namespace angabe
-- helm lint
-    - überprüfung ob helm chart template keine fehler hat
+- helm uninstall <!-- .element: class="fragment" data-fragment-index="1" -->
+    - deinstalliert ein chart, löscht alle ressourcen <!-- .element: class="fragment" data-fragment-index="2" -->
+- helm rollback <!-- .element: class="fragment" data-fragment-index="3" -->
+    - zurückspielen auf alte version des helm charts <!-- .element: class="fragment" data-fragment-index="4" -->
+- helm list <!-- .element: class="fragment" data-fragment-index="5" -->
+    - zeigt installierte helm charts <!-- .element: class="fragment" data-fragment-index="6" -->
+    - entweder mit -A für alle Namespaces oder -n mit Namespace angabe <!-- .element: class="fragment" data-fragment-index="7" -->
+- helm lint <!-- .element: class="fragment" data-fragment-index="8" -->
+    - überprüfung ob helm chart template keine fehler hat <!-- .element: class="fragment" data-fragment-index="9" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- helm repo
-    - add 
-        - hinzufügen eines repos
-        - z.B. helm repo add bitnami
-    - update
-        - herunterladen welche charts in repos sind
-        - z.B. in bitnami gibt es ein postgresql chart
+- helm repo <!-- .element: class="fragment" data-fragment-index="1" -->
+    - add <!-- .element: class="fragment" data-fragment-index="2" -->
+        - hinzufügen eines repos <!-- .element: class="fragment" data-fragment-index="3" -->
+        - z.B. helm repo add bitnami <!-- .element: class="fragment" data-fragment-index="4" -->
+    - update <!-- .element: class="fragment" data-fragment-index="5" -->
+        - herunterladen welche charts in repos sind <!-- .element: class="fragment" data-fragment-index="6" -->
+        - z.B. in bitnami gibt es ein postgresql chart <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
@@ -2651,10 +2651,10 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 <!-- .slide: style="text-align: left;"> -->
 ### Übersicht Helm
-- Ist ein Packetmanager
-- arbeitet mit Templates
-- eine zentrale datei (values.yaml) um komplexe anwendungen zu deployen
-- wird in Repos verwaltet
+- Ist ein Packetmanager <!-- .element: class="fragment" data-fragment-index="1" -->
+- arbeitet mit Templates <!-- .element: class="fragment" data-fragment-index="2" -->
+- eine zentrale datei (values.yaml) um komplexe anwendungen zu deployen <!-- .element: class="fragment" data-fragment-index="3" -->
+- wird in Repos verwaltet <!-- .element: class="fragment" data-fragment-index="4" -->
 
 ---
 
@@ -2670,12 +2670,13 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 <!-- .slide: style="text-align: left;"> -->
 ## Prometheus
-- time series Database
-- speichert metric daten einzelner services
-- Abrufen der daten mittels PromQL
+- time series Database <!-- .element: class="fragment" data-fragment-index="1" -->
+- speichert metric daten einzelner services <!-- .element: class="fragment" data-fragment-index="2" -->
+- Abrufen der daten mittels PromQL <!-- .element: class="fragment" data-fragment-index="3" -->
 ```PromQL
 sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
 ```
+<!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
@@ -2686,28 +2687,29 @@ sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
 
 <!-- .slide: style="text-align: left;"> -->
 ### Alertmanager
-- Alamiert nach erstellten Vorgaben
-- Diverse endpoints lassen sich hinzufügen
-    - Email
-    - div. Instant messanger
-        - slack
-        - MS teams
-        - Telegram
-    - SMS
+- Alamiert nach erstellten Vorgaben <!-- .element: class="fragment" data-fragment-index="1" -->
+- Diverse endpoints lassen sich hinzufügen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Email <!-- .element: class="fragment" data-fragment-index="3" -->
+    - div. Instant messanger <!-- .element: class="fragment" data-fragment-index="4" -->
+        - slack <!-- .element: class="fragment" data-fragment-index="5" -->
+        - MS teams <!-- .element: class="fragment" data-fragment-index="6" -->
+        - Telegram <!-- .element: class="fragment" data-fragment-index="7" -->
+    - SMS <!-- .element: class="fragment" data-fragment-index="8" -->
+    - viele weitere <!-- .element: class="fragment" data-fragment-index="9" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Grafana
-- ließt daten von Datensammelstationen
-    - Prometheus
-    - Loki
-    - MSSQL
-    - InfluxDB
-    - viele weitere [DataSources](https://grafana.com/docs/grafana/latest/datasources/)
-- erstellt Grafiken
-- Dashboards auf benutzeroberfläche erstellbar
-- Dashboards importierbar
+- ließt daten von Datensammelstationen <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Prometheus <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Loki <!-- .element: class="fragment" data-fragment-index="3" -->
+    - MSSQL <!-- .element: class="fragment" data-fragment-index="4" -->
+    - InfluxDB <!-- .element: class="fragment" data-fragment-index="5" -->
+    - viele weitere [DataSources](https://grafana.com/docs/grafana/latest/datasources/) <!-- .element: class="fragment" data-fragment-index="6" -->
+- erstellt Grafiken <!-- .element: class="fragment" data-fragment-index="7" -->
+- Dashboards auf benutzeroberfläche erstellbar <!-- .element: class="fragment" data-fragment-index="8" -->
+- Dashboards importierbar <!-- .element: class="fragment" data-fragment-index="9" -->
 
 +++
 
@@ -2719,13 +2721,13 @@ sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
 
 <!-- .slide: style="text-align: left;"> -->
 ## Logging mit Loki und promtail
-- auch loki-stack genannt
-- log aggregation system
-- indexiert nicht den Inhalt der Logs
-- indexiert Metadaten der Logs
-- Integriert sich mit Prometheus und Grafana
-    - ununterbrochener Wechsel zwischen Logs und Metrics möglich
-- promtail um Logs von Nodes einzusammeln
+- auch loki-stack genannt <!-- .element: class="fragment" data-fragment-index="1" -->
+- log aggregation system <!-- .element: class="fragment" data-fragment-index="2" -->
+- indexiert nicht den Inhalt der Logs <!-- .element: class="fragment" data-fragment-index="3" -->
+- indexiert Metadaten der Logs <!-- .element: class="fragment" data-fragment-index="4" -->
+- Integriert sich mit Prometheus und Grafana <!-- .element: class="fragment" data-fragment-index="5" -->
+    - ununterbrochener Wechsel zwischen Logs und Metrics möglich <!-- .element: class="fragment" data-fragment-index="6" -->
+- promtail um Logs von Nodes einzusammeln <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
