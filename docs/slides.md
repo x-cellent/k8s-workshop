@@ -1763,7 +1763,7 @@ spec:
 ![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
 
 <aside class="notes">
-Der Service leitet anfragen welche an die Nodes kommt an die Pods weiter
+Der Service leitet Anfragen, welche an die Nodes kommt an die Pods weiter.
 </aside>
 
 +++
@@ -1803,7 +1803,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- Diese yaml in den gewünsten Namespace deployen
+- Diese yaml in den gewünschten Namespace deployen
     - k apply -f service.yaml -n web
 
 +++
@@ -1811,14 +1811,14 @@ spec:
 <!-- .slide: style="text-align: left;"> -->
 ## Port-Forwarding
 - Zugriff in Container erlangen
-- für debugging
+- für Debugging
 - k9s kann diese Verwalten
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 3
-- Deployment und service aus letzter Aufgabe muss im selben Namespace deployt sein
+- Deployment und Service aus letzter Aufgabe muss im selben Namespace deployed sein
     - kubectl create ns web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml -n web
@@ -1830,7 +1830,7 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ### Lösung 3
-- es gibt den weg mit kubectl
+- es gibt den Weg mit kubectl
     - kubectl port-forward -n web service/web 8081:8081
     - kubectl port-forward -n web deployment/web 8081:80
     - kubectl port-forward -n web pod/web-6779b45f74-bvc7p 8081:80
@@ -1848,20 +1848,20 @@ spec:
     - Monitoring Agent
 
 <aside class="notes">
-  daemonSets starten eine Replica auf jeder Node
+  DaemonSets starten eine Replica auf jeder Node.
 
-  kann nicht passieren, dass bei einem Node ausfall die pods erst auf einer neuen node deployt wird
+  Kann nicht passieren, dass bei einem Node-Ausfall die Pods erst auf einer neuen Node deployed wird.
 
-  oft verwendet für log collector, da diese die logs von allen pods auf allen nodes braucht
+  Oft verwendet für "log collector", da diese die Logs von allen Pods auf allen Nodes braucht.
 
-  ebenso bei monitoring collectorn, da diese das monitoring von allen nodes braucht
+  Ebenso bei "monitoring collectoren", da diese das Monitoring von allen Nodes braucht.
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 4
-- Deploye ein DaemonSet mit einem nginx Pod in ein Namespace deiner Wahl
+- Deploye ein DaemonSet mit einem nginx Pod in einen Namespace deiner Wahl
 - Scale das DaemonSet auf 3 Pods
     - ist dies Möglich?
     - Warum? Warum nicht?
@@ -1899,7 +1899,7 @@ spec:
 
 +++
 
-- scaling ist nicht möglich, da daemonSets mit den Nodes scalen
+- Scaling ist nicht möglich, da DaemonSets mit den Nodes scalen
 
 +++
 
@@ -1909,9 +1909,9 @@ spec:
 - Geordnetes Update/Shutdown
 
 <aside class="notes">
-  StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine anwendung ihren status nicht verliert
+  StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine Anwendung ihren Status nicht verliert.
 
-  z.B Datenbanken sind klassische Anwendungen welche man in diesem zustand haben möchte.
+  z.B Datenbanken sind klassische Anwendungen, welche man in diesem Zustand haben möchte.
 </aside>
 
 +++
@@ -1922,23 +1922,23 @@ spec:
     - Datenbank Backup
 
 <aside class="notes">
-  jobs sind praktisch um einzelne kommandos auszuführen
+  Jobs sind praktisch um einzelne Kommandos auszuführen.
 
-  z.B prüfen ob ein service im cluster erreichbar ist, datenbank backups zu erstellen
+  Z.B prüfen ob ein Service im Cluster erreichbar ist, Datenbank-Backups zu erstellen.
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 5
-- Erstelle ein Job welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
+- Erstelle einen Job, welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
 - gebe Pi aus
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 #### Lösung 5
-- von kubernetes doku das Manifest übernehmen und anpassen
+- Von Kubernetes Doku das Manifest übernehmen und anpassen
 
 +++
 
@@ -1978,18 +1978,18 @@ spec:
 <aside class="notes">
   wie klassische Linux Cronjobs 
 
-  Regelmäßige außführung von Jobs
+  Regelmäßige Außführung von Jobs
 
-  man kann auch einmalig die Jobs eines Cronjobs außführen pratkisch für debugging
+  Man kann auch einmalig die Jobs eines Cronjobs außführen pratkisch für debugging
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 6
-- erstelle einen Cronjob welcher minütlich das datum und deinen Namen ausgibt
-- dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene versuche behalten
-- teste diesen cronjob ohne eine minute zu warten
+- erstelle einen CronJob welcher minütlich das Datum und deinen Namen ausgibt
+- dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene Versuche behalten
+- teste diesen CronJob ohne eine Minute zu warten
 
 +++
 
@@ -2030,7 +2030,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- erstellen eines einmaligen runs
+- Erstellen eines einmaligen runs
 ```sh
  kubectl create job -n ex8 --from=cronjob/hello hello-test
 ```
@@ -2043,7 +2043,7 @@ kubectl logs -n ex8 hello-
 
 <!-- .slide: style="text-align: left;"> -->
 ## ConfigMaps
-- Speicherung von nicht vertraulichen daten
+- Speicherung von nicht vertraulichen Daten
 - Einbindung in Pods als
     - Umgebungsvariable
     - command-line argument
@@ -2051,18 +2051,18 @@ kubectl logs -n ex8 hello-
 - Kein Reload der Pods bei Änderung
 
 <aside class="notes">
-  in configmaps sollen nur nicht vertrauliche daten gespeichert werden
+  in ConfigMaps sollen nur nicht vertrauliche Daten gespeichert werden
 
-  es gibt mehrere wege diese in die container einzubinden
+  es gibt mehrere Wege diese in die Container einzubinden
 
-  pods reloaden nicht automatisch wenn configmaps geupdated wurden
+  Pods reloaden nicht automatisch wenn ConfigMaps geupdated wurden
   </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 7
-- dieses deployment möchte eine ConfigMap einbinden
+- dieses Deployment möchte eine ConfigMap einbinden
     - [Deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml)
 - diese ConfigMap
     - [configmap.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/configmap.yaml)
@@ -2072,7 +2072,7 @@ kubectl logs -n ex8 hello-
 
 <!-- .slide: style="text-align: left;"> -->
 #### Lösung 7
-- WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen
+- WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen:
 ```sh
 kubectl apply -f configmap.yaml -n ex9
 ```
@@ -2080,23 +2080,23 @@ kubectl apply -f configmap.yaml -n ex9
 ```sh
 kubectl apply -f deployment.yaml -n ex9
 ```
-- Wichtig! Beides in den gleichen Namespace
+- Wichtig! Beides in den gleichen Namespace.
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Secret
 - Speicherung vertraulicher Daten
-- Unverschlüsselt in etcd DB
-- Bessere Seperierung mittels Rollen
-   - User darf Configmaps sehen aber keine Secrets
+- Unverschlüsselt in etcd-Datenbank
+- Bessere Separierung mittels Rollen
+   - User darf ConfigMaps sehen aber keine Secrets
 
 <aside class="notes">
-  secrets gibt es um vertrauliche daten zu speichern
+  Secrets gibt es um vertrauliche Daten zu speichern
 
-  standartmäßig liegen diese daten aber unverschlüsselt im etcd
+  Standartmäßig liegen diese Daten aber unverschlüsselt im etcd
 
-  einbindung ähnlich wie bei configmaps
+  Einbindung ähnlich wie bei ConfigMaps
 </aside>
 
 +++
@@ -2119,10 +2119,10 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 ### Aufgabe 8
-- erstelle ein local PV mit 10 GB Capacity
-- erstelle das Verzeichnis auf der Node
-- dieser soll ReadWriteOnce sein
-- dieser muss einen eindeutigen Namen haben
+- Erstelle ein local PV mit 10 GB Capacity
+- Erstelle das Verzeichnis auf der Node
+- Dieses soll ReadWriteOnce sein
+- Dieses muss einen eindeutigen Namen haben
 
 +++
 
@@ -2158,8 +2158,8 @@ spec:
 
 ## PersistantVolumeClaim (PVC)
 - Reserviert Ressourcen eines PV`s
-- wird anschließend ins deployment eingebaut
-- Verknüpfung PV und PVC mit Selector labels oder direkt mit namen
+- wird anschließend ins Deployment eingebaut
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit Namen
     - bei local kein dynamisches (selector) mapping möglich
 - Verknüpfung ist eine 1 zu 1 Verknüpfung
     - keine 2 PVC an einem PV
@@ -2167,12 +2167,12 @@ spec:
 +++
 
 ### Aufgabe 10
-- erstelle ein PVC
-- erstelle ein postgresql statefulset
+- Erstelle ein PVC
+- Erstelle ein postgresql statefulset
     - Tipp: Configmap und Secret müssen auch erstellt sein
       um env Variablen in den Container zu übergeben
-- welches das PVC einbindet
-- lasse die daten welche in der DB sind anzeigen
+- Welches das PVC einbindet
+- Lasse die Daten, welche in der DB sind anzeigen
 
 +++
 
@@ -2291,7 +2291,7 @@ Role Based Access Control
 <!-- .slide: style="text-align: left;"> -->
 ## Admission Controller
 -
-Allow/Deny/Change APi-Requests
+Allow/Deny/Change API-Requests
 - Basiert auf Regeln und Policies
 
 ---
@@ -2299,17 +2299,17 @@ Allow/Deny/Change APi-Requests
 <!-- .slide: style="text-align: left;"> -->
 # Helm
 - Package Manager für Kubernetes
-- gegliedert in sogenannten Charts
+- Gegliedert in sogenannten Charts
 - Große Softwarehersteller schreiben eigene Helm Charts
     - z.B. Gitlab
 
 +++
 
-- praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen
+- Praktisch um eine Anwendung mit wenigen Änderungen in verschiedenen Umgebungen zu deployen
     - test/staging/production
-- helm charts sind in sogenannten Repos gespeichert
-    - chart ersteller meistens eigene Repo
-    - nutzung ähnlich wie bei apt in ubuntu
+- Helm Charts sind in sogenannten Repos gespeichert
+    - Chart ersteller haben meistens eigene Repos
+    - Nutzung ähnlich wie bei apt in ubuntu
         - adden, updaten installieren
 
 +++
@@ -2325,7 +2325,7 @@ Allow/Deny/Change APi-Requests
 schulung
 ├── charts
 ├── Chart.yaml
-├── templates
+├── Stemplates
 │   ├── deployment.yaml
 │   ├── _helpers.tpl
 │   ├── hpa.yaml
@@ -2342,7 +2342,7 @@ schulung
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- das meiste spielt sich im templates ordner ab
+- Das Meiste spielt sich im templates-Ordner ab
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -2411,9 +2411,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- wie so oft im yaml format
-- das meiste bis alles templates
-- anpassungen in der values.yaml
+- wie so oft im yaml-Format
+- das Meiste sind alles templates
+- Anpassungen in der values.yaml
 
 +++
 
@@ -2543,54 +2543,54 @@ resources: {}
 
 ## Helm Commands
 - helm install
-    - installiert ein helm chart
-    - mit -n namespace angebbar
-    - mit --dry-run --debug kann man überprüfen ob das deployment klappen sollte
-    - mit --version versionspinning
-    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
+    - Installiert ein Helm Chart
+    - mit "-n namespace" angebbar
+    - mit "--dry-run --debug" kann man überprüfen ob das deployment klappen sollte
+    - mit "--version" Versionspinning
+    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART`
 
 +++
 
 - helm upgrade
-    - upgraden eines helm charts auf neue revision
-    - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist
-    - mit --version versionspinning
+    - Upgraden eines Helm Charts auf neue Revision
+    - "--install" wichtiges Flag. Macht, dass Chart installiert wird wenns nicht da ist
+    - mit "--version" Versionspinning
 - helm create
-    - erstellen eines helm charts
-    - erstellt die grundlegende ordner struktur
+    - Erstellen eines Helm Charts
+    - Erstellt die grundlegende Ordner-Struktur
 
 +++
 
 - helm uninstall
-    - deinstalliert ein chart, löscht alle ressourcen
+    - Deinstalliert ein Chart und löscht alle Ressourcen
 - helm rollback
-    - zurückspielen auf alte version des helm charts
+    - Zurückspielen der alten Version des Helm Charts
 - helm list
-    - zeigt installierte helm charts
-    - entweder mit -A für alle Namespaces oder -n mit Namespace angabe
+    - Zeigt installierte Helm Charts
+    - entweder mit "-A" für alle Namespaces oder "-n" mit Namespace angabe
 - helm lint
-    - überprüfung ob helm chart template keine fehler hat
+    - Überprüfung ob das Helm Chart-Template keine Fehler hat
 
 +++
 
 - helm repo
     - add 
-        - hinzufügen eines repos
-        - z.B. helm repo add bitnami
+        - Hinzufügen eines Repos
+        - z.B. "helm repo add bitnami"
     - update
-        - herunterladen welche charts in repos sind
-        - z.B. in bitnami gibt es ein postgresql chart
+        - Herunterladen, welche Charts im Repo sind
+        - z.B. in bitnami gibt es ein postgresql-Chart
 
 +++
 
 ## Aufgabe 11
-1. erstelle ein Helm Chart für ein nginx deployment mit service
-1. deploye dies in ein Namespace deiner wahl
+1. erstelle ein Helm Chart für ein nginx deployment mit Service
+1. deploye dies in einen Namespace deiner Wahl
 
 +++
 
 ### Lösung 11
-1. erst das chart erstellen
+1. Erst das Chart erstellen
 ```sh
 helm create NAME
 helm create nginx-deployment
@@ -2604,19 +2604,19 @@ helm install -n helm-namespace nginx-deployment ./nginx-deployment
 +++
 
 ## Aufgabe 12
-1. passe die replicas mit helm an
-1. Verifiziere, dass mehr pods laufen
+1. Passe die Replicas mit helm an
+1. Verifiziere, dass mehr Pods laufen
 
 +++
 
 ### Lösung 12
 
-1. dann die values yaml anpassen und upgrade
+1. Dann die values.yaml anpassen und upgrade
 ```sh
 helm upgrade -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
 helm upgrade -n helm-namespace nginx-deployment ./nginx-deployment
 ```
-1. mit kubectl oder k9s anzeigen, dass die angegebenen Pods da sind
+1. Mit "kubectl" oder "k9s" anzeigen, dass die angegebenen Pods vorhanden sind
 ```sh
 kubectl get pods -n NAMESPACE
 kubectl get pods -n helm-namespace
@@ -2625,12 +2625,12 @@ kubectl get pods -n helm-namespace
 +++
 
 ## Aufgabe 13
-1. mache ein Rollback auf eine alte Helm version
+1. Mache ein Rollback auf eine alte Helm-Version
 
 +++
 
 ### Lösung 13
-1. mit helm rollback auf alte revision gehen
+1. Mit "helm rollback" auf alte Revision gehen
 ```sh
 helm rollback -n NAMESPACE RELEASE_NAME REVISION
 helm rollback -n helm-namespace nginx-deployment 1
@@ -2638,10 +2638,10 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 +++
 
-### Übersicht Helm
+### Zusammenfassung Helm
 - Ist ein Packetmanager
 - arbeitet mit Templates
-- eine zentrale datei (values.yaml) um komplexe anwendungen zu deployen
+- eine zentrale Datei (values.yaml) um komplexe Anwendungen zu deployen
 - wird in Repos verwaltet
 
 ---
