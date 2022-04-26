@@ -2519,6 +2519,7 @@ affinity: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ```yaml
 image:
   repository: nginx
@@ -2541,6 +2542,7 @@ resources: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Helm Commands
 - helm install
     - installiert ein helm chart
@@ -2551,6 +2553,7 @@ resources: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 - helm upgrade
     - upgraden eines helm charts auf neue revision
     - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist
@@ -2561,6 +2564,7 @@ resources: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 - helm uninstall
     - deinstalliert ein chart, löscht alle ressourcen
 - helm rollback
@@ -2573,6 +2577,7 @@ resources: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 - helm repo
     - add 
         - hinzufügen eines repos
@@ -2583,12 +2588,14 @@ resources: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Aufgabe:
 1. erstelle ein Helm Chart für ein nginx deployment mit service
 1. deploye dies in ein Namespace deiner wahl
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Lösung
 1. erst das chart erstellen
 ```sh
@@ -2603,12 +2610,14 @@ helm install -n helm-namespace nginx-deployment ./nginx-deployment
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Aufgabe:
 1. passe die replicas mit helm an
 1. Verifiziere, dass mehr pods laufen
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Lösung
 
 1. dann die values yaml anpassen und upgrade
@@ -2624,11 +2633,13 @@ kubectl get pods -n helm-namespace
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Aufgabe:
 1. mache ein Rollback auf eine alte Helm version
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Lösung
 1. mit helm rollback auf alte revision gehen
 ```sh
@@ -2638,6 +2649,7 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Übersicht Helm
 - Ist ein Packetmanager
 - arbeitet mit Templates
@@ -2646,11 +2658,140 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 ---
 
+<!-- .slide: style="text-align: left;"> -->
 # Finance Cloud Native
 
 ---
 
-# Prometheus und Loki
+<!-- .slide: style="text-align: left;"> -->
+# Monitoring und Logging
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Prometheus
+- time series Database
+- speichert metric daten einzelner services
+- Abrufen der daten mittels PromQL
+```PromQL
+sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+![image](https://devconnected.com/wp-content/uploads/2019/05/what-does-prometheus-do.png)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Alertmanager
+- Alamiert nach erstellten Vorgaben
+- Diverse endpoints lassen sich hinzufügen
+    - Email
+    - div. Instant messanger
+        - slack
+        - MS teams
+        - Telegram
+    - SMS
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Grafana
+- ließt daten von Datensammelstationen
+    - Prometheus
+    - Loki
+    - MSSQL
+    - InfluxDB
+    - viele weitere [DataSources](https://grafana.com/docs/grafana/latest/datasources/)
+- erstellt Grafiken
+- Dashboards auf benutzeroberfläche erstellbar
+- Dashboards importierbar
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+<!-- .slide: data-background="#51565c" -->
+  <img src="https://www.augmentedmind.de/wp-content/uploads/2021/09/prometheus-official-architecture-1024x615.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Logging mit Loki und promtail
+- auch loki-stack genannt
+- log aggregation system
+- indexiert nicht den Inhalt der Logs
+- indexiert Metadaten der Logs
+- Integriert sich mit Prometheus und Grafana
+    - ununterbrochener Wechsel zwischen Logs und Metrics möglich
+- promtail um Logs von Nodes einzusammeln
+
++++
+
+  
+
+<!-- .slide: style="text-align: left;"> -->
+<!-- .slide: data-background="#808080" -->
+  <img src="images/grafana-loki-work.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufgabe
+- installiert mit Helm Prometheus, Grafana, loki-stack(loki und promtail)
+- in grafana Datasources Prometheus und Loki hinzufügen
+- erstellt ein Dashboard welches den Ressourcenverbrauch anzeigt
+- erstellt ein Log Dashboard
+- Tipp: bei installation mit helm ausgabe nach installation beachten!
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Lösung
+- für Prometheus:
+    - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    - helm repo update
+    - helm install -n NAMESPACE prometheus-community prometheus-community/prometheus
+- für Grafana: 
+    - helm repo add grafana https://grafana.github.io/helm-charts
+    - helm repo update
+    - helm install -n NAMESPACE grafana grafana/grafana
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- für Loki-stack (installiert loki und promtail):
+    - ist auch in grafana helm repo
+    - helm install -n NAMESPACE loki grafana/loki-stack
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- um das grafana Dashboard erreichbar zu machen braucht man ein port-forward
+    - export POD_NAME=$(kubectl get pods --namespace NAMESPACE -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=grafana" -o jsonpath="{.items[0].metadata.name}")
+    - kubectl --namespace NAMESPACE port-forward $POD_NAME 3000
+    - anschließend grafana auf localhost:3000 erreichbar
+        - username ist admin, password steht im secret grafana base64 encrypted
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Datasources auf der linken seite bei Configuration
+    - prometheus braucht in diesem Fall nur die URL: dieses Schema: http://PROMETHEUS-SERVER-SERVICE:PORT
+    - loki braucht ebenfalls nur URL: diese Schema: http://LOKI-SERVICE:PORT
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Auslastungsdashboard erstellen:
+    - auf grafischer Oberfläche entweder ein Dashboard mit PromQL erstellen
+    - oder auf grafischer Oberfläche ein Dashboard importieren
+        - [Dashboard](https://grafana.com/grafana/dashboards/6417)
+- Log Dashboard erstellen
+    - auf grafischer Oberfläche mit Loki Query
+    - oder auf grafischer Oberfläche Importieren
+        - [Dashboard](https://grafana.com/grafana/dashboards/12019)
 
 ---
 
