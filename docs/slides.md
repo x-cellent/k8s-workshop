@@ -1060,7 +1060,7 @@ die Controle Plane Server sind die nodes, welche für die Verwaltung des Cluster
     - default  <!-- .element: class="fragment" data-fragment-index="4" -->
     - kube-node-lease <!-- .element: class="fragment" data-fragment-index="5" -->
     - kube-public <!-- .element: class="fragment" data-fragment-index="6" -->
-    -kube-system <!-- .element: class="fragment" data-fragment-index="7" -->
+    - kube-system <!-- .element: class="fragment" data-fragment-index="7" -->
 
 <aside class="notes">
   Namespaces sind ein ganz wichtiger punkt in Kubernetes
@@ -1546,40 +1546,43 @@ docker build -t my-image .
 
 <!-- .slide: style="text-align: left;"> -->
 - Container Orchestrierungstool
-  - Verwaltung von Pods <!-- .element: class="fragment" data-fragment-index="2" -->
-  - Starten, stoppen und Überwachen <!-- .element: class="fragment" data-fragment-index="3" -->
-  - Self-Healing <!-- .element: class="fragment" data-fragment-index="4" -->
-  - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="5" -->
-  - Zugriffskontrolle (RBAC) <!-- .element: class="fragment" data-fragment-index="5" -->
-  - Validierung <!-- .element: class="fragment" data-fragment-index="5" -->
+  - Verwaltung von Pods
+  - Starten, stoppen und Überwachen
+  - Self-Healing
+  - Dynamische Skalierung
+  - Zugriffskontrolle (RBAC)
+  - Validierung
   - u.v.m
 
 +++
 
-![image](https://cdn.ttgtmedia.com/rms/German/Kubernetes-Cluster-deutsch.png)
+<!-- .slide: style="text-align: left;" class="stretch"> -->
+## Architektur von Kubernetes
+![image](https://upload.wikimedia.org/wikipedia/commons/b/be/Kubernetes.png)
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Objekte
+### Kubernetes API Objekte
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 - Pod
-  - kleinste deploybare Einheit <!-- .element: class="fragment" data-fragment-index="1" -->
-  - beinhaltet 1 bis N Container <!-- .element: class="fragment" data-fragment-index="2" -->
-  - eigener Netzbereich und IP <!-- .element: class="fragment" data-fragment-index="3" -->
+  - kleinste deploybare Einheit
+  - beinhaltet 1 bis N Container
+  - eigener Netzbereich und IP
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
-  - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
-  - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
-- Deployment <!-- .element: class="fragment" data-fragment-index="4" -->
-  - Managed ein ReplicaSet <!-- .element: class="fragment" data-fragment-index="5" -->
-  - Bietet zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="6" -->
+- ReplicaSet
+  - Stellt sicher, dass zu jeder Zeit genau N Pods laufen
+  - Matching über Labels
+- Deployment <!-- .element: class="fragment" data-fragment-index="1" -->
+  - Managed stateless Pods
+  - Managed ein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
+  - Bietet zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="1" -->
 
 +++
 
@@ -1589,10 +1592,10 @@ docker build -t my-image .
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- DeamonSet <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Spec sehr ähnlich zu Deployment, aber ohne Replicas <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Managed damit kein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Stattdessen je ein Replica pro Node <!-- .element: class="fragment" data-fragment-index="1" -->
+- DeamonSet
+  - Spec fast analog zu Deployment, u.a. ohne Replicas
+  - Managed damit kein ReplicaSet
+  - Stattdessen je ein Replica pro Node
 
 +++
 
@@ -1602,13 +1605,13 @@ docker build -t my-image .
 
 <!-- .slide: style="text-align: left;"> -->
 - Service
-    - Loadbalancer für Pods
-    - Auch hier Matching via Labels
-    - Typen <!-- .element: class="fragment" data-fragment-index="1" -->
-        - None (headless) <!-- .element: class="fragment" data-fragment-index="1" -->
-        - ClusterIP (Default) <!-- .element: class="fragment" data-fragment-index="2" -->
-        - NodePort <!-- .element: class="fragment" data-fragment-index="3" -->
-        - Loadbalancer <!-- .element: class="fragment" data-fragment-index="4" -->
+  - Loadbalancer für Pods
+  - Matching via Labels
+  - Typen
+    - None (headless)
+    - ClusterIP (Default)
+    - NodePort
+    - Loadbalancer
 
 Note:
 Service - headless (erstellt für jeden Pod einen DNS entry innerhalb des Clusters (coredns), kein externer Zugriff möglich)
@@ -1623,10 +1626,13 @@ Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalan
 
 <!-- .slide: style="text-align: left;"> -->
 - StatefulSet
-    - Spec ähnlich zu Deployment
-    - Geordnetes Starten (einer nach dem anderen)
-    - Geordnetes Stoppen in umgekehrter Reihenfolge
-    - Je Pod ein DNS Eintrag
+  - Managed stateful Pods
+  - Spec ähnlich zu Deployment
+  - Geordnetes Starten (einer nach dem anderen)
+  - Geordnetes Stoppen in umgekehrter Reihenfolge
+  - Je Pod ein DNS Eintrag der Bauart POD-INDEX.NAMESPACE:
+    - z.B. redis-0.db, redis-1.db, ...
+    - Bei Pod Rearrangement wird DNS Eintrag aktualisiert
 
 +++
 
@@ -1635,12 +1641,12 @@ Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalan
 
 +++
 
-- ConfigMap <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Plain-Text Key-Value Store <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="2" -->
-- Secret <!-- .element: class="fragment" data-fragment-index="3" -->
-    - base64 encoded Data Store <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Kann in Pods, Deployments, STSs und DSs gemounted werden <!-- .element: class="fragment" data-fragment-index="4" -->
+- ConfigMap
+  - Plain-Text Key-Value Store
+  - Kann für Pods, Deployments, STSs und DSs definiert werden
+- Secret <!-- .element: class="fragment" data-fragment-index="1" -->
+  - base64 encoded Data Store <!-- .element: class="fragment" data-fragment-index="1" -->
+  - Kann für Pods, Deployments, STSs und DSs definiert werden <!-- .element: class="fragment" data-fragment-index="1" -->
 
 +++
 
@@ -1651,14 +1657,14 @@ Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalan
 
 <!-- .slide: style="text-align: left;"> -->
 ### Kubernetes Tools
-- kubectl <!-- .element: class="fragment" data-fragment-index="1" -->
-    - CLI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
-- krew <!-- .element: class="fragment" data-fragment-index="2" -->
-    - kubectl Plugin Manager <!-- .element: class="fragment" data-fragment-index="2" -->
-- k9s <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Terminal UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="3" -->
-- kind (Kubernetes in Docker) <!-- .element: class="fragment" data-fragment-index="4" -->
-    - Single-Node k8s Cluster in Docker Container <!-- .element: class="fragment" data-fragment-index="4" -->
+- kubectl
+  - CLI zur Interaktion mit k8s Clustern
+- krew
+  - kubectl Plugin Manager
+- k9s
+  - Terminal UI zur Interaktion mit k8s Clustern
+- kind (Kubernetes in Docker)
+  - Single-Node k8s Cluster in Docker Container
 
 +++
 
@@ -1703,6 +1709,11 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 ## Erinnerung Pod
 - Kleinste deploybare Einheit <!-- .element: class="fragment" data-fragment-index="1" -->
 - Kann per Manifest werden <!-- .element: class="fragment" data-fragment-index="2" -->
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="images/pod-to-node.drawio.png" style="height: 500px"   >
 
 +++
 
@@ -1753,33 +1764,55 @@ Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .elemen
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Service
-- Loadbalancer für Pods <!-- .element: class="fragment" data-fragment-index="1" -->
-- Matching via Labels <!-- .element: class="fragment" data-fragment-index="2" -->
+## Service Typen
+
+- None (headless)
+  - erstellt für jeden Pod einen DNS Eintrag innerhalb des Clusters (coredns)
+  - kein externer Zugriff möglich
 
 +++
 
-## Service Type ClusterIP
+<!-- .slide: style="text-align: left;"> -->
+- ClusterIP
+  - routet über die clusterinternen Pod IPs
+  - kein externer Zugiff möglich
+
++++
+
 <!-- .slide: data-background="#51565c" -->
-  <img src="images/svc-clusterip.png" style="height: 500px"  >
+<img src="images/svc-clusterip.png" style="height: 500px"  >
 
 +++
 
-## Service Type NodePort
+<!-- .slide: style="text-align: left;"> -->
+- NodePort
+  - öffnet auf jedem Node denselben Port zwischen 30000 und 32767
+  - Traffic wird von dort an den Service weitergeleitet
+
++++
+
 <!-- .slide: data-background="#51565c" -->
-  <img src="images/svc-nodeport.png" style="height: 500px"   >
+<img src="images/svc-nodeport.png" style="height: 500px"   >
 
 +++
 
-## Service Type LoadBalancer
+<!-- .slide: style="text-align: left;"> -->
+- Loadbalancer
+  - macht den Service von außen zugänglich
+  - bedarf eines Loadbalancers, der den Traffic zum Service routet
+  - k8s bietet keine Standardimplementierung (Cloud Provider)
+    - Kosten
+
++++
+
 <!-- .slide: data-background="#51565c"  -->
-  <img src="images/svc-loadbalancer.png" style="height: 500px" >
+<img src="images/svc-loadbalancer.png" style="height: 500px" >
 
 +++
 
 ## Ausblick: Ingress
 <!-- .slide: data-background="#51565c" -->
-  <img src="images/ingress.png" style="height: 500px"  >
+<img src="images/ingress.png" style="height: 500px"  >
 
 +++
 
@@ -2078,7 +2111,7 @@ kubectl logs -n ex8 hello-
 ```sh
 kubectl apply -f configmap.yaml -n ex9
 ```
-- anschließend das deployment deplyoen
+- anschließend das Deployment Objekt deployen
 ```sh
 kubectl apply -f deployment.yaml -n ex9
 ```
@@ -2089,7 +2122,7 @@ kubectl apply -f deployment.yaml -n ex9
 <!-- .slide: style="text-align: left;"> -->
 - Speicherung vertraulicher Daten <!-- .element: class="fragment" data-fragment-index="1" -->
 - Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="2" -->
-- Bessere Seperierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
+- Bessere Separierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
    - User darf Configmaps sehen aber keine Secrets <!-- .element: class="fragment" data-fragment-index="4" -->
 
 <aside class="notes">
@@ -2111,11 +2144,12 @@ kubectl apply -f deployment.yaml -n ex9
 
 +++
 
-- ReadWriteOnce oder ReadWriteMany <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Once, nur ein Node darf auf das Volume schreiben <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Many, mehrere dürfen <!-- .element: class="fragment" data-fragment-index="3" -->
-- ReadOnlyMany <!-- .element: class="fragment" data-fragment-index="4" -->
-    - mehere Nodes können das Volume ReadOnly Mounten <!-- .element: class="fragment" data-fragment-index="5" -->
+- ReadWriteOnce
+    - Once, nur ein Node darf auf das Volume schreiben
+- ReadWriteMany
+    - Many, mehrere dürfen
+- ReadOnlyMany
+    - mehrere Nodes können das Volume ReadOnly mounten
 
 +++
 
