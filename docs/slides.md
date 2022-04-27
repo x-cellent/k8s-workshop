@@ -532,7 +532,7 @@ Lösung nach 15 min
 
   liegt daran, dass sich alle systeme ein host os teilen können
 
-  dazu zählen kernel aufgaben
+  dazu zählen kernel Aufgaben
 
   deployments schneller da nicht alle prozesse beendet und neugestartet werden müssen
 </aside>
@@ -1600,7 +1600,7 @@ Service - ClusterIP (routet über die clusterinternen Pod IPs, kein externer Zug
 
 Service - NodePort (öffnet auf jedem Node denselben Port, über den von außen der Service erreicht werden kann)
 
-Service - Loadbalancer (exosed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
+Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
 
 +++
 
@@ -1695,7 +1695,7 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe:
+### Aufgabe 1
 - Kaputte [pod.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md)
 - Reparieren und in Namespace der Wahl deployen
 
@@ -1727,7 +1727,7 @@ containers:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
+### Lösung 1
 ```yaml
 apiVersion: v1 #Typo in apiVersion, V von Version muss groß sein
 kind: Pod #Typo, kind muss klein sein
@@ -1763,21 +1763,22 @@ spec:
 ![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
 
 <aside class="notes">
-Der Service leitet anfragen welche in die Nodes kommt an die Pods weiter
+Der Service leitet Anfragen, welche an die Nodes kommt an die Pods weiter.
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Aufgabe
-- erstelle ein Deployment (Objekt) des Pods aus vergangener aufgabe 
+#### Aufgabe 2
+- erstelle ein Deployment (Objekt) des Pods aus vorhergegangener Aufgabe
+
     - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
 - erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
     - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
 
 +++
 
-#### Lösung
+#### Lösung 2
 - erst deployment.yaml erstellen und in gewünschten Namespace deployen
     - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
     - kubectl apply -d deployment.yaml -n web
@@ -1803,22 +1804,23 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- Diese yaml in den gewünsten Namespace deployen
+- Diese yaml in den gewünschten Namespace deployen
     - k apply -f service.yaml -n web
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Port-Forwarding
+
 - Zugriff in Container erlangen <!-- .element: class="fragment" data-fragment-index="1" -->
-- für debugging <!-- .element: class="fragment" data-fragment-index="2" -->
+- für Debugging <!-- .element: class="fragment" data-fragment-index="2" -->
 - k9s kann diese Verwalten <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe
-- Deployment und service aus letzter Aufgabe muss im selben Namespace deployt sein
+### Aufgabe 3
+- Deployment und Service aus letzter Aufgabe muss im selben Namespace deployed sein
     - kubectl create ns web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
     - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml -n web
@@ -1829,8 +1831,8 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
-- es gibt den weg mit kubectl
+### Lösung 3
+- es gibt den Weg mit kubectl
     - kubectl port-forward -n web service/web 8081:8081
     - kubectl port-forward -n web deployment/web 8081:80
     - kubectl port-forward -n web pod/web-6779b45f74-bvc7p 8081:80
@@ -1848,20 +1850,20 @@ spec:
     - Monitoring Agent
 
 <aside class="notes">
-  daemonSets starten eine Replica auf jeder Node
+  DaemonSets starten eine Replica auf jeder Node.
 
-  kann nicht passieren, dass bei einem Node ausfall die pods erst auf einer neuen node deployt wird
+  Kann nicht passieren, dass bei einem Node-Ausfall die Pods erst auf einer neuen Node deployed wird.
 
-  oft verwendet für log collector, da diese die logs von allen pods auf allen nodes braucht
+  Oft verwendet für "log collector", da diese die Logs von allen Pods auf allen Nodes braucht.
 
-  ebenso bei monitoring collectorn, da diese das monitoring von allen nodes braucht
+  Ebenso bei "monitoring collectoren", da diese das Monitoring von allen Nodes braucht.
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe 
-- Deploye ein DaemonSet mit einem nginx Pod in ein Namespace deiner Wahl
+### Aufgabe 4
+- Deploye ein DaemonSet mit einem nginx Pod in einen Namespace deiner Wahl
 - Scale das DaemonSet auf 3 Pods
     - ist dies Möglich?
     - Warum? Warum nicht?
@@ -1869,7 +1871,7 @@ spec:
 +++
 
 
-### Lösung
+### Lösung 4
 ```yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -1899,7 +1901,7 @@ spec:
 
 +++
 
-- scaling ist nicht möglich, da daemonSets mit den Nodes scalen
+- Scaling ist nicht möglich, da DaemonSets mit den Nodes scalen
 
 +++
 
@@ -1909,9 +1911,9 @@ spec:
 - Geordnetes Update/Shutdown <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
-  StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine anwendung ihren status nicht verliert
+  StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine Anwendung ihren Status nicht verliert.
 
-  z.B Datenbanken sind klassische Anwendungen welche man in diesem zustand haben möchte.
+  z.B Datenbanken sind klassische Anwendungen, welche man in diesem Zustand haben möchte.
 </aside>
 
 +++
@@ -1922,23 +1924,23 @@ spec:
     - Datenbank Backup <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
-  jobs sind praktisch um einzelne kommandos auszuführen
+  Jobs sind praktisch um einzelne Kommandos auszuführen.
 
-  z.B prüfen ob ein service im cluster erreichbar ist, datenbank backups zu erstellen
+  Z.B prüfen ob ein Service im Cluster erreichbar ist, Datenbank-Backups zu erstellen.
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe 
-- Erstelle ein Job welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
+### Aufgabe 5
+- Erstelle einen Job, welcher einmalig die Zahl Pi auf 5000 Stellen genau berechnet.
 - gebe Pi aus
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Lösung
-- von kubernetes doku das Manifest übernehmen und anpassen
+#### Lösung 5
+- Von Kubernetes Doku das Manifest übernehmen und anpassen
 
 +++
 
@@ -1978,23 +1980,23 @@ spec:
 <aside class="notes">
   wie klassische Linux Cronjobs 
 
-  Regelmäßige außführung von Jobs
+  Regelmäßige Außführung von Jobs
 
-  man kann auch einmalig die Jobs eines Cronjobs außführen pratkisch für debugging
+  Man kann auch einmalig die Jobs eines Cronjobs außführen pratkisch für debugging
 </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe 
-- erstelle einen Cronjob welcher minütlich das datum und deinen Namen ausgibt
-- dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene versuche behalten
-- teste diesen cronjob ohne eine minute zu warten
+### Aufgabe 6
+- erstelle einen CronJob welcher minütlich das Datum und deinen Namen ausgibt
+- dieser Cronjob soll 5 erfolgreiche und 8 fehlgeschlagene Versuche behalten
+- teste diesen CronJob ohne eine Minute zu warten
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Lösung
+#### Lösung 6
 - aus kubernetes Doku Manifest kopieren und anpassen
 
 +++
@@ -2030,7 +2032,7 @@ spec:
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- erstellen eines einmaligen runs
+- Erstellen eines einmaligen runs
 ```sh
  kubectl create job -n ex8 --from=cronjob/hello hello-test
 ```
@@ -2043,7 +2045,7 @@ kubectl logs -n ex8 hello-
 
 <!-- .slide: style="text-align: left;"> -->
 ## ConfigMaps
-- Speicherung von nicht vertraulichen daten <!-- .element: class="fragment" data-fragment-index="1" -->
+- Speicherung von nicht vertraulichen Daten <!-- .element: class="fragment" data-fragment-index="1" -->
 - Einbindung in Pods als <!-- .element: class="fragment" data-fragment-index="2" -->
     - Umgebungsvariable <!-- .element: class="fragment" data-fragment-index="3" -->
     - command-line argument <!-- .element: class="fragment" data-fragment-index="4" -->
@@ -2051,18 +2053,18 @@ kubectl logs -n ex8 hello-
 - Kein Reload der Pods bei Änderung <!-- .element: class="fragment" data-fragment-index="6" -->
 
 <aside class="notes">
-  in configmaps sollen nur nicht vertrauliche daten gespeichert werden
+  in ConfigMaps sollen nur nicht vertrauliche Daten gespeichert werden
 
-  es gibt mehrere wege diese in die container einzubinden
+  es gibt mehrere Wege diese in die Container einzubinden
 
-  pods reloaden nicht automatisch wenn configmaps geupdated wurden
+  Pods reloaden nicht automatisch wenn ConfigMaps geupdated wurden
   </aside>
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Aufgabe
-- dieses deployment möchte eine ConfigMap einbinden
+### Aufgabe 7
+- dieses Deployment möchte eine ConfigMap einbinden
     - [Deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/deployment.yaml)
 - diese ConfigMap
     - [configmap.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex9%20-%20ConfigMap%20-%20Deployment/configmap.yaml)
@@ -2071,8 +2073,8 @@ kubectl logs -n ex8 hello-
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Lösung
-- WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen
+#### Lösung 7
+- WorkerConnection in Zeile 13 Updaten, anschließend zurst die Configmap deployen:
 ```sh
 kubectl apply -f configmap.yaml -n ex9
 ```
@@ -2080,23 +2082,22 @@ kubectl apply -f configmap.yaml -n ex9
 ```sh
 kubectl apply -f deployment.yaml -n ex9
 ```
-- Wichtig! Beides in den gleichen Namespace
+- Wichtig! Beides in den gleichen Namespace.
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Secret
 - Speicherung vertraulicher Daten <!-- .element: class="fragment" data-fragment-index="1" -->
 - Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="2" -->
 - Bessere Seperierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
    - User darf Configmaps sehen aber keine Secrets <!-- .element: class="fragment" data-fragment-index="4" -->
 
 <aside class="notes">
-  secrets gibt es um vertrauliche daten zu speichern
+  Secrets gibt es um vertrauliche Daten zu speichern
 
-  standartmäßig liegen diese daten aber unverschlüsselt im etcd
+  Standartmäßig liegen diese Daten aber unverschlüsselt im etcd
 
-  einbindung ähnlich wie bei configmaps
+  Einbindung ähnlich wie bei ConfigMaps
 </aside>
 
 +++
@@ -2118,15 +2119,15 @@ kubectl apply -f deployment.yaml -n ex9
 
 +++
 
-### Aufgabe
-- erstelle ein local PV mit 10 GB Capacity
-- erstelle das Verzeichnis auf der Node
-- dieser soll ReadWriteOnce sein
-- dieser muss einen eindeutigen Namen haben
+### Aufgabe 8
+- Erstelle ein local PV mit 10 GB Capacity
+- Erstelle das Verzeichnis auf der Node
+- Dieses soll ReadWriteOnce sein
+- Dieses muss einen eindeutigen Namen haben
 
 +++
 
-#### Lösung
+#### Lösung 8
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
@@ -2158,26 +2159,26 @@ spec:
 
 ## PersistantVolumeClaim (PVC)
 - Reserviert Ressourcen eines PV`s <!-- .element: class="fragment" data-fragment-index="1" -->
-- wird anschließend ins deployment eingebaut <!-- .element: class="fragment" data-fragment-index="2" -->
-- Verknüpfung PV und PVC mit Selector labels oder direkt mit namen <!-- .element: class="fragment" data-fragment-index="3" -->
+- wird anschließend ins Deployment eingebaut <!-- .element: class="fragment" data-fragment-index="2" -->
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit Namen <!-- .element: class="fragment" data-fragment-index="3" -->
     - bei local kein dynamisches (selector) mapping möglich <!-- .element: class="fragment" data-fragment-index="4" -->
 - Verknüpfung ist eine 1 zu 1 Verknüpfung <!-- .element: class="fragment" data-fragment-index="5" -->
     - keine 2 PVC an einem PV <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
-### Aufgabe
-- erstelle ein PVC
-- erstelle ein postgresql statefulset
+### Aufgabe 10
+- Erstelle ein PVC
+- Erstelle ein postgresql statefulset
     - Tipp: Configmap und Secret müssen auch erstellt sein
       um env Variablen in den Container zu übergeben
-- welches das PVC einbindet
-- lasse die daten welche in der DB sind anzeigen
+- Welches das PVC einbindet
+- Lasse die Daten, welche in der DB sind anzeigen
 
 +++
 
-#### Lösung
-- Der PV der letzten aufgabe muss erstellt sein
+#### Lösung 10
+- Der PV der letzten Aufgabe muss erstellt sein
 ```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -2291,7 +2292,7 @@ Role Based Access Control
 <!-- .slide: style="text-align: left;"> -->
 ## Admission Controller
 -
-Allow/Deny/Change APi-Requests
+Allow/Deny/Change API-Requests
 - Basiert auf Regeln und Policies
 
 ---
@@ -2299,17 +2300,17 @@ Allow/Deny/Change APi-Requests
 <!-- .slide: style="text-align: left;"> -->
 # Helm
 - Package Manager für Kubernetes <!-- .element: class="fragment" data-fragment-index="1" -->
-- gegliedert in sogenannten Charts <!-- .element: class="fragment" data-fragment-index="2" -->
+- Gegliedert in sogenannten Charts <!-- .element: class="fragment" data-fragment-index="2" -->
 - Große Softwarehersteller schreiben eigene Helm Charts <!-- .element: class="fragment" data-fragment-index="3" -->
     - z.B. Gitlab <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
-- praktisch um eine anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen <!-- .element: class="fragment" data-fragment-index="1" -->
+- Praktisch um eine Anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen <!-- .element: class="fragment" data-fragment-index="1" -->
     - test/staging/production <!-- .element: class="fragment" data-fragment-index="2" -->
-- helm charts sind in sogenannten Repos gespeichert <!-- .element: class="fragment" data-fragment-index="3" -->
-    - chart ersteller meistens eigene Repo <!-- .element: class="fragment" data-fragment-index="4" -->
-    - nutzung ähnlich wie bei apt in ubuntu <!-- .element: class="fragment" data-fragment-index="5" -->
+- Helm Charts sind in sogenannten Repos gespeichert <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Chart ersteller haben meistens eigene Repos <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Nutzung ähnlich wie bei apt in ubuntu <!-- .element: class="fragment" data-fragment-index="5" -->
         - adden, updaten installieren <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
@@ -2325,7 +2326,7 @@ Allow/Deny/Change APi-Requests
 schulung
 ├── charts
 ├── Chart.yaml
-├── templates
+├── Stemplates
 │   ├── deployment.yaml
 │   ├── _helpers.tpl
 │   ├── hpa.yaml
@@ -2342,7 +2343,7 @@ schulung
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- das meiste spielt sich im templates ordner ab
+- Das Meiste spielt sich im templates-Ordner ab
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -2411,9 +2412,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- wie so oft im yaml format <!-- .element: class="fragment" data-fragment-index="1" -->
-- das meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
-- anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
+- wie so oft im yaml-Format <!-- .element: class="fragment" data-fragment-index="1" -->
+- das Meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
+- Anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
@@ -2545,59 +2546,59 @@ resources: {}
 <!-- .slide: style="text-align: left;"> -->
 ## Helm Commands
 - helm install <!-- .element: class="fragment" data-fragment-index="1" -->
-    - installiert ein helm chart <!-- .element: class="fragment" data-fragment-index="2" -->
-    - mit -n namespace angebbar <!-- .element: class="fragment" data-fragment-index="3" -->
-    - mit --dry-run --debug kann man überprüfen ob das deployment klappen sollte <!-- .element: class="fragment" data-fragment-index="4" -->
-    - mit --version versionspinning <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Installiert ein Helm Chart <!-- .element: class="fragment" data-fragment-index="2" -->
+    - mit "-n namespace" angebbar <!-- .element: class="fragment" data-fragment-index="3" -->
+    - mit "--dry-run --debug" kann man überprüfen ob das deployment klappen sollte <!-- .element: class="fragment" data-fragment-index="4" -->
+    - mit "--version" Versionspinning <!-- .element: class="fragment" data-fragment-index="5 -->
     - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART` <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 - helm upgrade <!-- .element: class="fragment" data-fragment-index="1" -->
-    - upgraden eines helm charts auf neue revision <!-- .element: class="fragment" data-fragment-index="2" -->
-    - --install wichtige flag, macht, dass chart installiert wird wenns nicht da ist <!-- .element: class="fragment" data-fragment-index="3" -->
-    - mit --version versionspinning <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Upgraden eines Helm Charts auf neue Revision <!-- .element: class="fragment" data-fragment-index="2" -->
+    - "--install" wichtiges Flag. Macht, dass Chart installiert wird wenns nicht da ist <!-- .element: class="fragment" data-fragment-index="3" -->
+    - mit "--version" Versionspinning <!-- .element: class="fragment" data-fragment-index="4" -->
 - helm create <!-- .element: class="fragment" data-fragment-index="5" -->
-    - erstellen eines helm charts <!-- .element: class="fragment" data-fragment-index="6" -->
-    - erstellt die grundlegende ordner struktur <!-- .element: class="fragment" data-fragment-index="7" -->
+    - Erstellen eines Helm Charts <!-- .element: class="fragment" data-fragment-index="6" -->
+    - Erstellt die grundlegende Ordner-Struktur <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 - helm uninstall <!-- .element: class="fragment" data-fragment-index="1" -->
-    - deinstalliert ein chart, löscht alle ressourcen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Deinstalliert ein Chart und löscht alle Ressourcen <!-- .element: class="fragment" data-fragment-index="2" -->
 - helm rollback <!-- .element: class="fragment" data-fragment-index="3" -->
-    - zurückspielen auf alte version des helm charts <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Zurückspielen der alten Version des Helm Charts <!-- .element: class="fragment" data-fragment-index="4" -->
 - helm list <!-- .element: class="fragment" data-fragment-index="5" -->
-    - zeigt installierte helm charts <!-- .element: class="fragment" data-fragment-index="6" -->
-    - entweder mit -A für alle Namespaces oder -n mit Namespace angabe <!-- .element: class="fragment" data-fragment-index="7" -->
+    - Zeigt installierte Helm Charts <!-- .element: class="fragment" data-fragment-index="6" -->
+    - entweder mit "-A" für alle Namespaces oder "-n" mit Namespace angabe <!-- .element: class="fragment" data-fragment-index="7" -->
 - helm lint <!-- .element: class="fragment" data-fragment-index="8" -->
-    - überprüfung ob helm chart template keine fehler hat <!-- .element: class="fragment" data-fragment-index="9" -->
+    - Überprüfung ob das Helm Chart-Template keine Fehler hat <!-- .element: class="fragment" data-fragment-index="9" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 - helm repo <!-- .element: class="fragment" data-fragment-index="1" -->
     - add <!-- .element: class="fragment" data-fragment-index="2" -->
-        - hinzufügen eines repos <!-- .element: class="fragment" data-fragment-index="3" -->
-        - z.B. helm repo add bitnami <!-- .element: class="fragment" data-fragment-index="4" -->
+        - Hinzufügen eines Repos <!-- .element: class="fragment" data-fragment-index="3" -->
+        - z.B. "helm repo add bitnami" <!-- .element: class="fragment" data-fragment-index="4" -->
     - update <!-- .element: class="fragment" data-fragment-index="5" -->
-        - herunterladen welche charts in repos sind <!-- .element: class="fragment" data-fragment-index="6" -->
-        - z.B. in bitnami gibt es ein postgresql chart <!-- .element: class="fragment" data-fragment-index="7" -->
+        - Herunterladen, welche Charts im Repo sind <!-- .element: class="fragment" data-fragment-index="6" -->
+        - z.B. in bitnami gibt es ein postgresql-Chart <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe:
-1. erstelle ein Helm Chart für ein nginx deployment mit service
-1. deploye dies in ein Namespace deiner wahl
+## Aufgabe 11
+1. erstelle ein Helm Chart für ein nginx deployment mit Service
+1. deploye dies in einen Namespace deiner Wahl
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
-1. erst das chart erstellen
+### Lösung 11
+1. Erst das Chart erstellen
 ```sh
 helm create NAME
 helm create nginx-deployment
@@ -2611,21 +2612,20 @@ helm install -n helm-namespace nginx-deployment ./nginx-deployment
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe:
-1. passe die replicas mit helm an
-1. Verifiziere, dass mehr pods laufen
+## Aufgabe 12
+1. Passe die Replicas mit helm an
+1. Verifiziere, dass mehr Pods laufen
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
-
-1. dann die values yaml anpassen und upgrade
+### Lösung 12
+1. Dann die values.yaml anpassen und upgrade
 ```sh
 helm upgrade -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
 helm upgrade -n helm-namespace nginx-deployment ./nginx-deployment
 ```
-1. mit kubectl oder k9s anzeigen, dass die angegebenen Pods da sind
+1. Mit "kubectl" oder "k9s" anzeigen, dass die angegebenen Pods vorhanden sind
 ```sh
 kubectl get pods -n NAMESPACE
 kubectl get pods -n helm-namespace
@@ -2634,14 +2634,15 @@ kubectl get pods -n helm-namespace
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Aufgabe:
-1. mache ein Rollback auf eine alte Helm version
+## Aufgabe 13
+1. Mache ein Rollback auf eine alte Helm-Version
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Lösung
-1. mit helm rollback auf alte revision gehen
+### Lösung 13
+1. Mit "helm rollback" auf alte Revision gehen
+
 ```sh
 helm rollback -n NAMESPACE RELEASE_NAME REVISION
 helm rollback -n helm-namespace nginx-deployment 1
@@ -2650,11 +2651,11 @@ helm rollback -n helm-namespace nginx-deployment 1
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-### Übersicht Helm
-- Ist ein Packetmanager <!-- .element: class="fragment" data-fragment-index="1" -->
-- arbeitet mit Templates <!-- .element: class="fragment" data-fragment-index="2" -->
-- eine zentrale datei (values.yaml) um komplexe anwendungen zu deployen <!-- .element: class="fragment" data-fragment-index="3" -->
-- wird in Repos verwaltet <!-- .element: class="fragment" data-fragment-index="4" -->
+### Zusammenfassung Helm <!-- .element: class="fragment" data-fragment-index="1" -->
+- Ist ein Packetmanager <!-- .element: class="fragment" data-fragment-index="2" -->
+- arbeitet mit Templates <!-- .element: class="fragment" data-fragment-index="3" -->
+- eine zentrale Datei (values.yaml) um komplexe Anwendungen zu deployen <!-- .element: class="fragment" data-fragment-index="4" -->
+- wird in Repos verwaltet <!-- .element: class="fragment" data-fragment-index="5" -->
 
 ---
 
