@@ -2,8 +2,8 @@
 
 2. Installiere den ingress-nginx controller via Helm.
 
-3. Installiere den letsencrypt-prod cluster issuer via kubectl.
-   Finde dafür den Namen der Ingress Klasse heraus und verwende deine Firmen-Email Adresse.
+3. Installiere den letsencrypt-staging cluster issuer via kubectl.
+   Finde dafür den Namen der Ingress Klasse heraus.
 
 4. Da wir uns in einem unmanaged Kubernetes-Cluster befinden, gibt es keine CRD Admission Controller, die Services
    vom Typ `LoadBalancer` abfangen und uns automatisch einen solchen aufbaut.
@@ -14,5 +14,6 @@
    Verwende für den Ingress die Ingress-Klasse aus Aufgabe 3 und als Host `nginx.nip.io`.
 
 6. Teste, ob du die Landing Page vom nginx via `curl -k -H"Host: nginx.nip.io" https://<cluster-container-ip>:<https-node-port>`.
-   Die <cluster-container-ip> kann mittels `docker inspect --format='{{.NetworkSettings.IPAddress}}' k8s-workshop-cluster-control-plane` ermittelt werden.
-   Der <https-node-port> kann vom Service aus Aufgabe 4 eingesehen werden.
+   Tipps:
+   Die <cluster-container-ip> kann mittels `docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' k8s-workshop-cluster-control-plane` ermittelt werden.
+   Der <https-node-port> kann mittels `kubectl -n ingress-nginx get svc ingress-nginx-controller -o custom-columns=NODEPORT:.spec.ports[1].nodePort` ermittelt werden.

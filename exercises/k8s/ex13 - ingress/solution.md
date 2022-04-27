@@ -18,18 +18,18 @@ helm upgrade --install ingress-nginx ingress-nginx \
   --timeout 5m
 ```
 
-3. Manifest des letsencrypt-prod cluster issuers:
+3. Manifest des letsencrypt-staging cluster issuers:
 ```yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-prod
+  name: letsencrypt-staging
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
     email: sandro.koll@x-cellent.com
     privateKeySecretRef:
-      name: letsencrypt-prod
+      name: letsencrypt-staging
     solvers:
       - http01:
           ingress:
@@ -53,7 +53,11 @@ kubectl apply -f ingress.yaml
 ```
 
 6.
+```sh
+curl -k -H"Host: nginx.nip.io" https://$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' k8s-workshop-cluster-control-plane):$(kubectl -n ingress-nginx get svc ingress-nginx-controller -o custom-columns=NODEPORT:.spec.ports[1].nodePort --no-headers)
+```
+
 Zum Beispiel:
 ```sh
-curl -k -H"Host: 10.10.11.138.nip.io" https://172.22.0.2:32318
+curl -k -H"Host: nginx.nip.io" https://172.22.0.2:32318
 ```
