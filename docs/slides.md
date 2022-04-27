@@ -1689,8 +1689,8 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 
 <!-- .slide: style="text-align: left;"> -->
 ## Errinnerung Pod
-- Kleinste Deploybare einheit
-- Kann per yaml datei erstellt/modifiziert werden
+- Kleinste Deploybare einheit <!-- .element: class="fragment" data-fragment-index="1" -->
+- Kann per yaml datei erstellt/modifiziert werden <!-- .element: class="fragment" data-fragment-index="2" -->
 
 +++
 
@@ -1755,8 +1755,8 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Service
-- Loadbalancer für Pods
-- Matching via Labels
+- Loadbalancer für Pods <!-- .element: class="fragment" data-fragment-index="1" -->
+- Matching via Labels <!-- .element: class="fragment" data-fragment-index="2" -->
 
 +++
 
@@ -1771,6 +1771,7 @@ Der Service leitet Anfragen, welche an die Nodes kommt an die Pods weiter.
 <!-- .slide: style="text-align: left;"> -->
 #### Aufgabe 2
 - erstelle ein Deployment (Objekt) des Pods aus vorhergegangener Aufgabe
+
     - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
 - erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
     - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
@@ -1810,9 +1811,10 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Port-Forwarding
-- Zugriff in Container erlangen
-- für Debugging
-- k9s kann diese Verwalten
+
+- Zugriff in Container erlangen <!-- .element: class="fragment" data-fragment-index="1" -->
+- für Debugging <!-- .element: class="fragment" data-fragment-index="2" -->
+- k9s kann diese Verwalten <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
@@ -1905,8 +1907,8 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## StatefulSet
-- Persistente Pods
-- Geordnetes Update/Shutdown
+- Persistente Pods <!-- .element: class="fragment" data-fragment-index="1" -->
+- Geordnetes Update/Shutdown <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
   StatefulSets sind sinnvoll, wenn man erzielen möchte, dass eine Anwendung ihren Status nicht verliert.
@@ -1918,8 +1920,8 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Job
-- Einmalige Ausführung eines Commands in einem Pod
-    - Datenbank Backup
+- Einmalige Ausführung eines Commands in einem Pod <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Datenbank Backup <!-- .element: class="fragment" data-fragment-index="2" -->
 
 <aside class="notes">
   Jobs sind praktisch um einzelne Kommandos auszuführen.
@@ -1971,9 +1973,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## CronJobs
-- Mischung aus klassischen CronJobs und Jobs
-- Regelmäßige Ausführung eines Jobs
-    - Datenbank Backups
+- Mischung aus klassischen CronJobs und Jobs <!-- .element: class="fragment" data-fragment-index="1" -->
+- Regelmäßige Ausführung eines Jobs <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Datenbank Backups <!-- .element: class="fragment" data-fragment-index="3" -->
 
 <aside class="notes">
   wie klassische Linux Cronjobs 
@@ -2043,12 +2045,12 @@ kubectl logs -n ex8 hello-
 
 <!-- .slide: style="text-align: left;"> -->
 ## ConfigMaps
-- Speicherung von nicht vertraulichen Daten
-- Einbindung in Pods als
-    - Umgebungsvariable
-    - command-line argument
-    - Datei (Volume)
-- Kein Reload der Pods bei Änderung
+- Speicherung von nicht vertraulichen Daten <!-- .element: class="fragment" data-fragment-index="1" -->
+- Einbindung in Pods als <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Umgebungsvariable <!-- .element: class="fragment" data-fragment-index="3" -->
+    - command-line argument <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Datei (Volume) <!-- .element: class="fragment" data-fragment-index="5" -->
+- Kein Reload der Pods bei Änderung <!-- .element: class="fragment" data-fragment-index="6" -->
 
 <aside class="notes">
   in ConfigMaps sollen nur nicht vertrauliche Daten gespeichert werden
@@ -2085,11 +2087,10 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Secret
-- Speicherung vertraulicher Daten
-- Unverschlüsselt in etcd-Datenbank
-- Bessere Separierung mittels Rollen
-   - User darf ConfigMaps sehen aber keine Secrets
+- Speicherung vertraulicher Daten <!-- .element: class="fragment" data-fragment-index="1" -->
+- Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="2" -->
+- Bessere Seperierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
+   - User darf Configmaps sehen aber keine Secrets <!-- .element: class="fragment" data-fragment-index="4" -->
 
 <aside class="notes">
   Secrets gibt es um vertrauliche Daten zu speichern
@@ -2102,19 +2103,19 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 ## PersistantVolume (PV)
-- sehr viele Volume Typen
-    - Lightbits, local und s3 bei der FI-TS
-- Speichert Infos über Volumen und Storage
-- überverzeichnis muss bereits erstellt sein
+- sehr viele Volume Typen <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Lightbits, local und s3 bei der FI-TS <!-- .element: class="fragment" data-fragment-index="2" -->
+- Speichert Infos über Volumen und Storage <!-- .element: class="fragment" data-fragment-index="3" -->
+- überverzeichnis muss bereits erstellt sein <!-- .element: class="fragment" data-fragment-index="4" -->
 
 
 +++
 
-- ReadWriteOnce oder ReadWriteMany
-    - Once, nur ein Node darf auf das Volume schreiben
-    - Many, mehrere dürfen
-- ReadOnlyMany
-    - mehere Nodes können das Volume ReadOnly Mounten
+- ReadWriteOnce oder ReadWriteMany <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Once, nur ein Node darf auf das Volume schreiben <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Many, mehrere dürfen <!-- .element: class="fragment" data-fragment-index="3" -->
+- ReadOnlyMany <!-- .element: class="fragment" data-fragment-index="4" -->
+    - mehere Nodes können das Volume ReadOnly Mounten <!-- .element: class="fragment" data-fragment-index="5" -->
 
 +++
 
@@ -2157,12 +2158,12 @@ spec:
 +++
 
 ## PersistantVolumeClaim (PVC)
-- Reserviert Ressourcen eines PV`s
-- wird anschließend ins Deployment eingebaut
-- Verknüpfung PV und PVC mit Selector labels oder direkt mit Namen
-    - bei local kein dynamisches (selector) mapping möglich
-- Verknüpfung ist eine 1 zu 1 Verknüpfung
-    - keine 2 PVC an einem PV
+- Reserviert Ressourcen eines PV`s <!-- .element: class="fragment" data-fragment-index="1" -->
+- wird anschließend ins Deployment eingebaut <!-- .element: class="fragment" data-fragment-index="2" -->
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit Namen <!-- .element: class="fragment" data-fragment-index="3" -->
+    - bei local kein dynamisches (selector) mapping möglich <!-- .element: class="fragment" data-fragment-index="4" -->
+- Verknüpfung ist eine 1 zu 1 Verknüpfung <!-- .element: class="fragment" data-fragment-index="5" -->
+    - keine 2 PVC an einem PV <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
@@ -2298,19 +2299,19 @@ Allow/Deny/Change API-Requests
 
 <!-- .slide: style="text-align: left;"> -->
 # Helm
-- Package Manager für Kubernetes
-- Gegliedert in sogenannten Charts
-- Große Softwarehersteller schreiben eigene Helm Charts
-    - z.B. Gitlab
+- Package Manager für Kubernetes <!-- .element: class="fragment" data-fragment-index="1" -->
+- Gegliedert in sogenannten Charts <!-- .element: class="fragment" data-fragment-index="2" -->
+- Große Softwarehersteller schreiben eigene Helm Charts <!-- .element: class="fragment" data-fragment-index="3" -->
+    - z.B. Gitlab <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
-- Praktisch um eine Anwendung mit wenigen Änderungen in verschiedenen Umgebungen zu deployen
-    - test/staging/production
-- Helm Charts sind in sogenannten Repos gespeichert
-    - Chart ersteller haben meistens eigene Repos
-    - Nutzung ähnlich wie bei apt in ubuntu
-        - adden, updaten installieren
+- Praktisch um eine Anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen <!-- .element: class="fragment" data-fragment-index="1" -->
+    - test/staging/production <!-- .element: class="fragment" data-fragment-index="2" -->
+- Helm Charts sind in sogenannten Repos gespeichert <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Chart ersteller haben meistens eigene Repos <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Nutzung ähnlich wie bei apt in ubuntu <!-- .element: class="fragment" data-fragment-index="5" -->
+        - adden, updaten installieren <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
@@ -2411,9 +2412,9 @@ spec:
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- wie so oft im yaml-Format
-- das Meiste sind alles templates
-- Anpassungen in der values.yaml
+- wie so oft im yaml-Format <!-- .element: class="fragment" data-fragment-index="1" -->
+- das Meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
+- Anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
@@ -2519,6 +2520,7 @@ affinity: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ```yaml
 image:
   repository: nginx
@@ -2541,54 +2543,60 @@ resources: {}
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Helm Commands
-- helm install
-    - Installiert ein Helm Chart
-    - mit "-n namespace" angebbar
-    - mit "--dry-run --debug" kann man überprüfen ob das deployment klappen sollte
-    - mit "--version" Versionspinning
-    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART`
+- helm install <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Installiert ein Helm Chart <!-- .element: class="fragment" data-fragment-index="2" -->
+    - mit "-n namespace" angebbar <!-- .element: class="fragment" data-fragment-index="3" -->
+    - mit "--dry-run --debug" kann man überprüfen ob das deployment klappen sollte <!-- .element: class="fragment" data-fragment-index="4" -->
+    - mit "--version" Versionspinning <!-- .element: class="fragment" data-fragment-index="5 -->
+    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART` <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
-- helm upgrade
-    - Upgraden eines Helm Charts auf neue Revision
-    - "--install" wichtiges Flag. Macht, dass Chart installiert wird wenns nicht da ist
-    - mit "--version" Versionspinning
-- helm create
-    - Erstellen eines Helm Charts
-    - Erstellt die grundlegende Ordner-Struktur
+<!-- .slide: style="text-align: left;"> -->
+- helm upgrade <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Upgraden eines Helm Charts auf neue Revision <!-- .element: class="fragment" data-fragment-index="2" -->
+    - "--install" wichtiges Flag. Macht, dass Chart installiert wird wenns nicht da ist <!-- .element: class="fragment" data-fragment-index="3" -->
+    - mit "--version" Versionspinning <!-- .element: class="fragment" data-fragment-index="4" -->
+- helm create <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Erstellen eines Helm Charts <!-- .element: class="fragment" data-fragment-index="6" -->
+    - Erstellt die grundlegende Ordner-Struktur <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
-- helm uninstall
-    - Deinstalliert ein Chart und löscht alle Ressourcen
-- helm rollback
-    - Zurückspielen der alten Version des Helm Charts
-- helm list
-    - Zeigt installierte Helm Charts
-    - entweder mit "-A" für alle Namespaces oder "-n" mit Namespace angabe
-- helm lint
-    - Überprüfung ob das Helm Chart-Template keine Fehler hat
+<!-- .slide: style="text-align: left;"> -->
+- helm uninstall <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Deinstalliert ein Chart und löscht alle Ressourcen <!-- .element: class="fragment" data-fragment-index="2" -->
+- helm rollback <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Zurückspielen der alten Version des Helm Charts <!-- .element: class="fragment" data-fragment-index="4" -->
+- helm list <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Zeigt installierte Helm Charts <!-- .element: class="fragment" data-fragment-index="6" -->
+    - entweder mit "-A" für alle Namespaces oder "-n" mit Namespace angabe <!-- .element: class="fragment" data-fragment-index="7" -->
+- helm lint <!-- .element: class="fragment" data-fragment-index="8" -->
+    - Überprüfung ob das Helm Chart-Template keine Fehler hat <!-- .element: class="fragment" data-fragment-index="9" -->
 
 +++
 
-- helm repo
-    - add 
-        - Hinzufügen eines Repos
-        - z.B. "helm repo add bitnami"
-    - update
-        - Herunterladen, welche Charts im Repo sind
-        - z.B. in bitnami gibt es ein postgresql-Chart
+<!-- .slide: style="text-align: left;"> -->
+- helm repo <!-- .element: class="fragment" data-fragment-index="1" -->
+    - add <!-- .element: class="fragment" data-fragment-index="2" -->
+        - Hinzufügen eines Repos <!-- .element: class="fragment" data-fragment-index="3" -->
+        - z.B. "helm repo add bitnami" <!-- .element: class="fragment" data-fragment-index="4" -->
+    - update <!-- .element: class="fragment" data-fragment-index="5" -->
+        - Herunterladen, welche Charts im Repo sind <!-- .element: class="fragment" data-fragment-index="6" -->
+        - z.B. in bitnami gibt es ein postgresql-Chart <!-- .element: class="fragment" data-fragment-index="7" -->
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Aufgabe 11
 1. erstelle ein Helm Chart für ein nginx deployment mit Service
 1. deploye dies in einen Namespace deiner Wahl
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Lösung 11
 1. Erst das Chart erstellen
 ```sh
@@ -2603,14 +2611,15 @@ helm install -n helm-namespace nginx-deployment ./nginx-deployment
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Aufgabe 12
 1. Passe die Replicas mit helm an
 1. Verifiziere, dass mehr Pods laufen
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Lösung 12
-
 1. Dann die values.yaml anpassen und upgrade
 ```sh
 helm upgrade -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART
@@ -2624,13 +2633,16 @@ kubectl get pods -n helm-namespace
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Aufgabe 13
 1. Mache ein Rollback auf eine alte Helm-Version
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Lösung 13
 1. Mit "helm rollback" auf alte Revision gehen
+
 ```sh
 helm rollback -n NAMESPACE RELEASE_NAME REVISION
 helm rollback -n helm-namespace nginx-deployment 1
@@ -2638,19 +2650,151 @@ helm rollback -n helm-namespace nginx-deployment 1
 
 +++
 
-### Zusammenfassung Helm
-- Ist ein Packetmanager
-- arbeitet mit Templates
-- eine zentrale Datei (values.yaml) um komplexe Anwendungen zu deployen
-- wird in Repos verwaltet
+<!-- .slide: style="text-align: left;"> -->
+### Zusammenfassung Helm <!-- .element: class="fragment" data-fragment-index="1" -->
+- Ist ein Packetmanager <!-- .element: class="fragment" data-fragment-index="2" -->
+- arbeitet mit Templates <!-- .element: class="fragment" data-fragment-index="3" -->
+- eine zentrale Datei (values.yaml) um komplexe Anwendungen zu deployen <!-- .element: class="fragment" data-fragment-index="4" -->
+- wird in Repos verwaltet <!-- .element: class="fragment" data-fragment-index="5" -->
 
 ---
 
+<!-- .slide: style="text-align: left;"> -->
 # Finance Cloud Native
 
 ---
 
-# Prometheus und Loki
+<!-- .slide: style="text-align: left;"> -->
+# Monitoring und Logging
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Prometheus
+- time series Database <!-- .element: class="fragment" data-fragment-index="1" -->
+- speichert metric daten einzelner services <!-- .element: class="fragment" data-fragment-index="2" -->
+- Abrufen der daten mittels PromQL <!-- .element: class="fragment" data-fragment-index="3" -->
+```PromQL
+sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
+```
+<!-- .element: class="fragment" data-fragment-index="4" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+![image](https://devconnected.com/wp-content/uploads/2019/05/what-does-prometheus-do.png)
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Alertmanager
+- Alamiert nach erstellten Vorgaben <!-- .element: class="fragment" data-fragment-index="1" -->
+- Diverse endpoints lassen sich hinzufügen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Email <!-- .element: class="fragment" data-fragment-index="3" -->
+    - div. Instant messanger <!-- .element: class="fragment" data-fragment-index="4" -->
+        - slack <!-- .element: class="fragment" data-fragment-index="5" -->
+        - MS teams <!-- .element: class="fragment" data-fragment-index="6" -->
+        - Telegram <!-- .element: class="fragment" data-fragment-index="7" -->
+    - SMS <!-- .element: class="fragment" data-fragment-index="8" -->
+    - viele weitere <!-- .element: class="fragment" data-fragment-index="9" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Grafana
+- ließt daten von Datensammelstationen <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Prometheus <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Loki <!-- .element: class="fragment" data-fragment-index="3" -->
+    - MSSQL <!-- .element: class="fragment" data-fragment-index="4" -->
+    - InfluxDB <!-- .element: class="fragment" data-fragment-index="5" -->
+    - viele weitere [DataSources](https://grafana.com/docs/grafana/latest/datasources/) <!-- .element: class="fragment" data-fragment-index="6" -->
+- erstellt Grafiken <!-- .element: class="fragment" data-fragment-index="7" -->
+- Dashboards auf benutzeroberfläche erstellbar <!-- .element: class="fragment" data-fragment-index="8" -->
+- Dashboards importierbar <!-- .element: class="fragment" data-fragment-index="9" -->
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+<!-- .slide: data-background="#51565c" -->
+  <img src="https://www.augmentedmind.de/wp-content/uploads/2021/09/prometheus-official-architecture-1024x615.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Logging mit Loki und promtail
+- auch loki-stack genannt <!-- .element: class="fragment" data-fragment-index="1" -->
+- log aggregation system <!-- .element: class="fragment" data-fragment-index="2" -->
+- indexiert nicht den Inhalt der Logs <!-- .element: class="fragment" data-fragment-index="3" -->
+- indexiert Metadaten der Logs <!-- .element: class="fragment" data-fragment-index="4" -->
+- Integriert sich mit Prometheus und Grafana <!-- .element: class="fragment" data-fragment-index="5" -->
+    - ununterbrochener Wechsel zwischen Logs und Metrics möglich <!-- .element: class="fragment" data-fragment-index="6" -->
+- promtail um Logs von Nodes einzusammeln <!-- .element: class="fragment" data-fragment-index="7" -->
+
++++
+
+  
+
+<!-- .slide: style="text-align: left;"> -->
+<!-- .slide: data-background="#808080" -->
+  <img src="images/grafana-loki-work.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufgabe
+- installiert mit Helm Prometheus, Grafana, loki-stack(loki und promtail)
+- in grafana Datasources Prometheus und Loki hinzufügen
+- erstellt ein Dashboard welches den Ressourcenverbrauch anzeigt
+- erstellt ein Log Dashboard
+- Tipp: bei installation mit helm ausgabe nach installation beachten!
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+### Lösung
+- für Prometheus:
+    - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    - helm repo update
+    - helm install -n NAMESPACE prometheus-community prometheus-community/prometheus
+- für Grafana: 
+    - helm repo add grafana https://grafana.github.io/helm-charts
+    - helm repo update
+    - helm install -n NAMESPACE grafana grafana/grafana
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- für Loki-stack (installiert loki und promtail):
+    - ist auch in grafana helm repo
+    - helm install -n NAMESPACE loki grafana/loki-stack
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- um das grafana Dashboard erreichbar zu machen braucht man ein port-forward
+    - export POD_NAME=$(kubectl get pods --namespace NAMESPACE -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=grafana" -o jsonpath="{.items[0].metadata.name}")
+    - kubectl --namespace NAMESPACE port-forward $POD_NAME 3000
+    - anschließend grafana auf localhost:3000 erreichbar
+        - username ist admin, password steht im secret grafana base64 encrypted
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Datasources auf der linken seite bei Configuration
+    - prometheus braucht in diesem Fall nur die URL: dieses Schema: http://PROMETHEUS-SERVER-SERVICE:PORT
+    - loki braucht ebenfalls nur URL: diese Schema: http://LOKI-SERVICE:PORT
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Auslastungsdashboard erstellen:
+    - auf grafischer Oberfläche entweder ein Dashboard mit PromQL erstellen
+    - oder auf grafischer Oberfläche ein Dashboard importieren
+        - [Dashboard](https://grafana.com/grafana/dashboards/6417)
+- Log Dashboard erstellen
+    - auf grafischer Oberfläche mit Loki Query
+    - oder auf grafischer Oberfläche Importieren
+        - [Dashboard](https://grafana.com/grafana/dashboards/12019)
 
 ---
 
