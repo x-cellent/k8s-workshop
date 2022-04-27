@@ -2,6 +2,22 @@
 
 ---
 
++++
+
+<!-- .slide: data-background="#51565c" -->
+  <img src="images/layer.drawio.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Bau des Images
+
+```
+docker build -t my-image .
+```
+
+---
+
 # Vortragende
 
 +++
