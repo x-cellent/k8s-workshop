@@ -1545,6 +1545,27 @@ docker build -t my-image .
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+## Veröffentlichung des Images
+
+```sh
+docker pull nginx
+```
+
+```sh
+docker tag my-image my-registry-host.my-image:v1
+docker login my-registry-host
+docker push|pull my-registry-host.my-image:v1
+docker logout my-registry-host
+```
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="images/docker-registry.drawio.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 - Container Orchestrierungstool
   - Verwaltung von Pods
   - Starten, stoppen und Überwachen
@@ -1628,7 +1649,7 @@ Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalan
 - StatefulSet
   - Managed stateful Pods
   - Spec ähnlich zu Deployment
-  - Geordnetes Starten (einer nach dem anderen)
+  - Geordnetes Starten
   - Geordnetes Stoppen in umgekehrter Reihenfolge
   - Je Pod ein DNS Eintrag der Bauart POD-INDEX.NAMESPACE:
     - z.B. redis-0.db, redis-1.db, ...
