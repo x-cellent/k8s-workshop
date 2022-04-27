@@ -2,22 +2,6 @@
 
 ---
 
-+++
-
-<!-- .slide: data-background="#51565c" -->
-  <img src="images/layer.drawio.png" >
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Bau des Images
-
-```
-docker build -t my-image .
-```
-
----
-
 # Vortragende
 
 +++
@@ -1519,7 +1503,6 @@ Ende Tag 2
 # Agenda
 - Recap
 - Weitere Kubernetes Objekte
-- Helm
 
 ---
 
@@ -1537,21 +1520,39 @@ Ende Tag 2
 
 +++
 
-![image](https://aracom.de/wp-content/uploads/2020/05/docker-layer-system.png)
+<!-- .slide: data-background="#51565c" -->
+<img src="images/layer.drawio.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Bau des Images
+
+```
+docker build -t my-image .
+```
 
 +++
 
 <!-- .slide: data-background="#51565c" -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg" >
+<img src="https://aracom.de/wp-content/uploads/2020/05/docker-layer-system.png" >
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg" >
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 - Container Orchestrierungstool
-    - Verwalten von Pods <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Starten stoppen und Überwachen <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Self-Healing <!-- .element: class="fragment" data-fragment-index="4" -->
-    - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="5" -->
+  - Verwaltung von Pods <!-- .element: class="fragment" data-fragment-index="2" -->
+  - Starten, stoppen und Überwachen <!-- .element: class="fragment" data-fragment-index="3" -->
+  - Self-Healing <!-- .element: class="fragment" data-fragment-index="4" -->
+  - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="5" -->
+  - Zugriffskontrolle (RBAC) <!-- .element: class="fragment" data-fragment-index="5" -->
+  - Validierung <!-- .element: class="fragment" data-fragment-index="5" -->
+  - u.v.m
 
 +++
 
@@ -1566,19 +1567,19 @@ Ende Tag 2
 
 <!-- .slide: style="text-align: left;"> -->
 - Pod
-    - kleinste deploybare Einheit <!-- .element: class="fragment" data-fragment-index="1" -->
-    - beinhaltet 1 bis N Container <!-- .element: class="fragment" data-fragment-index="2" -->
-    - eigener Netzbereich und IP <!-- .element: class="fragment" data-fragment-index="3" -->
+  - kleinste deploybare Einheit <!-- .element: class="fragment" data-fragment-index="1" -->
+  - beinhaltet 1 bis N Container <!-- .element: class="fragment" data-fragment-index="2" -->
+  - eigener Netzbereich und IP <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 - ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
+  - Stellt sicher, dass zu jeder Zeit genau N Pods laufen <!-- .element: class="fragment" data-fragment-index="2" -->
+  - Matching über Labels <!-- .element: class="fragment" data-fragment-index="3" -->
 - Deployment <!-- .element: class="fragment" data-fragment-index="4" -->
-    - Managed ein ReplicaSet <!-- .element: class="fragment" data-fragment-index="5" -->
-    - Bietet Versionierung und zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="6" -->
+  - Managed ein ReplicaSet <!-- .element: class="fragment" data-fragment-index="5" -->
+  - Bietet zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
@@ -1589,7 +1590,7 @@ Ende Tag 2
 
 <!-- .slide: style="text-align: left;"> -->
 - DeamonSet <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Spec wie Deployment nur ohne Replica Count <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Spec sehr ähnlich zu Deployment, aber ohne Replicas <!-- .element: class="fragment" data-fragment-index="1" -->
     - Managed damit kein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
     - Stattdessen je ein Replica pro Node <!-- .element: class="fragment" data-fragment-index="1" -->
 
@@ -1620,22 +1621,17 @@ Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalan
 
 +++
 
-![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
-
-+++
-
 <!-- .slide: style="text-align: left;"> -->
 - StatefulSet
     - Spec ähnlich zu Deployment
     - Geordnetes Starten (einer nach dem anderen)
     - Geordnetes Stoppen in umgekehrter Reihenfolge
+    - Je Pod ein DNS Eintrag
 
 +++
 
-<!-- .slide: class="stretch"> -->
+<!-- .slide: data-background="#51565c" class="stretch" -->
 <img src="https://www.bluematador.com/hs-fs/hubfs/blog/new/An%20Introduction%20to%20Kubernetes%20StatefulSet/StatefulSets.png?width=770&name=StatefulSets.png" width="800" height="800">
-
-
 
 +++
 
@@ -1704,68 +1700,55 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Errinnerung Pod
-- Kleinste Deploybare einheit <!-- .element: class="fragment" data-fragment-index="1" -->
-- Kann per yaml datei erstellt/modifiziert werden <!-- .element: class="fragment" data-fragment-index="2" -->
+## Erinnerung Pod
+- Kleinste deploybare Einheit <!-- .element: class="fragment" data-fragment-index="1" -->
+- Kann per Manifest werden <!-- .element: class="fragment" data-fragment-index="2" -->
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 1
-- Kaputte [pod.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md)
+- Fehlerhaftes Manifest [pod.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/exercise.md)
 - Reparieren und in Namespace der Wahl deployen
-
-+++
-
-```yaml
-apiversion: v1
-Kind: pod
-metadata:
-  labels:
-    app: frontend
-  name: web
-spec:
-containers:
-  name: web
-    image: nginx
-    tag: latest
-    ports:
-  - containerPort: 80
-    resources:
-      requests:
-        cpu: "1.0"
-        memory:"1G"
-      limits:
-       cpu: "1.0"
-        memory: 1G
-```
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Lösung 1
 ```yaml
-apiVersion: v1 #Typo in apiVersion, V von Version muss groß sein
-kind: Pod #Typo, kind muss klein sein
+apiVersion: v1 #Typo in apiVersion
+kind: Pod #Typo
 metadata:
   labels:
     app: frontend
   name: web
-  namespace: ex1 # Optional, kann auch kubectl auch via "-n ex1" mitgegeben werden
+  namespace: ex1 #Optional
 spec:
-  containers: #ab hier muss alles eingeruckt sein
-  - name: web #listen in yaml werden beim ersten punkt mit `-`angegeben
-    image: nginx:latest #Image und Tag definiert man in einer zeile mit `:` dazwischen
+  containers: #Einrückung beachten
+  - name: web #Listenelemente werden mit `-` eingeleitet
+    image: nginx:latest #Image und Tag mit `:` getrennt
     ports:
     - containerPort: 80 #hier auch falsch eingerückt
     resources:
       requests:
         cpu: "1.0"
-        memory: "1G" # zwischen memory und den 1G muss ein Leerzeichen sein
+        memory: "1G" #Leerzeichen nach Keys beachten
       limits:
         cpu: "1.0"
-        memory: "1G" #1G muss in anführungszeichen sein
+        memory: "1G" #Text mit führender Zahl in Anführungszeichen
 ```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Erstelle Pod Manifest:
+
+```sh
+export do='--dry-run=client -o yaml'
+kubectl run my-pod --image ubuntu:20.04 $do > pod.yaml
+```
+
+Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .element: class="fragment" data-fragment-index="1" -->
 
 +++
 
@@ -1776,61 +1759,63 @@ spec:
 
 +++
 
-![image](https://miro.medium.com/max/1400/0*X1VC6PMEMbxloLmh.png)
+## Service Type ClusterIP
+<!-- .slide: data-background="#51565c" -->
+  <img src="images/svc-clusterip.png" style="height: 500px"  >
 
-<aside class="notes">
-Der Service leitet Anfragen, welche an die Nodes kommt an die Pods weiter.
-</aside>
++++
+
+## Service Type NodePort
+<!-- .slide: data-background="#51565c" -->
+  <img src="images/svc-nodeport.png" style="height: 500px"   >
+
++++
+
+## Service Type LoadBalancer
+<!-- .slide: data-background="#51565c"  -->
+  <img src="images/svc-loadbalancer.png" style="height: 500px" >
+
++++
+
+## Ausblick: Ingress
+<!-- .slide: data-background="#51565c" -->
+  <img src="images/ingress.png" style="height: 500px"  >
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-#### Aufgabe 2
-- erstelle ein Deployment (Objekt) des Pods aus vorhergegangener Aufgabe
+- Erstelle Deployment Manifest:
 
-    - yaml des pods hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml
-- erstelle anschließend ein Service (Objekt) um die Pods zu Loadbalancen
-    - Deployment Lösung hier zu finden: https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
-
-+++
-
-#### Lösung 2
-- erst deployment.yaml erstellen und in gewünschten Namespace deployen
-    - https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml
-    - kubectl apply -d deployment.yaml -n web
-- anschließend eine service.yaml erstellen 
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: web
-spec:
-  selector:
-    app: frontend # selector hier muss dem label des deployments ensprechen
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8081
+```sh
+export do='--dry-run=client -o yaml'
+kubectl create deploy --image alpine:3.15 my-deploy $do > dp.yaml
 ```
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-- Diese yaml in den gewünschten Namespace deployen
-    - k apply -f service.yaml -n web
+#### Aufgabe 2
+- Erstelle ein Deployment (Objekt) des Pods aus vorangegangener Aufgabe
+    - [Pod Manifest](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex3%20-%20fix%20broken%20Pod/pod.yaml)
+- Erstelle anschließend ein Service (Objekt) um die Pods zu loadbalancen
+    - [Deployment Manifest](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml)
+
++++
+
+#### Lösung 2
+- Erstelle [deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml)
+    - kubectl apply -f deployment.yaml -n web
+- Erstelle [service.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml)
+    - kubectl apply -f service.yaml -n web
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ## Port-Forwarding
 
-- Zugriff in Container erlangen <!-- .element: class="fragment" data-fragment-index="1" -->
-- für Debugging <!-- .element: class="fragment" data-fragment-index="2" -->
-- k9s kann diese Verwalten <!-- .element: class="fragment" data-fragment-index="3" -->
+- Zugriff auf Container (Tunnel) <!-- .element: class="fragment" data-fragment-index="1" -->
+- Debugging <!-- .element: class="fragment" data-fragment-index="2" -->
+- via kubectl und k9s möglich <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
@@ -1838,24 +1823,23 @@ spec:
 ### Aufgabe 3
 - Deployment und Service aus letzter Aufgabe muss im selben Namespace deployed sein
     - kubectl create ns web
-    - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml -n web
-    - kubectl apply -f https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml -n web
-- Anschließend bitte ein Port-Forwarding in einen Pod machen
+    - kubectl apply -f [deployment.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/deplyoment.yaml) -n web
+    - kubectl apply -f [service.yaml](https://github.com/x-cellent/k8s-workshop/blob/main/exercises/k8s/ex4%20-%20create%20Service/service.yaml) -n web
+- Anschließend bitte ein Port-Forwarding zu den Pods des Deployments einrichten
     - Welche Wege gibt es?
-
 
 +++
 
 <!-- .slide: style="text-align: left;"> -->
 ### Lösung 3
-- es gibt den Weg mit kubectl
-    - kubectl port-forward -n web service/web 8081:8081
-    - kubectl port-forward -n web deployment/web 8081:80
-    - kubectl port-forward -n web pod/web-6779b45f74-bvc7p 8081:80
-    - kubectl port-forward -n web pod/web-6779b45f74-bvc7p :80 
-        - hier bestimmt kubectl selber den local port
-- mit k9s ist es auch möglich
 
+- kubectl -n web port-forward pod/web-6779b45f74-bvc7p :80
+  - lokaler, zufällig bestimmter Port wird an Pod Port 80 gebunden
+- kubectl -n web port-forward svc/web 8081
+  - lokaler Port 8081 -> von Service bestimmter Pod Port 8081
+- kubectl -n web port-forward deploy/web 8081:80
+  - lokaler Port 8081 -> von Deployment bestimmter Pod Port 80
+- in k9s via `Shift^f`
 
 +++
 
