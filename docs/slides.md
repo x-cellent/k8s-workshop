@@ -1524,14 +1524,14 @@ Ende Tag 2
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Container Runtime Interface
-- API für Container Verwaltung (Starten/Stoppen)
-- Wird von Kubernetes unterstützt
+## Container Ökosystem
+- Container Runtime Interface (CRI)
+    - Wird von Kubernetes unterstützt
     - Konkrete Implemetierung damit austauschbar
 - [Container Runtimes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
-    - containerd
-    - CRI-O
-    - Docker Engine
+    - containerd (von Docker entwickelt), CRI-O, ...
+- Open Container Initiative (OCI) spec
+    - enthält runtime-spec (runc) und image-spec (basiert stark auf Docker)
 
 +++
 
