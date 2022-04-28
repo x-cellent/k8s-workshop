@@ -1554,7 +1554,7 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 <!-- .slide: style="text-align: left;"> -->
 ## Bau des Images
 
-```
+```sh
 docker build -t my-image .
 ```
 
