@@ -1502,7 +1502,10 @@ Ende Tag 2
 
 # Agenda
 - Recap
+  - Docker (high-level)
+  - Kubernetes und API Objekte
 - Weitere Kubernetes Objekte
+- RBAC
 
 ---
 
