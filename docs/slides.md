@@ -1546,6 +1546,7 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 +++
 
 <!-- .slide: data-background="#51565c" -->
+## Beispiel Docker-Image
 <img src="images/layer.drawio.png" >
 
 +++
