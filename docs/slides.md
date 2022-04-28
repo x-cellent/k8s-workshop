@@ -1564,11 +1564,6 @@ docker build -t my-image .
 
 +++
 
-<!-- .slide: data-background="#51565c" -->
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg" >
-
-+++
-
 <!-- .slide: style="text-align: left;"> -->
 ## Veröffentlichung des Images
 
@@ -1590,17 +1585,22 @@ docker logout my-registry-host
 
 +++
 
+<!-- .slide: data-background="#51565c" -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg" >
+
++++
+
 <!-- .slide: style="text-align: left;"> -->
-- Container Orchestrierungstool
-  - Verwaltung von Pods
-  - Reconciliation-Loop / Control-Loop
-    - Starten, stoppen und Überwachen
-    - Self-Healing
-    - Dynamische Skalierung
-    - u.v.m.
-  - Zugriffskontrolle (RBAC)
-  - Validierung
-  - u.v.m
+- Container Orchestrierungstool 
+  - Verwaltung von Pods <!-- .element: class="fragment" data-fragment-index="2" -->
+  - Reconciliation-Loop / Control-Loop <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Starten, stoppen und Überwachen <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Self-Healing <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Dynamische Skalierung <!-- .element: class="fragment" data-fragment-index="6" -->
+    - u.v.m. <!-- .element: class="fragment" data-fragment-index="7" -->
+  - Zugriffskontrolle (RBAC) <!-- .element: class="fragment" data-fragment-index="8" -->
+  - Validierung <!-- .element: class="fragment" data-fragment-index="9" -->
+  - u.v.m <!-- .element: class="fragment" data-fragment-index="10" -->
 
 +++
 
@@ -1613,12 +1613,12 @@ docker logout my-registry-host
 <!-- .slide: style="text-align: left;"> -->
 ### KUBECONFIG
 
-- Text-Datei
-- Beinhaltet URLs und Credentials zu k8s Clustern
-- "Login zum Cluster"
-    - ~/.kube/config (default)
-    - via KUBECONFIG Umgebungsvariable
-    - via --kubeconfig flag
+- Text-Datei <!-- .element: class="fragment" data-fragment-index="1" -->
+- Beinhaltet URLs und Credentials zu k8s Clustern <!-- .element: class="fragment" data-fragment-index="2" --> 
+- "Login zum Cluster" <!-- .element: class="fragment" data-fragment-index="3" -->
+    - ~/.kube/config (default) <!-- .element: class="fragment" data-fragment-index="3" -->
+    - via KUBECONFIG Umgebungsvariable <!-- .element: class="fragment" data-fragment-index="3" -->
+    - via --kubeconfig flag <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
