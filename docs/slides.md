@@ -2661,8 +2661,8 @@ resources: {}
     - Installiert ein Helm Chart <!-- .element: class="fragment" data-fragment-index="2" -->
     - mit "-n namespace" angebbar <!-- .element: class="fragment" data-fragment-index="3" -->
     - mit "--dry-run --debug" kann man überprüfen ob das deployment klappen sollte <!-- .element: class="fragment" data-fragment-index="4" -->
-    - mit "--version" Versionspinning <!-- .element: class="fragment" data-fragment-index="5 -->
-    - Syntax `helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART` <!-- .element: class="fragment" data-fragment-index="6" -->
+    - mit "--version" Versionspinning <!-- .element: class="fragment" data-fragment-index="5" -->
+    - Syntax helm install -n NAMESPACE RELEASE_NAME PFAD_ZUM_HELM_CHART <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
