@@ -1549,11 +1549,6 @@ runc – Low-Level-Container-Runtime; verwendet libcontainer - native Go-basiert
 ## Beispiel Docker-Image
 <img src="images/layer.drawio.png" >
 
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Bau des Images
-
 ```sh
 docker build -t my-image .
 ```
