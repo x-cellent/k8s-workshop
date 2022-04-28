@@ -1642,7 +1642,7 @@ docker logout my-registry-host
 - Deployment <!-- .element: class="fragment" data-fragment-index="1" -->
   - Managed stateless Pods
   - Managed ein ReplicaSet <!-- .element: class="fragment" data-fragment-index="1" -->
-  - Bietet zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="1" -->
+  - Bietet Versionierung und zero downtime Rollouts <!-- .element: class="fragment" data-fragment-index="1" -->
 
 +++
 
