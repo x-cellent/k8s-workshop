@@ -1572,9 +1572,9 @@ docker pull nginx
 ```
 
 ```sh
-docker tag my-image my-registry-host.my-image:v1
+docker tag my-image my-registry-host/my-image:v1
 docker login my-registry-host
-docker push|pull my-registry-host.my-image:v1
+docker push|pull my-registry-host/my-image:v1
 docker logout my-registry-host
 ```
 
