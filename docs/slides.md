@@ -1504,8 +1504,6 @@ Ende Tag 2
 - Recap
   - Docker (high-level)
   - Kubernetes und API Objekte
-- Weitere Kubernetes Objekte
-- RBAC
 
 ---
 
@@ -1801,6 +1799,23 @@ Service - ExternalName (erstellt DNS Eintrag, der auf einen externen DNS routet)
 - Lens <!-- .element: class="fragment" data-fragment-index="1" -->
     - Graphical UI zur Interaktion mit k8s Clustern <!-- .element: class="fragment" data-fragment-index="1" -->
     - Nicht Teil des Workshops <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
+# Tag 4
+
++++
+
+## Agenda
+- RBAC
+- Weitere API Objekttypen
+- Helm
+- Cert-Manager + Ingress
+- FCN
+- Logging/Monitoring
 
 ---
 
@@ -2396,22 +2411,6 @@ Allow/Deny/Change API-Requests
 - Basiert auf Regeln und Policies
 
 ---
-
-<!-- .slide: style="text-align: left;"> -->
-# Tag 4
-
-+++
-
-## Agenda
-- Helm
-- Cert-Manager + Ingress
-- (Anti-)Affinity
-- PodSecurityPolicy
-- NetworkPolicy
-- FCN
-- Logging/Monitoring
-
-+++
 
 <!-- .slide: style="text-align: left;"> -->
 # Helm
