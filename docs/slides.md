@@ -1522,6 +1522,8 @@ Ende Tag 2
 - Bau und Starten von Images
     - Container Runtime Engine
 - Image-Sharing (Docker Registry)
+- Client-Server Architektur
+   - docker bzw. Docker Daemon
 
 +++
 
