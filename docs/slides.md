@@ -2188,14 +2188,14 @@ kubectl apply -f deployment.yaml -n ex9
 
 <!-- .slide: style="text-align: left;"> -->
 ## PersistentVolume (PV)
-- kapselt Storage in einer API
-- sehr viele Volume Typen
-    - NFS share, iSCSI, Host-Path, emptyDir, ...
-    - Lightbits, S3 und lokal bei FI-TS
-- Vorab oder dynamisch (StorageClass) erstellt
-- Kann von Pods via PersistentVolumeClaims (PVC) angefordert werden
-    - Wird dann bidirektional gebunden
-    - ReclaimPolicy (Retain/Delete)
+- kapselt Storage in einer API <!-- .element: class="fragment" data-fragment-index="1" -->
+- sehr viele Volume Typen <!-- .element: class="fragment" data-fragment-index="2" -->
+    - NFS share, iSCSI, Host-Path, emptyDir, ... <!-- .element: class="fragment" data-fragment-index="2" -->
+    - Lightbits, S3 und lokal bei FI-TS <!-- .element: class="fragment" data-fragment-index="2" -->
+- Vorab oder dynamisch (StorageClass) erstellt <!-- .element: class="fragment" data-fragment-index="3" -->
+- Kann von Pods via PersistentVolumeClaims (PVC) angefordert werden <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Wird dann bidirektional gebunden <!-- .element: class="fragment" data-fragment-index="4" -->
+    - ReclaimPolicy (Retain/Delete) <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
 
