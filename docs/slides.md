@@ -1589,6 +1589,18 @@ docker logout my-registry-host
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+### KUBECONFIG
+
+- Text-Datei
+- Beinhaltet URLs und Credentials zu k8s Clustern
+- "Login zum Cluster"
+    - ~/.kube/config (default)
+    - via KUBECONFIG Umgebungsvariable
+    - via --kubeconfig flag
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 ### Kubernetes API Objekte
 
 +++
