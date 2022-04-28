@@ -1568,9 +1568,11 @@ docker logout my-registry-host
 <!-- .slide: style="text-align: left;"> -->
 - Container Orchestrierungstool
   - Verwaltung von Pods
-  - Starten, stoppen und Überwachen
-  - Self-Healing
-  - Dynamische Skalierung
+  - Reconciliation-Loop / Control-Loop
+    - Starten, stoppen und Überwachen
+    - Self-Healing
+    - Dynamische Skalierung
+    - u.v.m.
   - Zugriffskontrolle (RBAC)
   - Validierung
   - u.v.m
@@ -1626,22 +1628,25 @@ docker logout my-registry-host
 
 <!-- .slide: style="text-align: left;"> -->
 - Service
-  - Loadbalancer für Pods
+  - Loadbalancer für Pods (Layer 3/4)
   - Matching via Labels
   - Typen
     - None (headless)
     - ClusterIP (Default)
     - NodePort
     - Loadbalancer
+    - ExternalName
 
 Note:
-Service - headless (erstellt für jeden Pod einen DNS entry innerhalb des Clusters (coredns), kein externer Zugriff möglich)
+Service - headless (erstellt für jeden Pod einen vorbestimmten DNS entry innerhalb des Clusters (coredns), kein externer Zugriff möglich)
 
-Service - ClusterIP (routet über die clusterinternen Pod IPs, kein externer Zugiff möglich)
+Service - ClusterIP (erstellt für jeden Pod einen vorbestimmten DNS entry, kein externer Zugiff möglich)
 
 Service - NodePort (öffnet auf jedem Node denselben Port, über den von außen der Service erreicht werden kann)
 
 Service - Loadbalancer (exposed den Service ins Internet, bedarf eines Loadbalancers der den Traffic an der Service weiterleitet)
+
+Service - ExternalName (erstellt DNS Eintrag, der auf einen externen DNS routet)
 
 +++
 
@@ -1807,7 +1812,8 @@ Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .elemen
 
 <!-- .slide: style="text-align: left;"> -->
 - NodePort
-  - öffnet auf jedem Node denselben Port zwischen 30000 und 32767
+  - öffnet auf jedem Node einen zufälligen Port zwischen 30000 und 32767
+  - ist auf allen Nodes immer derselbe
   - Traffic wird von dort an den Service weitergeleitet
 
 +++
@@ -1831,7 +1837,16 @@ Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .elemen
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ## Ausblick: Ingress
+
+- HTTP level router (Level 7)
+- Host und Path basiertes Routing
+- Auch für verschiedene Hosts (SNI)
+- TLS Terminierung möglich
+
++++
+
 <!-- .slide: data-background="#51565c" -->
 <img src="images/ingress.png" style="height: 500px"  >
 
