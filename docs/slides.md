@@ -1322,7 +1322,7 @@ spec:
 
   diese definieren, auf welchem filesystem diese daten abgelegt werden sollen
 
-  braucht im hintergrund kubernetes object PersistantVolume
+  braucht im hintergrund kubernetes object PersistentVolume
 
   metadata name, definiert wieder den namen des volumeclaims
 
@@ -2169,16 +2169,23 @@ kubectl apply -f deployment.yaml -n ex9
   Einbindung ähnlich wie bei ConfigMaps
 </aside>
 
+---
+
+<!-- .slide: style="text-align: left;"> -->
+## PersistentVolume (PV)
+- kapselt Storage in einer API
+- sehr viele Volume Typen
+    - NFS share, iSCSI, Host-Path, emptyDir, ...
+    - Lightbits, S3 und lokal bei FI-TS
+- Vorab oder dynamisch (StorageClass) erstellt
+- Kann von Pods via PersistentVolumeClaims (PVC) angefordert werden
+    - Wird dann bidirektional gebunden
+    - ReclaimPolicy (Retain/Delete)
+
 +++
 
-## PersistantVolume (PV)
-- sehr viele Volume Typen <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Lightbits, local und s3 bei der FI-TS <!-- .element: class="fragment" data-fragment-index="2" -->
-- Speichert Infos über Volumen und Storage <!-- .element: class="fragment" data-fragment-index="3" -->
-- überverzeichnis muss bereits erstellt sein <!-- .element: class="fragment" data-fragment-index="4" -->
-
-
-+++
+<!-- .slide: style="text-align: left;"> -->
+## Zugriffstypen
 
 - ReadWriteOnce
     - Once, nur ein Node darf auf das Volume schreiben
@@ -2189,6 +2196,7 @@ kubectl apply -f deployment.yaml -n ex9
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 8
 - Erstelle ein local PV mit 10 GB Capacity
 - Erstelle das Verzeichnis auf der Node
@@ -2197,6 +2205,7 @@ kubectl apply -f deployment.yaml -n ex9
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 #### Lösung 8
 ```yaml
 apiVersion: v1
@@ -2227,16 +2236,18 @@ spec:
 
 +++
 
-## PersistantVolumeClaim (PVC)
-- Reserviert Ressourcen eines PV`s <!-- .element: class="fragment" data-fragment-index="1" -->
-- wird anschließend ins Deployment eingebaut <!-- .element: class="fragment" data-fragment-index="2" -->
-- Verknüpfung PV und PVC mit Selector labels oder direkt mit Namen <!-- .element: class="fragment" data-fragment-index="3" -->
-    - bei local kein dynamisches (selector) mapping möglich <!-- .element: class="fragment" data-fragment-index="4" -->
-- Verknüpfung ist eine 1 zu 1 Verknüpfung <!-- .element: class="fragment" data-fragment-index="5" -->
-    - keine 2 PVC an einem PV <!-- .element: class="fragment" data-fragment-index="6" -->
+<!-- .slide: style="text-align: left;"> -->
+## PersistentVolumeClaim (PVC)
+- Reserviert Ressourcen eines PV`s
+- wird anschließend ins Deployment eingebaut
+- Verknüpfung PV und PVC mit Selector labels oder direkt mit Namen
+    - bei local kein dynamisches (selector) mapping möglich
+- Verknüpfung ist eine 1 zu 1 Verknüpfung
+    - keine 2 PVC an einem PV
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 ### Aufgabe 10
 - Erstelle ein PVC
 - Erstelle ein postgresql statefulset
@@ -2247,6 +2258,7 @@ spec:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 #### Lösung 10
 - Der PV der letzten Aufgabe muss erstellt sein
 ```yaml
@@ -2269,6 +2281,7 @@ spec:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 - Configmap
 ```yaml
 apiVersion: v1
@@ -2294,7 +2307,8 @@ data:
 
 +++
 
-- Statefulset
+<!-- .slide: style="text-align: left;"> -->
+- StatefulSet
 ```yaml
 apiVersion: apps/v1
 kind: StatefulSet
@@ -2335,6 +2349,7 @@ spec:
 
 +++
 
+<!-- .slide: style="text-align: left;"> -->
 - Daten anzeigen lassen
 ```sh
 kubectl exec -n postgresql -it postges-statefulset-0 -- /bin/bash
@@ -2366,6 +2381,22 @@ Allow/Deny/Change API-Requests
 - Basiert auf Regeln und Policies
 
 ---
+
+<!-- .slide: style="text-align: left;"> -->
+# Tag 4
+
++++
+
+## Agenda
+- Helm
+- Cert-Manager + Ingress
+- (Anti-)Affinity
+- PodSecurityPolicy
+- NetworkPolicy
+- FCN
+- Logging/Monitoring
+
++++
 
 <!-- .slide: style="text-align: left;"> -->
 # Helm
