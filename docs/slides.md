@@ -1566,7 +1566,7 @@ docker build -t my-image .
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Veröffentlichung des Images
+## Image-Sharing
 
 ```sh
 docker pull nginx
