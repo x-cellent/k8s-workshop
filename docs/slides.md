@@ -1688,6 +1688,69 @@ Service - ExternalName (erstellt DNS Eintrag, der auf einen externen DNS routet)
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+## Service Typen
+
+- None (headless)
+  - erstellt für jeden Pod einen DNS Eintrag innerhalb des Clusters (coredns)
+  - kein externer Zugriff möglich
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- ClusterIP
+  - routet über die clusterinternen Pod IPs
+  - kein externer Zugiff möglich
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="images/svc-clusterip.png" style="height: 500px"  >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- NodePort
+  - öffnet auf jedem Node einen zufälligen Port zwischen 30000 und 32767
+  - ist auf allen Nodes immer derselbe
+  - Traffic wird von dort an den Service weitergeleitet
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="images/svc-nodeport.png" style="height: 500px"   >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Loadbalancer
+  - macht den Service von außen zugänglich
+  - bedarf eines Loadbalancers, der den Traffic zum Service routet
+  - k8s bietet keine Standardimplementierung (Cloud Provider)
+    - Kosten
+
++++
+
+<!-- .slide: data-background="#51565c"  -->
+<img src="images/svc-loadbalancer.png" style="height: 500px" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Ausblick: Ingress
+
+- HTTP level router (Level 7)
+- Host und Path basiertes Routing
+- Auch für verschiedene Hosts (SNI)
+- TLS Terminierung möglich
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="images/ingress.png" style="height: 500px"  >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 - StatefulSet
   - Managed stateful Pods
   - Spec ähnlich zu Deployment
@@ -1801,69 +1864,6 @@ kubectl run my-pod --image ubuntu:20.04 $do > pod.yaml
 ```
 
 Dieses Manifest kann jetzt bequem angepasst/vervollständigt werden <!-- .element: class="fragment" data-fragment-index="1" -->
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Service Typen
-
-- None (headless)
-  - erstellt für jeden Pod einen DNS Eintrag innerhalb des Clusters (coredns)
-  - kein externer Zugriff möglich
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-- ClusterIP
-  - routet über die clusterinternen Pod IPs
-  - kein externer Zugiff möglich
-
-+++
-
-<!-- .slide: data-background="#51565c" -->
-<img src="images/svc-clusterip.png" style="height: 500px"  >
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-- NodePort
-  - öffnet auf jedem Node einen zufälligen Port zwischen 30000 und 32767
-  - ist auf allen Nodes immer derselbe
-  - Traffic wird von dort an den Service weitergeleitet
-
-+++
-
-<!-- .slide: data-background="#51565c" -->
-<img src="images/svc-nodeport.png" style="height: 500px"   >
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-- Loadbalancer
-  - macht den Service von außen zugänglich
-  - bedarf eines Loadbalancers, der den Traffic zum Service routet
-  - k8s bietet keine Standardimplementierung (Cloud Provider)
-    - Kosten
-
-+++
-
-<!-- .slide: data-background="#51565c"  -->
-<img src="images/svc-loadbalancer.png" style="height: 500px" >
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Ausblick: Ingress
-
-- HTTP level router (Level 7)
-- Host und Path basiertes Routing
-- Auch für verschiedene Hosts (SNI)
-- TLS Terminierung möglich
-
-+++
-
-<!-- .slide: data-background="#51565c" -->
-<img src="images/ingress.png" style="height: 500px"  >
 
 +++
 
