@@ -1516,10 +1516,12 @@ Ende Tag 2
 
 <!-- .slide: style="text-align: left;"> -->
 ## Docker
-- Bau von Images
-- Starten von Images
-- Verwalten von Images
-- Container Runtime Engine
+- Bündelt Software mitsamt aller Abhängigkeiten
+    - evtl. auch inklusive OS
+    - damit über Rechnergrenzen hinweg funktional
+- Bau und Starten von Images
+    - Container Runtime Engine
+- Image-Sharing (Docker Registry)
 
 +++
 
