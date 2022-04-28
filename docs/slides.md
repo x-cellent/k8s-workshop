@@ -1523,7 +1523,7 @@ Ende Tag 2
     - Container Runtime Engine
 - Image-Sharing (Docker Registry)
 - Client-Server Architektur
-   - docker bzw. Docker Daemon
+   - docker CLI bzw. Docker Daemon
 
 +++
 
