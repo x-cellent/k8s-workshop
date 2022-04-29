@@ -2145,12 +2145,12 @@ kubectl logs -n ex8 hello-
 
 <!-- .slide: style="text-align: left;"> -->
 ## ConfigMaps
-- Speicherung von nicht vertraulichen Daten <!-- .element: class="fragment" data-fragment-index="1" -->
-- Einbindung in Pods als <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Umgebungsvariable <!-- .element: class="fragment" data-fragment-index="3" -->
-    - command-line argument <!-- .element: class="fragment" data-fragment-index="4" -->
-    - Datei (Volume) <!-- .element: class="fragment" data-fragment-index="5" -->
-- Kein Reload der Pods bei Änderung <!-- .element: class="fragment" data-fragment-index="6" -->
+- Speicherung von nicht vertraulichen Daten
+- Einbindung in Pods als <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Umgebungsvariable <!-- .element: class="fragment" data-fragment-index="2" -->
+    - command-line argument <!-- .element: class="fragment" data-fragment-index="3" -->
+    - Datei (Volume) <!-- .element: class="fragment" data-fragment-index="4" -->
+- Kein Reload der Pods bei Änderung <!-- .element: class="fragment" data-fragment-index="5" -->
 
 <aside class="notes">
   in ConfigMaps sollen nur nicht vertrauliche Daten gespeichert werden
@@ -2187,11 +2187,11 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Secret  <!-- .element: class="fragment" data-fragment-index="1" -->
-- Speicherung vertraulicher Daten <!-- .element: class="fragment" data-fragment-index="1" -->
-- Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="2" -->
-- Bessere Separierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
-   - User darf Configmaps sehen aber keine Secrets <!-- .element: class="fragment" data-fragment-index="4" -->
+## Secret
+- Speicherung vertraulicher Daten
+- Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="1" -->
+- Bessere Separierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="2" -->
+   - User darf Configmaps sehen aber keine Secrets <!-- .element: class="fragment" data-fragment-index="3" -->
 
 <aside class="notes">
   Secrets gibt es um vertrauliche Daten zu speichern
