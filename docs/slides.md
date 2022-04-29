@@ -2473,7 +2473,14 @@ startupProbe:
     port: 80
   failureThreshold: 30
   periodSeconds: 10
+```
 
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Beispiel
+
+```sh
 livenessProbe:
   exec:
     command:
