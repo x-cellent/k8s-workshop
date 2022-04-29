@@ -2187,7 +2187,7 @@ kubectl apply -f deployment.yaml -n ex9
 +++
 
 <!-- .slide: style="text-align: left;"> -->
-## Secret
+## Secret  <!-- .element: class="fragment" data-fragment-index="1" -->
 - Speicherung vertraulicher Daten <!-- .element: class="fragment" data-fragment-index="1" -->
 - Unverschlüsselt in etcd DB <!-- .element: class="fragment" data-fragment-index="2" -->
 - Bessere Separierung mittels Rollen <!-- .element: class="fragment" data-fragment-index="3" -->
