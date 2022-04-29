@@ -2518,6 +2518,38 @@ Role Based Access Control (RBAC)
 - (Cluster)RoleBinding
     - Mappt (Cluster)Roles auf Accounts (SA/User)
 
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```sh
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: my-ns
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```sh
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: my-ns
+subjects:
+- kind: User
+  name: jane
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io```
 ---
 
 <!-- .slide: style="text-align: left;"> -->
