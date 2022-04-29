@@ -1815,7 +1815,7 @@ Service - ExternalName (erstellt DNS Eintrag, der auf einen externen DNS routet)
 - RBAC
 - Helm
 - Cert-Manager + Ingress
-- FCN
+- MetalStack / Gardener / FCN
 - Logging/Monitoring
 
 ---
@@ -2939,7 +2939,57 @@ helm rollback -n helm-namespace nginx-deployment 1
 ---
 
 <!-- .slide: style="text-align: left;"> -->
-# Finance Cloud Native
+# MetalStack
+
+- von der x-cellent für die FI-TS entwickelte bare-metal cloud
+- OpenSource
+- Server-Racks in drei Rechenzentren (Nürnberg, Stuttgart, Fellbach)
+- ersetzt Nimbus-Cloud
+- schon zwei Jahre produktiv im Einsatz
+- https://github.com/x-cellent/training-internal/blob/main/metal-stack/metal-stack.md
+- metalctl / cloudctl
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+# Gardener
+
+- Kubernets-as-a-Service (KaaS) von SAP (Open Source)
+- Eine Abstraktionsebene höher
+    - Shoot-Cluster ~ Pod
+        - beinhaltet die tenant Cluster
+    - Seed-Cluster ~ Node
+        - beinhaltet control-planes der tenant Cluster
+        - gardenlet ~ kubelet
+    - Garden Cluster
+        - Verwaltet die Seed-Cluster
+        - Seed-Cluster isoliert lauffähig
+            - Umgekehrung der Kommunikation
+- Unterstützt alle großen CloudProvider, und...
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="gardener-zitat.png" style="height: 500px" >
+
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="gardener.jpg" style="height: 500px" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+# Finance Cloud Native (FCN)
+
+- Bietet cloudctl als zentrales Verwaltungstools von Tenant-Clustern
+- Bereitstellung (via Gardener -> MetalStack)
+- Netzwerkeinrichtung
+- Update
+    - Kubernetes Version der einzelnen Nodes (auto)
+    - Netzwerke
+- IP Adressen Reservierung (statisch) für Cluster-LoadBalancer
+- u.v.m.
 
 ---
 
