@@ -2659,16 +2659,6 @@ roleRef:
 
 +++
 
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Aufbau eines Helm Charts
-- wie so oft im yaml-Format <!-- .element: class="fragment" data-fragment-index="1" -->
-- das Meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
-- Anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
-
-+++
-
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
 ```sh
@@ -2687,6 +2677,15 @@ name
 │       └── test-connection.yaml
 └── values.yaml
 ```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
+- wie so oft im yaml-Format <!-- .element: class="fragment" data-fragment-index="1" -->
+- das Meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
+- Anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
+
 
 +++
 
