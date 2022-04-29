@@ -1810,8 +1810,9 @@ Service - ExternalName (erstellt DNS Eintrag, der auf einen externen DNS routet)
 +++
 
 ## Agenda
-- RBAC
 - Weitere API Objekttypen
+- Admission Controller
+- RBAC
 - Helm
 - Cert-Manager + Ingress
 - FCN
@@ -2491,7 +2492,7 @@ readinessProbe:
 <!-- .slide: style="text-align: left;"> -->
 ## Sicherheit
 
-Role Based Access Control
+Role Based Access Control (RBAC)
 - Authentifizierung (Wer bin ich?) <!-- .element: class="fragment" data-fragment-index="1" -->
     - Analogie Ausreise: Perso <!-- .element: class="fragment" data-fragment-index="1" -->
 - Autorisierung (Was darf ich?) <!-- .element: class="fragment" data-fragment-index="2" -->
