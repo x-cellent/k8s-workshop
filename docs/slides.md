@@ -2591,7 +2591,9 @@ subjects:
 roleRef:
   kind: Role
   name: pod-reader
-  apiGroup: rbac.authorization.k8s.io```
+  apiGroup: rbac.authorization.k8s.io
+```
+
 ---
 
 <!-- .slide: style="text-align: left;"> -->
@@ -2680,7 +2682,15 @@ name
 
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
-- Das Meiste spielt sich im templates-Ordner ab
+- wie so oft im yaml-Format <!-- .element: class="fragment" data-fragment-index="1" -->
+- das Meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
+- Anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
+
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Aufbau eines Helm Charts
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -2744,14 +2754,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 ```
-
-+++
-
-<!-- .slide: style="text-align: left;"> -->
-## Aufbau eines Helm Charts
-- wie so oft im yaml-Format <!-- .element: class="fragment" data-fragment-index="1" -->
-- das Meiste bis alles templates <!-- .element: class="fragment" data-fragment-index="2" -->
-- Anpassungen in der values.yaml <!-- .element: class="fragment" data-fragment-index="3" -->
 
 +++
 
