@@ -3075,10 +3075,8 @@ helm rollback -n helm-namespace nginx-deployment 1
 - Bereitstellung (via Gardener -> MetalStack)
 - Netzwerkeinrichtung
 - Update
-    - Kubernetes Version der einzelnen Nodes (auto)
-    - Netzwerke
+    - Kubernetes Version der einzelnen Nodes (auto), Netzwerk, ...
 - IP Adressen Reservierung (statisch) für Cluster-LoadBalancer
-- u.v.m.
 
 ---
 
