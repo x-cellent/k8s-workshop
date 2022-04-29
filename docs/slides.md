@@ -2553,6 +2553,11 @@ Role Based Access Control (RBAC)
     - cert-manager
     - anwendungsspezifische Funktionalitäten
 
++++
+
+<!-- .slide: data-background="#808080" -->
+<img src="images/external-secrets.drawio.png" >
+
 ---
 
 <!-- .slide: style="text-align: left;"> -->
