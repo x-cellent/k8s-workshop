@@ -2406,7 +2406,7 @@ psql -U user23 topdb
 - Effiziente Nutzung der Nodes
 - Löst das Problem mit den ResourceQuotas/LimitRange
 - Noch nicht für Produktion empfohlen
-    - wegen möglicher eingeschränker Sichtbarket der Arbeitsspeichernutzung
+    - wegen möglicher eingeschränkter Sichtbarkeit der Arbeitsspeichernutzung
 
 +++
 
