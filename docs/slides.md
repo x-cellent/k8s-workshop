@@ -1812,7 +1812,7 @@ Service - ExternalName (erstellt DNS Eintrag, der auf einen externen DNS routet)
 ## Agenda
 - Weitere API Objekttypen
 - Admission Controller
-- RBAC
+- Sicherheit (RBAC)
 - Helm
 - Cert-Manager + Ingress
 - MetalStack / Gardener / FCN
