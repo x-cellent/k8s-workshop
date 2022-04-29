@@ -69,3 +69,9 @@ bin/w6p exercise k8s -nX
 ```
 to start the Kubernetes exercise number `X`.
 Each exercise will be deployed into a fresh namespace `exX` including the exercise number `X`, for example `ex1`.
+
+### Proxy
+
+~/.bashrc
+~/.docker/config.json
+/etc/systemd/system/docker.service.d/http-proxy.conf

@@ -24,12 +24,12 @@ metadata:
 spec:
   replicas: 3
   selector:
-    matchLables:
+    matchLabels:
       app: frontend
   template:
     metadata:
       labels:
-        app: web
+        app: frontend
     spec:
       containers:
       - name: web
