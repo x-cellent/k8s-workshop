@@ -2,6 +2,8 @@
 
 set -e
 
+export KUBECONFIG=$( dirname "$(readlink -f "${BASH_SOURCE[0]}" )")/../k8s-workshop.kubeconfig
+
 kubectl create ns ex13 || true
 
 helm repo add jetstack https://charts.jetstack.io

@@ -2389,6 +2389,106 @@ psql -U user23 topdb
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+## Resource Quotas
+
+- Limitiert die Ressourcen (CPU/Memory/Anzahl Pods/...) für Pods auf NS Ebene
+- LimitRange einsetzen für Min/Max und default Werte
+- Vorsicht bei zu knapper Bemessung
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Vertical Pod Autoscaler
+
+- Passt Ressourcen-Nutzung (CPU/Memory) der Pods automatisch an
+- Effiziente Nutzung der Nodes
+- Löst das Problem mit den ResourceQuotas/LimitRange
+- Noch nicht für Produktion empfohlen
+    - wegen möglicher eingeschränker Sichtbarket der Arbeitsspeichernutzung
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Horizontal Pod Autoscaler
+
+- Automatisches Rescaling von Deployments
+   - nach CPU Auslastung
+   - nach Custom Metriken (v2)
+
++++
+
+<!-- .slide: data-background="#808080" -->
+<img src="images/hpa.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## HPA erstellen
+
+```sh
+kubectl autoscale deployment nginx --cpu-percent=50 --min=1 --max=10
+```
+
+```sh
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Probes
+
+- Überwachung und Einschätzung der Pods
+- LivenessProbe
+    - Wann ist ein Pod gestartet und gesund?
+- ReadinessProbe
+    - Wann kann ein Pod Traffic entgegennehmen?
+    - z.B. wenn Pod von anderen Pods noch abhängt
+- StartupProbe
+    - Deaktiviert liveness und readiness Probes beim Container-Start
+    - Analog zu LivenessProbe für langsame legacy Applikationen
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Beispiel
+
+```sh
+startupProbe:
+  httpGet:
+    path: /health
+    port: 80
+  failureThreshold: 30
+  periodSeconds: 10
+
+livenessProbe:
+  exec:
+    command:
+    - cat
+    - /tmp/health
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 ## Sicherheit
 
 Role Based Access Control
@@ -2406,9 +2506,36 @@ Role Based Access Control
 
 <!-- .slide: style="text-align: left;"> -->
 ## Admission Controller
--
-Allow/Deny/Change API-Requests
-- Basiert auf Regeln und Policies
+
+- Validate/Mutate API-Requests
+- Viele built-in Admission Controller
+    - LimitRanger, PSP, ImageScanner, RBAC, ...
+- Eigene Admission Controller installierbar
+    - Erweitert den k8s Funktionsumfang
+    - Wird in der Reconciliation Loop ausgeführt
+    - CRDs
+
++++
+
+<!-- .slide: data-background="#808080" -->
+<img src="images/admission-controller-workflow.png" >
+
++++
+
+<!-- .slide: data-background="#808080" -->
+<img src="images/image-scanner.png" >
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## CustomResourceDefinition
+
+- Erfordert eigenen Admission Controller
+- Damit selbst definierbare Manifeste möglich
+- Beispiele
+    - external-secrets-controller
+    - cert-manager
+    - anwendungsspezifische Funktionalitäten
 
 ---
 
@@ -2421,12 +2548,12 @@ Allow/Deny/Change API-Requests
 
 +++
 
-- Praktisch um eine Anwendung mit wenigen änderungen in verschiedenen umgebungen zu deployen <!-- .element: class="fragment" data-fragment-index="1" -->
+- Praktisch, um eine Anwendung mit wenigen Änderungen in verschiedenen Umgebungen zu deployen <!-- .element: class="fragment" data-fragment-index="1" -->
     - test/staging/production <!-- .element: class="fragment" data-fragment-index="2" -->
 - Helm Charts sind in sogenannten Repos gespeichert <!-- .element: class="fragment" data-fragment-index="3" -->
-    - Chart ersteller haben meistens eigene Repos <!-- .element: class="fragment" data-fragment-index="4" -->
+    - Chart Ersteller haben meistens eigene Repos <!-- .element: class="fragment" data-fragment-index="4" -->
     - Nutzung ähnlich wie bei apt in ubuntu <!-- .element: class="fragment" data-fragment-index="5" -->
-        - adden, updaten installieren <!-- .element: class="fragment" data-fragment-index="6" -->
+        - adden, updaten, installieren <!-- .element: class="fragment" data-fragment-index="6" -->
 
 +++
 
@@ -2438,10 +2565,10 @@ Allow/Deny/Change API-Requests
 <!-- .slide: style="text-align: left;"> -->
 ## Aufbau eines Helm Charts
 ```sh
-schulung
+name
 ├── charts
 ├── Chart.yaml
-├── Stemplates
+├── templates
 │   ├── deployment.yaml
 │   ├── _helpers.tpl
 │   ├── hpa.yaml
@@ -2775,6 +2902,28 @@ helm rollback -n helm-namespace nginx-deployment 1
 ---
 
 <!-- .slide: style="text-align: left;"> -->
+## Ingress
+
+- HTTP layer 7 router
+- Host und Path basiertes Routing (HTTP/HTTPS)
+- TCP Routing von Ports != 80/443 über
+- Erfordert Installation Ingress Controller
+    - traefik
+    - ingress-nginx
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+## Ingress Übung
+
+- Installiere letsencrypt cert manager via Helm
+- Installiere ingress-nginx-controller
+- Mache den nginx Server nach außen hin via HTTPS mit Zertifikat zugreifbar via Ingress
+    - Weil kein LoadBalancer zur Verfügung steht, ändere den ingress-nginx Service in den Typ `NodePort`
+
+---
+
+<!-- .slide: style="text-align: left;"> -->
 # Finance Cloud Native
 
 ---
@@ -2829,9 +2978,8 @@ sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
 
 +++
 
-<!-- .slide: style="text-align: left;"> -->
 <!-- .slide: data-background="#51565c" -->
-  <img src="https://www.augmentedmind.de/wp-content/uploads/2021/09/prometheus-official-architecture-1024x615.png" >
+<img src="https://www.augmentedmind.de/wp-content/uploads/2021/09/prometheus-official-architecture-1024x615.png" >
 
 +++
 
@@ -2847,11 +2995,8 @@ sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
 
 +++
 
-  
-
-<!-- .slide: style="text-align: left;"> -->
 <!-- .slide: data-background="#808080" -->
-  <img src="images/grafana-loki-work.png" >
+<img src="images/grafana-loki-work.png" >
 
 +++
 

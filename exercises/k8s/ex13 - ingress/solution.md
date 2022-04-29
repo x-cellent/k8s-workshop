@@ -54,10 +54,10 @@ kubectl apply -f ingress.yaml
 
 6.
 ```sh
-curl -k -H"Host: nginx.nip.io" https://$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' k8s-workshop-cluster-control-plane):$(kubectl -n ingress-nginx get svc ingress-nginx-controller -o custom-columns=NODEPORT:.spec.ports[1].nodePort --no-headers)
+curl -k -H"Host: nginx.example.com" https://$(docker inspect --format='{{.NetworkSettings.Networks.kind.IPAddress}}' k8s-workshop-cluster-control-plane):$(kubectl -n ingress-nginx get svc ingress-nginx-controller -o custom-columns=NODEPORT:.spec.ports[1].nodePort --no-headers)
 ```
 
 Zum Beispiel:
 ```sh
-curl -k -H"Host: nginx.nip.io" https://172.22.0.2:32318
+curl -k -H"Host: nginx.example.com" https://172.22.0.2:32318
 ```

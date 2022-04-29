@@ -2,6 +2,8 @@
 
 set -e
 
+export KUBECONFIG=$( dirname "$(readlink -f "${BASH_SOURCE[0]}" )")/../k8s-workshop.kubeconfig
+
 kubectl create ns ex13 || true
 
 helm upgrade --install ingress-nginx ingress-nginx \

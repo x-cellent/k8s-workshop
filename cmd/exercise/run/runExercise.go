@@ -102,8 +102,9 @@ func Exercise(exercises embed.FS, n int, kind Kind, showSolutionImmediately bool
 				return err
 			}
 
-			err = exec.Command("./" + script).Run()
+			out, err := exec.Command("./" + script).CombinedOutput()
 			if err != nil {
+				fmt.Println(string(out))
 				return err
 			}
 		}
