@@ -2979,7 +2979,7 @@ helm rollback -n helm-namespace nginx-deployment 1
 +++
 
 <!-- .slide: data-background="#51565c" -->
-<img src="images/gardener-zitat.png" style="height: 500px" >
+<img src="images/gardener-zitat.png" style="height: 200px" >
 
 +++
 
