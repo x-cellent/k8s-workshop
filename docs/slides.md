@@ -1936,9 +1936,9 @@ kubectl create deploy --image alpine:3.15 my-deploy $do > dp.yaml
 - kubectl -n web port-forward pod/web-6779b45f74-bvc7p :80
   - lokaler, zufällig bestimmter Port wird an Pod Port 80 gebunden
 - kubectl -n web port-forward svc/web 8081
-  - lokaler Port 8081 -> von Service bestimmter Pod Port 8081
+  - lokaler Port 8081 -> von Service bestimmter Service Port 8081
 - kubectl -n web port-forward deploy/web 8081:80
-  - lokaler Port 8081 -> von Deployment bestimmter Pod Port 80
+  - lokaler Port 8081 -> von Deployment bestimmter Service Port 80
 - in k9s via `Shift^f`
 
 +++
