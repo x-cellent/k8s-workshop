@@ -2939,7 +2939,7 @@ helm rollback -n helm-namespace nginx-deployment 1
 +++
 
 <!-- .slide: data-background="#51565c" -->
-<img src="ingress-demo.drawio.png" style="height: 500px" >
+<img src="images/ingress-demo.drawio.png" style="height: 500px" >
 
 ---
 
@@ -2966,21 +2966,25 @@ helm rollback -n helm-namespace nginx-deployment 1
     - Seed-Cluster ~ Node
         - beinhaltet control-planes der tenant Cluster
         - gardenlet ~ kubelet
-    - Garden Cluster
-        - Verwaltet die Seed-Cluster
-        - Seed-Cluster isoliert lauffähig
-            - Umgekehrung der Kommunikation
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+- Garden Cluster
+    - Verwaltet die Seed-Cluster
+    - Seed-Cluster isoliert lauffähig
+        - Umgekehrung der Kommunikation
 - Unterstützt alle großen CloudProvider, und...
 
 +++
 
 <!-- .slide: data-background="#51565c" -->
-<img src="gardener-zitat.png" style="height: 500px" >
+<img src="images/gardener-zitat.png" style="height: 500px" >
 
 +++
 
 <!-- .slide: data-background="#51565c" -->
-<img src="gardener.jpg" style="height: 500px" >
+<img src="images/gardener.jpg" style="height: 500px" >
 
 +++
 
