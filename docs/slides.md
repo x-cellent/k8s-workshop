@@ -2400,6 +2400,41 @@ psql -U user23 topdb
 +++
 
 <!-- .slide: style="text-align: left;"> -->
+```sh
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mem-cpu-rq
+  namespace: my-namespace
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: "1Gi"
+    limits.cpu: "2"
+    limits.memory: "2Gi"
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
+```sh
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-cpu-lr
+  namespace: my-namespace
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+    defaultRequest:
+      memory: "256Mi"
+    type: Container
+```
+
++++
+
+<!-- .slide: style="text-align: left;"> -->
 ## Vertical Pod Autoscaler
 
 - Passt Ressourcen-Nutzung (CPU/Memory) der Pods automatisch an
