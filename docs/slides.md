@@ -2487,7 +2487,7 @@ readinessProbe:
     port: 80
 ```
 
-+++
+---
 
 <!-- .slide: style="text-align: left;"> -->
 ## Sicherheit
@@ -2504,6 +2504,20 @@ Role Based Access Control (RBAC)
         - Zoll: Darf ich mein Gepäck einführen? <!-- .element: class="fragment" data-fragment-index="4" -->
 
 +++
+
+<!-- .slide: style="text-align: left;"> -->
+## Modell
+
+- ServiceAccount (SA) / User
+    - technischer / User Account im Cluster
+- (Cluster)Role
+    - Feingranulare Berechtigungen auf Ressourcen
+        - get, create, read, watch, ...
+        - pod, secret, configmap, deployment, ...
+- (Cluster)RoleBinding
+    - Mappt (Cluster)Roles auf Accounts (SA/User)
+
+---
 
 <!-- .slide: style="text-align: left;"> -->
 ## Admission Controller
