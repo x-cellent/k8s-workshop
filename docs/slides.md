@@ -2936,6 +2936,11 @@ helm rollback -n helm-namespace nginx-deployment 1
 - Mache den nginx Server nach außen hin via HTTPS mit Zertifikat zugreifbar via Ingress
     - Weil kein LoadBalancer zur Verfügung steht, ändere den ingress-nginx Service in den Typ `NodePort`
 
++++
+
+<!-- .slide: data-background="#51565c" -->
+<img src="ingress-demo.drawio.png" style="height: 500px" >
+
 ---
 
 <!-- .slide: style="text-align: left;"> -->
